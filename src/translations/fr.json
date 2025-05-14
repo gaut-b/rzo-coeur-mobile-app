@@ -1,0 +1,44 @@
+{
+  "onboarding": {
+    "message": "Welcome to obytes app site"
+  },
+  "pages": {
+    "product": {
+      "title": "Produit",
+      "add": "Ajouter au panier"
+    },
+    "payment": {
+      "title": "Paiement",
+      "content": "Veuillez montrer ce QR code en caisse"
+    }
+  },
+  "settings": {
+    "about": "A propos",
+    "app_name": "App Name",
+    "arabic": "Arabic",
+    "english": "English",
+    "french": "Français",
+    "general": "Général",
+    "github": "Github",
+    "language": "Langue",
+    "links": "Liens",
+    "logout": "Déconnexion",
+    "more": "Plus d'infos...",
+    "privacy": "Paramètres de confidentialité",
+    "rate": "Noter",
+    "share": "Partager",
+    "support": "Nous supporter",
+    "support_us": "Nous supporter",
+    "terms": "CGU",
+    "theme": {
+      "dark": "Sombre",
+      "light": "Clair",
+      "system": "Système",
+      "title": "Thème"
+    },
+    "title": "Paramètres",
+    "version": "Version",
+    "website": "Site Web"
+  },
+  "welcome": "Welcome to obytes app site"
+}

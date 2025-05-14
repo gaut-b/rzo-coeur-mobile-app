@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+---
+- clearState
+- launchApp: ${APP_ID}
+- runFlow:
+    when:
+      visible:
+        text: 'http.*'
+    commands:
+      - tapOn: 'http.*'
+- runFlow:
+    when:
+      visible: 'Continue'
+    commands:
+      - tapOn: 'Continue'
+- runFlow:
+    when:
+      visible: 'Toggle performance monitor'
+    commands:
+      - tapOn:
+          point: 50%,10%
+- assertVisible: 'Obytes Starter'
+- assertVisible: "Let's Get Started "
+- tapOn: "Let's Get Started "
+- assertVisible: 'Sign In'
