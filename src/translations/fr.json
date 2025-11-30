@@ -9,7 +9,32 @@
     },
     "payment": {
       "title": "Paiement",
-      "content": "Veuillez montrer ce QR code en caisse"
+      "content-client": "Veuillez montrer ce QR code en caisse afin de régler les articles suspendus",
+      "content-cashier": "Veuillez scanner le QR code d'un client afin d'obtenir la liste des articles",
+      "content-recipient": "Veuillez montrer ce QR code en caisse après avoir récupéré vos articles suspendus",
+      "validate": "Valider le paiement "
+    },
+    "basket": {
+      "title": "Panier",
+      "greeting": "👋 Bonjour, {{firstName}}",
+      "empty-basket": "Votre panier est vide. Scannez des articles en cliquant sur le bouton ci-dessous pour les voir apparaître ici."
+    },
+    "login": {
+      "title": "Connexion",
+      "email_label": "Adresse e-mail",
+      "password_label": "Mot de passe",
+      "forgot_password": "Mot de passe oublié ?",
+      "sign_up": "Vous n'avez pas de compte ? Inscrivez-vous",
+      "submit": "Se connecter"
+    },
+    "sign-up": {
+      "title": "Inscription",
+      "email_label": "Adresse e-mail",
+      "firstName_label": "Prénom",
+      "lastName_label": "Nom de famille",
+      "password_label": "Mot de passe",
+      "password2_label": "Confirmez le mot de passe",
+      "submit": "Créer son compte"
     }
   },
   "settings": {
@@ -38,7 +63,11 @@
     },
     "title": "Paramètres",
     "version": "Version",
-    "website": "Site Web"
+    "website": "Site Web",
+    "role": "Rôle",
+    "client": "client",
+    "recipient": "bénéficiaire",
+    "cashier": "caissier"
   },
   "welcome": "Welcome to obytes app site"
 }

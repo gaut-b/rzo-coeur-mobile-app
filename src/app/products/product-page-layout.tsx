@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { ActivityIndicator, FocusAwareStatusBar, View } from '@/components/ui';
-import { translate } from '@/lib';
+import { translate } from '@/lib/i18n';
 
 type ProductPageLayoutProps = {
   children?: ReactNode;

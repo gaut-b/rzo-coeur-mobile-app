@@ -2,10 +2,10 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { showMessage } from 'react-native-flash-message';
 
-import { useGetProduct } from '@/api/products';
 import { Button, Image, Text, View } from '@/components/ui';
-import { translate } from '@/lib';
-import { addArticle } from '@/lib/state/basket/basket.store';
+import { useGetProduct } from '@/lib/hooks';
+import { translate } from '@/lib/i18n';
+import { addArticle } from '@/lib/state';
 
 import ProductPageLayout from './product-page-layout';
 

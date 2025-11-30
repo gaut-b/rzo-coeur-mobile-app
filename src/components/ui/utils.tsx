@@ -1,4 +1,4 @@
-import type { AxiosError } from 'axios';
+import { type HTTPError } from 'ky';
 import { Dimensions, Platform } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -9,9 +9,10 @@ export const WIDTH = width;
 export const HEIGHT = height;
 
 // for onError react queries and mutations
-export const showError = (error: AxiosError) => {
-  console.log(JSON.stringify(error?.response?.data));
-  const description = extractError(error?.response?.data).trimEnd();
+export const showError = (error: HTTPError) => {
+  console.log('Error in showError:', error);
+  console.log(JSON.stringify(error?.response));
+  const description = extractError(error?.response).trimEnd();
 
   showMessage({
     message: 'Error',

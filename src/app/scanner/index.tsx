@@ -2,12 +2,17 @@ import { CameraView } from 'expo-camera';
 import { Redirect, Stack } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { AppState, Platform, StatusBar, StyleSheet } from 'react-native';
+import { useAuthStore } from 'src/lib';
 
 import { View } from '@/components/ui';
+
+import { BARCODE_TYPE, QRCODE_TYPE } from './types';
 export default function Home() {
+  const userRole = useAuthStore.use.user()?.role;
   const qrLock = useRef(false);
   const appState = useRef(AppState.currentState);
   const [productId, setProductId] = useState<string | null>(null);
+  const [isPaymentBasket, setIsPaymentBasket] = useState<boolean>(false);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
@@ -28,6 +33,11 @@ export default function Home() {
   if (productId) {
     return <Redirect href={`/products/${productId}`} />;
   }
+
+  if (isPaymentBasket) {
+    return <Redirect href={`/payment/list`} />;
+  }
+
   return (
     <View style={StyleSheet.absoluteFillObject}>
       <Stack.Screen
@@ -40,13 +50,27 @@ export default function Home() {
       <CameraView
         style={StyleSheet.absoluteFillObject}
         facing="back"
-        onBarcodeScanned={({ data }) => {
+        onBarcodeScanned={({ type, data }) => {
           if (data && !qrLock.current) {
-            qrLock.current = true;
-            setProductId((oldValue) => {
-              if (oldValue !== data) return data;
-              return oldValue;
-            });
+            if (type === BARCODE_TYPE && userRole === 'CLIENT') {
+              qrLock.current = true;
+              setProductId((oldValue) => {
+                if (oldValue !== data) return data;
+                return oldValue;
+              });
+            } else if (type === QRCODE_TYPE && userRole === 'CASHIER') {
+              // Validate QR code data before proceeding
+              if (
+                typeof data === 'string' &&
+                data.startsWith('PAYMENT_BASKET:')
+              ) {
+                qrLock.current = true;
+                setIsPaymentBasket(true);
+              } else {
+                // Optionally, show an error or ignore invalid QR codes
+                // e.g., Alert.alert('Invalid QR code');
+              }
+            }
           }
         }}
       />

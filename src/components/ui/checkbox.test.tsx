@@ -3,7 +3,7 @@ import 'react-native';
 
 import React from 'react';
 
-import { cleanup, screen, setup } from '@/lib/test-utils';
+import { cleanup, screen, setup } from '@/lib/test';
 
 import { Checkbox, Radio, Switch } from './checkbox';
 

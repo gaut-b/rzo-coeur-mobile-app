@@ -2,7 +2,6 @@
 import '../../global.css';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
@@ -11,17 +10,13 @@ import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 
-import { APIProvider } from '@/api';
-import { hydrateAuth, loadSelectedTheme } from '@/lib';
-import { useThemeConfig } from '@/lib/use-theme-config';
+import { useThemeConfig } from '@/lib/hooks';
+import { APIProvider } from '@/lib/http';
 export { ErrorBoundary } from 'expo-router';
 export const unstable_settings = {
   initialRouteName: '(app)',
 };
 
-hydrateAuth();
-loadSelectedTheme();
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 // Set the animation options. This is optional.
 SplashScreen.setOptions({
@@ -31,19 +26,17 @@ SplashScreen.setOptions({
 
 export default function RootLayout() {
   return (
-    <>
-      <Providers>
-        <Stack>
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-        </Stack>
-      </Providers>
-    </>
+    <Providers>
+      <Stack>
+        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+      </Stack>
+    </Providers>
   );
 }
 
-function Providers({ children }: { children: React.ReactNode }) {
+function Providers({ children }: { readonly children: React.ReactNode }) {
   const theme = useThemeConfig();
   return (
     <GestureHandlerRootView
@@ -51,14 +44,12 @@ function Providers({ children }: { children: React.ReactNode }) {
       className={theme.dark ? `dark` : undefined}
     >
       <KeyboardProvider>
-        <ThemeProvider value={theme}>
-          <APIProvider>
-            <BottomSheetModalProvider>
-              {children}
-              <FlashMessage position="top" />
-            </BottomSheetModalProvider>
-          </APIProvider>
-        </ThemeProvider>
+        <APIProvider>
+          <BottomSheetModalProvider>
+            {children}
+            <FlashMessage position="top" />
+          </BottomSheetModalProvider>
+        </APIProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>
   );
