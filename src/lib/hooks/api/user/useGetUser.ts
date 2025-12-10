@@ -16,7 +16,7 @@ const getUserRequest = async (): Promise<GetUserRequestResponse> => {
     .json<GetUserRequestResponse>();
 };
 
-export const useGetUser = (shouldFetch?: boolean) =>
+export const useGetUser = (shouldFetch: boolean = false) =>
   useQuery({
     queryKey: ['user'],
     queryFn: async () => getUserRequest(),

@@ -2,6 +2,7 @@
 import '../../global.css';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
@@ -30,7 +31,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
       </Stack>
     </Providers>
   );
@@ -38,6 +39,7 @@ export default function RootLayout() {
 
 function Providers({ children }: { readonly children: React.ReactNode }) {
   const theme = useThemeConfig();
+
   return (
     <GestureHandlerRootView
       style={styles.container}
@@ -45,10 +47,12 @@ function Providers({ children }: { readonly children: React.ReactNode }) {
     >
       <KeyboardProvider>
         <APIProvider>
-          <BottomSheetModalProvider>
-            {children}
-            <FlashMessage position="top" />
-          </BottomSheetModalProvider>
+          <ThemeProvider value={theme}>
+            <BottomSheetModalProvider>
+              {children}
+              <FlashMessage position="top" />
+            </BottomSheetModalProvider>
+          </ThemeProvider>
         </APIProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>

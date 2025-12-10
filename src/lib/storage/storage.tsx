@@ -1,6 +1,6 @@
-import { createMMKV } from 'react-native-mmkv'
+import { MMKV } from 'react-native-mmkv';
 
-export const storage = createMMKV({
+export const storage = new MMKV({
   id: 'rzo-coeur-storage',
 });
 
@@ -14,5 +14,5 @@ export async function setItem<T>(key: string, value: T) {
 }
 
 export async function removeItem(key: string) {
-  storage.remove(key);
+  storage.delete(key);
 }

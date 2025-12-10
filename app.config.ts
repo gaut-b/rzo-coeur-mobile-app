@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import type { ConfigContext, ExpoConfig } from '@expo/config';
 import type { AppIconBadgeConfig } from 'app-icon-badge/types';
 
@@ -39,8 +38,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: Env.BUNDLE_ID,
-    config: {
-      usesNonExemptEncryption: false, // Avoid the export compliance warning on the app store
+    infoPlist: {
+      ITSAppUsesNonExemptEncryption: false,
     },
   },
   experiments: {

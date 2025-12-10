@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import React from 'react';
 import { useAuthStore } from 'src/lib';
 
@@ -16,8 +16,7 @@ export default function SignIn() {
   const signIn = useAuthStore.use.signIn();
 
   if (status === 'LOGGED_IN') {
-    router.push('/articles');
-    return null;
+    return <Redirect href="/" />;
   }
 
   const onSubmit: SignInFormProps['onSubmit'] = ({ email, password }) => {

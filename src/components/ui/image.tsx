@@ -1,13 +1,13 @@
 import type { ImageProps } from 'expo-image';
 import { Image as NImage } from 'expo-image';
-import { styled } from 'nativewind';
+import { cssInterop } from 'nativewind';
 import * as React from 'react';
 
 export type ImgProps = ImageProps & {
   className?: string;
 };
 
-const StyledImage = styled(NImage, { className: 'style' });
+cssInterop(NImage, { className: 'style' });
 
 export const Image = ({
   style,
@@ -16,7 +16,7 @@ export const Image = ({
   ...props
 }: ImgProps) => {
   return (
-    <StyledImage
+    <NImage
       className={className}
       placeholder={placeholder}
       style={style}

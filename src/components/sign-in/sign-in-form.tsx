@@ -67,7 +67,7 @@ export const SignInForm = ({
         <Link href="/forgot-password">
           <Text
             testID="sign-up"
-            className="pb-6 text-center text-4xl font-bold"
+            className="pb-6 text-center text-base font-bold"
           >
             {translate('pages.login.forgot_password')}
           </Text>
@@ -75,7 +75,7 @@ export const SignInForm = ({
         <Link href="/sign-up">
           <Text
             testID="sign-up"
-            className="pb-6 text-center text-4xl font-bold"
+            className="pb-6 text-center text-base font-bold"
           >
             {translate('pages.login.sign_up')}
           </Text>

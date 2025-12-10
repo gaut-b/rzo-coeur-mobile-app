@@ -15,7 +15,7 @@ export type TxKeyPath = RecursiveKeyOf<DefaultLocale>;
 
 export const LOCAL = 'local';
 
-export const getLanguage = () => storage.getString(LOCAL); // 'Marc' getItem<Language | undefined>(LOCAL);
+export const getLanguage = () => storage.getString(LOCAL);
 
 export const translate = memoize(
   (key: TxKeyPath, options = undefined) =>
@@ -26,9 +26,9 @@ export const translate = memoize(
 
 export const changeLanguage = (lang: Language) => {
   i18n.changeLanguage(lang);
-  // Enable RTL only for actual RTL languages
-  const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
-  if (rtlLanguages.includes(lang)) {
+  // List of RTL languages
+  const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
+  if (RTL_LANGUAGES.includes(lang)) {
     I18nManager.forceRTL(true);
   } else {
     I18nManager.forceRTL(false);

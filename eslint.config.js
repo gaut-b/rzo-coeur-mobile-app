@@ -7,6 +7,7 @@ const unusedImports = require('eslint-plugin-unused-imports');
 const simpleImportSort = require('eslint-plugin-simple-import-sort');
 const reactCompiler = require('eslint-plugin-react-compiler');
 const js = require('@eslint/js');
+const globals = require('globals');
 
 const { FlatCompat } = require('@eslint/eslintrc');
 
@@ -31,8 +32,8 @@ module.exports = defineConfig([
     },
 
     languageOptions: {
-      parserOptions: {
-        project: './tsconfig.json',
+      globals: {
+        ...globals.node,
       },
     },
 
@@ -55,15 +56,6 @@ module.exports = defineConfig([
       'react/require-default-props': 'off',
       '@typescript-eslint/comma-dangle': 'off',
 
-      '@typescript-eslint/consistent-type-imports': [
-        'warn',
-        {
-          prefer: 'type-imports',
-          fixStyle: 'inline-type-imports',
-          disallowTypeAnnotations: true,
-        },
-      ],
-
       'import/prefer-default-export': 'off',
 
       'import/no-cycle': [
@@ -84,6 +76,26 @@ module.exports = defineConfig([
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
+
+    rules: {
+      '@typescript-eslint/consistent-type-imports': [
+        'warn',
+        {
+          prefer: 'type-imports',
+          fixStyle: 'inline-type-imports',
+          disallowTypeAnnotations: true,
         },
       ],
     },
