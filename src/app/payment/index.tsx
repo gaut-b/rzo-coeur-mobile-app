@@ -2,11 +2,14 @@ import { Stack } from 'expo-router';
 import QRCode from 'react-native-qrcode-svg';
 
 import { FocusAwareStatusBar, Text, View } from '@/components/ui';
-import { translate } from '@/lib';
-import { useBasket } from '@/lib/state/basket/basket.store';
+import { translate } from '@/lib/i18n';
+import { useAuthStore, useBasketStore } from '@/lib/state';
+
 export const PaymentPage = () => {
+  const role = useAuthStore.use.user()?.role;
   let logoFromFile = require('../../components/ui/icons/icon.png');
-  const { articles: articlesById } = useBasket();
+  const { articles: articlesById } = useBasketStore();
+
   return (
     <View className="flex h-full items-center justify-center gap-4">
       <Stack.Screen
@@ -17,7 +20,9 @@ export const PaymentPage = () => {
       <FocusAwareStatusBar />
       <View>
         <Text className="text-center text-3xl tracking-tight">
-          {translate('pages.payment.content')}
+          {translate(
+            `pages.payment.content-${role === 'RECIPIENT' ? 'recipient' : 'client'}`
+          )}
         </Text>
       </View>
       <View className="flex-2">

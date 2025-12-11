@@ -4,7 +4,15 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/lib/hooks": ["./src/lib/hooks"],
+      "@/lib/http": ["./src/lib/http"],
+      "@/lib/i18n": ["./src/lib/i18n"],
+      "@/lib/state": ["./src/lib/state"],
+      "@/lib/storage": ["./src/lib/storage"],
+      "@/lib/test": ["./src/lib/test"],
+      "@/components": ["./src/components"],
+      "@/components/*": ["./src/components/*"],
+      "@/translations/*": ["./src/translations/*"],
       "@env": ["./src/lib/env.js"]
     },
     "esModuleInterop": true,

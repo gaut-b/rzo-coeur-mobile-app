@@ -54,7 +54,7 @@ const basketStore = create<BasketState>((set, get) => ({
   },
 }));
 
-export const useBasket = createSelectors(basketStore);
+export const useBasketStore = createSelectors(basketStore);
 
 export const addArticle = (article: ArticleInfos, articleQuantity: number) =>
   basketStore.getState().addArticle(article, articleQuantity);

@@ -9,7 +9,7 @@ export const Typography = () => {
     <>
       <Title text="Typography" />
       <View className="mb-4 flex-col">
-        <Text className="text-3xl  tracking-tight">
+        <Text className="text-3xl tracking-tight">
           H1: Lorem ipsum dolor sit
         </Text>
         <Text className="text-2xl ">H2: Lorem ipsum dolor sit</Text>

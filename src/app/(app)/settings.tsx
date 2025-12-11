@@ -1,6 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { Env } from '@env';
-import { useColorScheme } from 'nativewind';
 
 import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
@@ -14,13 +12,13 @@ import {
   View,
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
-import { translate, useAuth } from '@/lib';
-
+import { translate } from '@/lib/i18n';
+import { useAuthStore, useThemeStore } from '@/lib/state';
 export default function Settings() {
-  const signOut = useAuth.use.signOut();
-  const { colorScheme } = useColorScheme();
+  const signOut = useAuthStore.use.signOut();
+  const { selectedTheme } = useThemeStore();
   const iconColor =
-    colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+    selectedTheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
   return (
     <>
       <FocusAwareStatusBar />

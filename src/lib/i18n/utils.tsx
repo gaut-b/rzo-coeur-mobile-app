@@ -10,12 +10,12 @@ import { storage } from '../storage';
 import type { Language, resources } from './resources';
 import type { RecursiveKeyOf } from './types';
 
-type DefaultLocale = typeof resources.en.translation;
+type DefaultLocale = typeof resources.fr.translation;
 export type TxKeyPath = RecursiveKeyOf<DefaultLocale>;
 
 export const LOCAL = 'local';
 
-export const getLanguage = () => storage.getString(LOCAL); // 'Marc' getItem<Language | undefined>(LOCAL);
+export const getLanguage = () => storage.getString(LOCAL);
 
 export const translate = memoize(
   (key: TxKeyPath, options = undefined) =>
@@ -26,7 +26,9 @@ export const translate = memoize(
 
 export const changeLanguage = (lang: Language) => {
   i18n.changeLanguage(lang);
-  if (lang === 'ar') {
+  // List of RTL languages
+  const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
+  if (RTL_LANGUAGES.includes(lang)) {
     I18nManager.forceRTL(true);
   } else {
     I18nManager.forceRTL(false);

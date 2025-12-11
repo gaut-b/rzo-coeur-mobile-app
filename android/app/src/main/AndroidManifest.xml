@@ -27,7 +27,6 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="rzo_coeur_mobile_app"/>
-        <data android:scheme="com.rzo_coeur_mobile_app.development"/>
         <data android:scheme="exp+obytesapp"/>
       </intent-filter>
     </activity>

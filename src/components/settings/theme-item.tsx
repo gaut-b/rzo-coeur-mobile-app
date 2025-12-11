@@ -1,14 +1,15 @@
 import React from 'react';
+import { type ColorSchemeType } from 'src/lib';
 
 import type { OptionType } from '@/components/ui';
 import { Options, useModal } from '@/components/ui';
-import type { ColorSchemeType } from '@/lib';
-import { translate, useSelectedTheme } from '@/lib';
+import { translate } from '@/lib/i18n';
+import { useThemeStore } from '@/lib/state';
 
 import { Item } from './item';
 
 export const ThemeItem = () => {
-  const { selectedTheme, setSelectedTheme } = useSelectedTheme();
+  const { selectedTheme, setSelectedTheme } = useThemeStore();
   const modal = useModal();
 
   const onSelect = React.useCallback(

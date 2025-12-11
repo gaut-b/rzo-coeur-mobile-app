@@ -1,17 +1,17 @@
-import { locale } from 'expo-localization';
+import { getLocales } from 'expo-localization';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
 
 import { resources } from './resources';
 import { getLanguage } from './utils';
+export * from './resources';
 export * from './utils';
-
 i18n.use(initReactI18next).init({
   resources,
-  lng: getLanguage() || locale, // TODO: if you are not supporting multiple languages or languages with multiple directions you can set the default value to `en`
+  lng: getLanguage() ?? getLocales()[0]?.languageCode ?? 'fr', // Ensures lng is always a string
   fallbackLng: 'fr',
-  compatibilityJSON: 'v3', // By default React Native projects does not support Intl
+  compatibilityJSON: 'v3', // Use v4 for improved plural handling and translation features
 
   // allows integrating dynamic values into translations.
   interpolation: {
