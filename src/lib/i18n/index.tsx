@@ -11,7 +11,7 @@ i18n.use(initReactI18next).init({
   resources,
   lng: getLanguage() ?? getLocales()[0]?.languageCode ?? 'fr', // Ensures lng is always a string
   fallbackLng: 'fr',
-  compatibilityJSON: 'v4', // Use v4 for improved plural handling and translation features
+  compatibilityJSON: 'v3', // Use v4 for improved plural handling and translation features
 
   // allows integrating dynamic values into translations.
   interpolation: {

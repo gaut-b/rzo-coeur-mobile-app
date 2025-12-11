@@ -10,7 +10,7 @@ import { CashierIcon } from '@/components/ui/icons/cashier-icon';
 import { translate } from '@/lib/i18n';
 import { useAuthStore, useBasketStore } from '@/lib/state';
 
-export default function Feed() {
+export default function Basket() {
   const [permission, requestPermission] = useCameraPermissions();
   const isPermissionGranted = Boolean(permission?.granted);
   const router = useRouter();

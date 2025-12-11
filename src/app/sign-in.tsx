@@ -40,7 +40,7 @@ export default function SignIn() {
               lastName: data.user.last_name,
             }
           );
-          router.push('/articles');
+          router.push('/');
         },
         //@ts-expect-error. TODO: fix errors
         onError: showError,

@@ -30,7 +30,11 @@ export default function TabLayout() {
     return <Redirect href="/sign-in" />;
   }
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarShowLabel: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -41,10 +45,9 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="style"
+        name="articles"
         options={{
-          title: 'Style',
-          headerShown: false,
+          title: 'Historique',
           tabBarIcon: ({ color }) => <StyleIcon color={color} />,
           tabBarButtonTestID: 'style-tab',
         }}
