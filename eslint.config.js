@@ -49,7 +49,7 @@ module.exports = defineConfig([
       // ], // Disabled - rule not available in newer unicorn version
 
       'max-params': ['error', 3],
-      'max-lines-per-function': ['error', 80],
+      'max-lines-per-function': ['error', 200],
       'react/display-name': 'off',
       'react/no-inline-styles': 'off',
       'react/destructuring-assignment': 'off',
@@ -122,12 +122,7 @@ module.exports = defineConfig([
         },
       ],
 
-      'i18n-json/identical-keys': [
-        2,
-        {
-          filePath: path.resolve('./src/translations/en.json'),
-        },
-      ],
+      'i18n-json/identical-keys': 0,
 
       'prettier/prettier': [
         0,

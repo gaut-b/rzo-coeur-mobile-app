@@ -67,6 +67,7 @@ const authStore = create<AuthState>((set, get) => ({
   hydrate: () => {
     try {
       const authTokens = getTokens();
+
       if (authTokens !== null && !isRefreshTokenExpired(authTokens)) {
         set({ status: 'LOGGED_IN', authTokens, user: null });
       } else {

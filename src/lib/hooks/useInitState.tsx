@@ -12,6 +12,7 @@ export function useInitState() {
     setUser,
   } = useAuthStore();
 
+  console.log(status, currentUser);
   const shouldFetchUser = currentUser == null && status === 'LOGGED_IN';
 
   const { data: fetchedUser, isSuccess } = useGetUser(shouldFetchUser);

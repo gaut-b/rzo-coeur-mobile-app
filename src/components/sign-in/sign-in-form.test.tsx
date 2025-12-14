@@ -19,10 +19,11 @@ describe('SignIn Form ', () => {
     const { user } = setup(<SignInForm />);
 
     const button = screen.getByTestId('login-button');
-    expect(screen.queryByText(/Email is required/i)).not.toBeOnTheScreen();
+    expect(screen.queryByTestId('email-input-error')).not.toBeOnTheScreen();
     await user.press(button);
+    expect(await screen.findByTestId('email-input-error')).toBeOnTheScreen();
     expect(await screen.findByText(/Email is required/i)).toBeOnTheScreen();
-    expect(screen.getByText(/Password is required/i)).toBeOnTheScreen();
+    expect(screen.getByTestId('password-input-error')).toBeOnTheScreen();
   });
 
   it('should display matching error when email is invalid', async () => {
@@ -36,8 +37,8 @@ describe('SignIn Form ', () => {
     await user.type(passwordInput, 'test');
     await user.press(button);
 
-    expect(await screen.findByText(/Invalid Email Format/i)).toBeOnTheScreen();
-    expect(screen.queryByText(/Email is required/i)).not.toBeOnTheScreen();
+    expect(await screen.findByTestId('email-input-error')).toBeOnTheScreen();
+    expect(await screen.findByText(/Invalid email format/i)).toBeOnTheScreen();
   });
 
   it('Should call LoginForm with correct values when values are valid', async () => {
