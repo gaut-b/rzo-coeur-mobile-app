@@ -152,7 +152,8 @@
       "reactNativeDirectoryCheck": {
         "listUnknownPackages": false,
         "exclude": [
-          "react-native-restart"
+          "react-native-restart",
+          "react-native-barcode-creator"
         ]
       }
     },
