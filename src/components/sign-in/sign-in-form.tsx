@@ -10,8 +10,8 @@ import { Button, ControlledInput, Text, View } from '@/components/ui';
 import { translate } from '@/lib/i18n';
 
 const schema = z.object({
-  email: z.email('Invalid email format'),
-  password: z.string(),
+  email: z.string().min(1, 'Email is required').email('Invalid email format'),
+  password: z.string().min(1, 'Password is required'),
 });
 
 export type FormType = z.infer<typeof schema>;
@@ -27,6 +27,10 @@ export const SignInForm = ({
 }: SignInFormProps) => {
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
   return (
     <KeyboardAvoidingView

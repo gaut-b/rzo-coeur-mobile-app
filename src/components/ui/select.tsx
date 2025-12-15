@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import {
   BottomSheetFlatList,
   type BottomSheetModal,
@@ -143,8 +142,7 @@ export interface SelectProps {
   testID?: string;
 }
 interface ControlledSelectProps<T extends FieldValues>
-  extends SelectProps,
-    InputControllerType<T> {}
+  extends SelectProps, InputControllerType<T> {}
 
 export const Select = (props: SelectProps) => {
   const {

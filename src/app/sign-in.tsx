@@ -12,11 +12,19 @@ import { useSignIn } from '@/lib/hooks';
 export default function SignIn() {
   const router = useRouter();
   const signInMutation = useSignIn();
-  const status = useAuthStore.use.status();
-  const signIn = useAuthStore.use.signIn();
+  const status = useAuthStore((state) => state.status);
+  const signIn = useAuthStore((state) => state.signIn);
+  const user = useAuthStore((state) => state.user);
 
-  if (status === 'LOGGED_IN') {
-    return <Redirect href="/" />;
+  if (status === 'LOGGED_IN' && user != null) {
+    // Redirect to role-based group route
+    if (user.role === 'CLIENT') {
+      return <Redirect href="/(client)" />;
+    } else if (user.role === 'CASHIER') {
+      return <Redirect href="/(cashier)" />;
+    } else if (user.role === 'RECIPIENT') {
+      return <Redirect href="/(recipient)" />;
+    }
   }
 
   const onSubmit: SignInFormProps['onSubmit'] = ({ email, password }) => {

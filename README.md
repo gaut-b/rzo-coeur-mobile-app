@@ -26,6 +26,14 @@ cd ./repo-name
 pnpm install
 ```
 
+### Generate native folders (if needed)
+
+This project uses Expo Prebuild. The `android/` and `ios/` folders are not tracked in Git and are generated when needed:
+
+```sh
+pnpm prebuild
+```
+
 To run the app on ios
 
 ```sh
@@ -37,6 +45,8 @@ To run the app on Android
 ```sh
 pnpm android
 ```
+
+> **Note:** The `pnpm ios` and `pnpm android` commands automatically run prebuild if the native folders don't exist.
 
 ## ✍️ Documentation
 

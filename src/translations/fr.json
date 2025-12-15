@@ -3,44 +3,82 @@
     "message": "Welcome to obytes app site"
   },
   "pages": {
-    "product": {
-      "title": "Produit",
-      "add": "Ajouter au panier"
-    },
-    "payment": {
-      "title": "Paiement",
-      "content-client": "Veuillez montrer ce QR code en caisse afin de régler les articles suspendus",
-      "content-cashier": "Veuillez scanner le QR code d'un client afin d'obtenir la liste des articles",
-      "content-recipient": "Veuillez montrer ce QR code en caisse après avoir récupéré vos articles suspendus",
-      "validate": "Valider le paiement "
-    },
     "basket": {
-      "title": "Panier",
+      "checkout": "Passer en caisse",
+      "empty-basket": "Votre panier est vide. Scannez des articles en cliquant sur le bouton ci-dessous pour les voir apparaître ici.",
       "greeting": "👋 Bonjour, {{firstName}}",
-      "empty-basket": "Votre panier est vide. Scannez des articles en cliquant sur le bouton ci-dessous pour les voir apparaître ici."
+      "pickup-basket": "Récupérer le panier",
+      "scan": "Scan",
+      "scan-qr": "Scanner QR Code",
+      "title": "Panier"
+    },
+    "history": {
+      "articles": "articles",
+      "cart": "Panier",
+      "empty": "Aucun article pour le moment",
+      "standalone_articles": "Articles individuels",
+      "status": {
+        "assigned": "Assigné",
+        "available": "Disponible",
+        "collected": "Récupéré"
+      },
+      "title": "Historique"
     },
     "login": {
-      "title": "Connexion",
       "email_label": "Adresse e-mail",
-      "password_label": "Mot de passe",
       "forgot_password": "Mot de passe oublié ?",
+      "password_label": "Mot de passe",
       "sign_up": "Vous n'avez pas de compte ? Inscrivez-vous",
-      "submit": "Se connecter"
+      "submit": "Se connecter",
+      "title": "Connexion"
+    },
+    "payment": {
+      "content-cashier": "Veuillez scanner le QR code d'un client afin d'obtenir la liste des articles",
+      "content-client": "Veuillez montrer ce QR code en caisse afin de régler les articles suspendus",
+      "content-recipient": "Veuillez montrer ce QR code en caisse après avoir récupéré vos articles suspendus",
+      "title": "Paiement",
+      "validate": "Valider le paiement "
+    },
+    "product": {
+      "add": "Ajouter au panier",
+      "title": "Produit"
+    },
+    "recipient": {
+      "empty-baskets": "Aucun panier assigné pour le moment"
     },
     "sign-up": {
-      "title": "Inscription",
       "email_label": "Adresse e-mail",
       "firstName_label": "Prénom",
       "lastName_label": "Nom de famille",
-      "password_label": "Mot de passe",
       "password2_label": "Confirmez le mot de passe",
-      "submit": "Créer son compte"
+      "password_label": "Mot de passe",
+      "submit": "Créer son compte",
+      "title": "Inscription"
+    },
+    "tabs": {
+      "cashier": {
+        "history_tab": "Historique",
+        "scanner": "Scanner",
+        "settings_tab": "Paramètres"
+      },
+      "client": {
+        "basket": "Mon Panier",
+        "purchases": "Mes Achats",
+        "settings_tab": "Paramètres"
+      },
+      "recipient": {
+        "baskets": "Mes Paniers",
+        "history_tab": "Historique",
+        "settings_tab": "Paramètres"
+      }
     }
   },
   "settings": {
     "about": "A propos",
     "app_name": "App Name",
     "arabic": "Arabic",
+    "cashier": "caissier",
+    "client": "client",
     "english": "English",
     "french": "Français",
     "general": "Général",
@@ -51,6 +89,8 @@
     "more": "Plus d'infos...",
     "privacy": "Paramètres de confidentialité",
     "rate": "Noter",
+    "recipient": "bénéficiaire",
+    "role": "Rôle",
     "share": "Partager",
     "support": "Nous supporter",
     "support_us": "Nous supporter",
@@ -63,11 +103,7 @@
     },
     "title": "Paramètres",
     "version": "Version",
-    "website": "Site Web",
-    "role": "Rôle",
-    "client": "client",
-    "recipient": "bénéficiaire",
-    "cashier": "caissier"
+    "website": "Site Web"
   },
   "welcome": "Welcome to obytes app site"
 }

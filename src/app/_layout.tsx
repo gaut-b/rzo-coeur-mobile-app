@@ -15,7 +15,7 @@ import { useThemeConfig } from '@/lib/hooks';
 import { APIProvider } from '@/lib/http';
 export { ErrorBoundary } from 'expo-router';
 export const unstable_settings = {
-  initialRouteName: '(app)',
+  initialRouteName: 'index',
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -29,9 +29,17 @@ export default function RootLayout() {
   return (
     <Providers>
       <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(client)" options={{ headerShown: false }} />
+        <Stack.Screen name="(recipient)" options={{ headerShown: false }} />
+        <Stack.Screen name="(cashier)" options={{ headerShown: false }} />
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+        <Stack.Screen name="scanner" options={{ headerShown: false }} />
+        <Stack.Screen name="payment" options={{ headerShown: false }} />
+        <Stack.Screen name="products" options={{ headerShown: false }} />
       </Stack>
     </Providers>
   );

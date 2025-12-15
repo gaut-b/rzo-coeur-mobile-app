@@ -1,7 +1,6 @@
 import React from 'react';
 import Svg, { G, Path, type SvgProps } from 'react-native-svg';
 
-// eslint-disable-next-line max-lines-per-function
 export const CashierIcon = (props: SvgProps) => {
   return (
     <Svg

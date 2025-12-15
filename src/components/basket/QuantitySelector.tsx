@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Input, Pressable, View } from '@/components/ui';
+import { Pressable, Text, View } from '@/components/ui';
 import { DeleteIcon } from '@/components/ui/icons/delete';
 import { addArticle, deleteArticle, removeArticle } from '@/lib/state';
 import { type Article } from '@/lib/state';
@@ -15,43 +15,51 @@ export const ArticleQuantitySelector = ({
   showSelectors = true,
 }: ArticleQuantitySelectorProps) => {
   const isRemoveButtonDisabled = item.quantity === 1;
+
   return (
-    <View className="w-1/3 flex-none items-center justify-center">
+    <View className="items-center">
       {showSelectors && (
-        <View className="absolute -top-2 right-2">
-          <Pressable onPress={() => deleteArticle(item.id)}>
-            <DeleteIcon fill="black" width={20} height={20} />
-          </Pressable>
-        </View>
+        <Pressable
+          onPress={() => deleteArticle(item.id)}
+          className="mb-2 rounded-full bg-red-100 p-2 active:bg-red-200 dark:bg-red-900/30 dark:active:bg-red-900/50"
+        >
+          <DeleteIcon
+            className="text-red-600 dark:text-red-400"
+            width={18}
+            height={18}
+          />
+        </Pressable>
       )}
       <View
-        className={`align-center flex flex-row items-center justify-evenly rounded-full bg-orange-400 ${showSelectors ? 'w-32' : 'w-8'}`}
+        className={`flex-row items-center overflow-hidden rounded-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-700 ${showSelectors ? '' : ''}`}
       >
         {showSelectors && (
-          <Button
-            variant="ghost"
+          <Pressable
             onPress={() => removeArticle(item, 1)}
-            textClassName="no-underline text-2xl"
-            className={
-              isRemoveButtonDisabled ? 'text-gray-500 bg-orange-400' : ''
-            }
-            label="-"
             disabled={isRemoveButtonDisabled}
-          />
+            className={`px-3 py-2 active:bg-neutral-100 dark:active:bg-neutral-600 ${isRemoveButtonDisabled ? 'opacity-40' : ''}`}
+          >
+            <Text className="text-xl font-bold text-neutral-700 dark:text-neutral-200">
+              −
+            </Text>
+          </Pressable>
         )}
-        <Input
-          id="Quantity"
-          value={item.quantity.toString()}
-          className="pt-1"
-          disabled
-        />
+        <View
+          className={`items-center justify-center ${showSelectors ? 'min-w-[40px] border-x border-neutral-200 dark:border-neutral-600' : 'px-3'}`}
+        >
+          <Text className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+            {item.quantity}
+          </Text>
+        </View>
         {showSelectors && (
-          <Button
-            variant="ghost"
-            textClassName="no-underline text-2xl"
-            label="+"
+          <Pressable
             onPress={() => addArticle(item, 1)}
-          />
+            className="px-3 py-2 active:bg-neutral-100 dark:active:bg-neutral-600"
+          >
+            <Text className="text-xl font-bold text-neutral-700 dark:text-neutral-200">
+              +
+            </Text>
+          </Pressable>
         )}
       </View>
     </View>
