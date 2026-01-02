@@ -1,6 +1,7 @@
 export * from './arrow-right';
 export * from './basket';
 export * from './caret-down';
+export * from './check-circle-icon';
 export * from './feed';
 export * from './github';
 export * from './history';

@@ -44,7 +44,16 @@
       "title": "Produit"
     },
     "recipient": {
-      "empty-baskets": "Aucun panier assigné pour le moment"
+      "cart-not-found": "Panier introuvable",
+      "empty-baskets": "Aucun panier assigné pour le moment",
+      "scan-button": "Scanner",
+      "scanned-articles": "articles scannés"
+    },
+    "scanner": {
+      "barcode-mismatch-message": "Le code barre scanné ({{scannedBarcode}}) ne correspond pas à l'article attendu ({{expectedBarcode}}).",
+      "barcode-mismatch-title": "Code barre incorrect",
+      "cancel": "Annuler",
+      "retry": "Réessayer"
     },
     "sign-up": {
       "email_label": "Adresse e-mail",
