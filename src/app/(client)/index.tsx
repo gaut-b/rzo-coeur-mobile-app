@@ -2,13 +2,13 @@ import { useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import React from 'react';
 
-import ArticleList from '@/components/basket/ArticleList';
+import ArticleList from '@/components/cart/ArticleList';
 import { Button, FocusAwareStatusBar, Text, View } from '@/components/ui';
 import BarcodeIcon from '@/components/ui/icons/barcode-icon';
 import { CashierIcon } from '@/components/ui/icons/cashier-icon';
 import { translate } from '@/lib/i18n';
 import { useAuthStore, useBasketStore } from '@/lib/state';
-
+import { CLIENT_ROOT_PATH } from '@/lib/types';
 export default function ClientBasket() {
   const [permission, requestPermission] = useCameraPermissions();
   const isPermissionGranted = Boolean(permission?.granted);
@@ -41,7 +41,7 @@ export default function ClientBasket() {
           className="absolute bottom-10 left-10 h-16 w-1/3 rounded-2xl bg-success-600"
           onPress={() => {
             if (isPermissionGranted) {
-              router.navigate('/payment');
+              router.navigate(`/${CLIENT_ROOT_PATH}/payment`);
             } else {
               requestPermission();
             }
@@ -62,7 +62,7 @@ export default function ClientBasket() {
         className="absolute bottom-10 right-10 h-16 w-1/3 rounded-2xl bg-success-600"
         onPress={() => {
           if (isPermissionGranted) {
-            router.navigate('/scanner');
+            router.navigate(`/${CLIENT_ROOT_PATH}/scanner`);
           } else {
             requestPermission();
           }

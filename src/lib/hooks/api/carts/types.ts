@@ -6,7 +6,7 @@ export type CartArticle = {
 export type CartStatus = 'PENDING' | 'ASSIGNED' | 'COLLECTED';
 
 // Full Cart type for recipient cart list
-export type Cart = {
+export type CartResponse = {
   id: number;
   shop: number;
   shop_name: string;
@@ -22,5 +22,5 @@ export type CartListResponse = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: Cart[];
+  results: CartResponse[];
 };

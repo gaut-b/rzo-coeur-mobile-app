@@ -14,6 +14,7 @@ import { CheckCircleIcon } from '@/components/ui/icons';
 import { type CartArticle, useGetRecipientCarts } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useRecipientCartStore } from '@/lib/state';
+import { RECIPIENT_ROOT_PATH } from '@/lib/types';
 
 const ArticleRow = ({
   article,
@@ -98,10 +99,8 @@ export default function CartDetailPage() {
     if (isPermissionGranted) {
       // Navigate to scanner with article info
       router.push({
-        pathname: '/scanner',
+        pathname: `/${RECIPIENT_ROOT_PATH}/scanner`,
         params: {
-          mode: 'recipient',
-          cartId: id,
           articleId: article.id.toString(),
           expectedBarcode: article.barcode.toString(),
         },

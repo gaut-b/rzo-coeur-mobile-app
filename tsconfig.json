@@ -10,7 +10,7 @@
       "@/lib/state": ["./src/lib/state"],
       "@/lib/storage": ["./src/lib/storage"],
       "@/lib/test": ["./src/lib/test"],
-      "@/lib/constants": ["./src/lib/constants"],
+      "@/lib/types": ["./src/lib/types"],
       "@/components": ["./src/components"],
       "@/components/*": ["./src/components/*"],
       "@/translations/*": ["./src/translations/*"],

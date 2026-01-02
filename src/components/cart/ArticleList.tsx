@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 
-import { ArticleDetail } from '@/components/basket/ArticleDetail';
+import { ArticleDetail } from '@/components/cart/ArticleDetail';
 import { ScrollView } from '@/components/ui';
 import { type Article } from '@/lib/state';
 

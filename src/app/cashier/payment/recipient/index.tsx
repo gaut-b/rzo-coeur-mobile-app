@@ -61,7 +61,7 @@ function renderItem(
   );
 }
 
-function PaymentArticleList() {
+export default function CashierPaymentPage() {
   const progress = useSharedValue<number>(0);
 
   return (
@@ -111,4 +111,3 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
-export default PaymentArticleList;
