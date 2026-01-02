@@ -1,0 +1,26 @@
+export type CartArticle = {
+  id: number;
+  barcode: number;
+  name: string;
+};
+export type CartStatus = 'PENDING' | 'ASSIGNED' | 'COLLECTED';
+
+// Full Cart type for recipient cart list
+export type Cart = {
+  id: number;
+  shop: number;
+  shop_name: string;
+  recipient: number;
+  recipient_email: string;
+  recipient_name: string;
+  status: CartStatus;
+  collected_at: string | null;
+  articles: CartArticle[];
+};
+
+export type CartListResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Cart[];
+};

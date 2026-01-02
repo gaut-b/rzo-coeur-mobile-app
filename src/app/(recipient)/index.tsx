@@ -1,58 +1,54 @@
-import { useCameraPermissions } from 'expo-camera';
-import { useRouter } from 'expo-router';
 import React from 'react';
 
-import ArticleList from '@/components/basket/ArticleList';
-import { Button, FocusAwareStatusBar, Text, View } from '@/components/ui';
-import { CashierIcon } from '@/components/ui/icons/cashier-icon';
+import { RecipientCartCard } from '@/components/articles/RecipientCartCard';
+import {
+  FocusAwareStatusBar,
+  Loader,
+  ScrollView,
+  Text,
+  View,
+} from '@/components/ui';
+import { useGetRecipientCarts } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
-import { useAuthStore, useBasketStore } from '@/lib/state';
+import { useAuthStore } from '@/lib/state';
 
 export default function RecipientBaskets() {
-  const [permission, requestPermission] = useCameraPermissions();
-  const isPermissionGranted = Boolean(permission?.granted);
-  const router = useRouter();
-  const { articles: articlesById } = useBasketStore();
   const firstName = useAuthStore((state) => state.user?.firstName);
+  const { data: cartListResponse, isLoading } = useGetRecipientCarts();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const carts = cartListResponse?.results || [];
 
   return (
-    <View className="relative flex-1">
+    <View className="flex-1">
       <FocusAwareStatusBar />
-      {articlesById.size === 0 ? (
-        <View className="flex-1 justify-center items-center m-4 gap-4">
+      {carts.length === 0 ? (
+        <View className="flex-1 items-center justify-center gap-4 p-4">
           <Text className="text-center text-3xl tracking-tight">
             {translate('pages.basket.greeting', {
               firstName,
             })}
           </Text>
-          <Text className="text-center text-lg tracking-tight">
+          <Text className="text-center text-lg tracking-tight text-neutral-600 dark:text-neutral-400">
             {translate('pages.recipient.empty-baskets')}
           </Text>
         </View>
       ) : (
-        <ArticleList articleByIds={articlesById} />
-      )}
-
-      {articlesById.size !== 0 && (
-        <Button
-          variant="secondary"
-          size="icon"
-          className="absolute bottom-10 h-16 w-2/3 self-center rounded-2xl bg-success-600"
-          onPress={() => {
-            if (isPermissionGranted) {
-              router.navigate('/payment');
-            } else {
-              requestPermission();
-            }
-          }}
-        >
-          <View className="w-full flex-row items-center justify-evenly">
-            <CashierIcon fill="white" width={40} height={40} />
-            <Text className="ml-2 flex-1 text-center font-bold text-white">
-              {translate('pages.basket.pickup-basket')}
+        <ScrollView className="flex-1 bg-neutral-50 dark:bg-neutral-900">
+          <View className="p-4">
+            <Text className="mb-4 text-2xl font-bold tracking-tight">
+              {translate('pages.basket.greeting', {
+                firstName,
+              })}
             </Text>
+            {carts.map((cart) => (
+              <RecipientCartCard key={cart.id} cart={cart} />
+            ))}
           </View>
-        </Button>
+        </ScrollView>
       )}
     </View>
   );
