@@ -1,5 +1,5 @@
 import { CameraView } from 'expo-camera';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Alert, AppState, Platform, StatusBar, StyleSheet } from 'react-native';
 import { useRoleProtectedRoute } from 'src/lib/hooks/routing';
@@ -7,15 +7,17 @@ import { useRoleProtectedRoute } from 'src/lib/hooks/routing';
 import { View } from '@/components/ui';
 import { translate } from '@/lib/i18n';
 import { useRecipientCartStore } from '@/lib/state';
-import { QRCODE_TYPE } from '@/lib/types';
+import { BARCODE_TYPE, RECIPIENT_ROOT_PATH } from '@/lib/types';
 
 export default function RecipientScannerPage() {
   useRoleProtectedRoute(['RECIPIENT']);
   const scanArticle = useRecipientCartStore.use.scanArticle();
+  const cartId = useRecipientCartStore.use.currentCartId();
   const router = useRouter();
   const params = useLocalSearchParams<{
-    expectedArticleId: string;
+    expectedBarcode: string;
     articleId: string;
+    expectedArticleName: string;
   }>();
 
   const qrLock = useRef(false);
@@ -37,6 +39,10 @@ export default function RecipientScannerPage() {
     };
   }, []);
 
+  if (!cartId) {
+    return <Redirect href={'/'} />;
+  }
+
   return (
     <View style={StyleSheet.absoluteFillObject}>
       <Stack.Screen
@@ -50,10 +56,10 @@ export default function RecipientScannerPage() {
         style={StyleSheet.absoluteFillObject}
         facing="back"
         onBarcodeScanned={({ type, data }) => {
-          if (data && !qrLock.current && type === QRCODE_TYPE) {
+          if (data && !qrLock.current && type === BARCODE_TYPE) {
             qrLock.current = true;
             const scannedBarcode = data;
-            const expectedBarcode = params.expectedArticleId;
+            const expectedBarcode = params.expectedBarcode;
 
             if (scannedBarcode === expectedBarcode) {
               // Success - add to scanned articles and navigate back
@@ -64,15 +70,17 @@ export default function RecipientScannerPage() {
                   scanArticle(parsedArticleId);
                 }
               }
-              router.push('/');
+              router.push(`/${RECIPIENT_ROOT_PATH}/cart/${cartId}`);
             } else {
               // Mismatch - show error and allow retry
               Alert.alert(
                 translate('pages.scanner.barcode-mismatch-title'),
-                translate('pages.scanner.barcode-mismatch-message', {
+                `${translate('pages.scanner.barcode-mismatch-message', {
                   scannedBarcode,
                   expectedBarcode,
-                }),
+                })}
+
+${translate('pages.scanner.expected-article')} : ${params.expectedArticleName || expectedBarcode}`,
                 [
                   {
                     text: translate('pages.scanner.retry'),

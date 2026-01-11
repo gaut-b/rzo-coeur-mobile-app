@@ -39,7 +39,7 @@ export default function RecipientPaymentPage() {
       <FocusAwareStatusBar />
       <View>
         <Text className="text-center text-3xl tracking-tight">
-          {translate(`pages.payment.content-recipient`)}
+          {translate('pages.payment.recipient.content')}
         </Text>
       </View>
       <View className="flex-2">

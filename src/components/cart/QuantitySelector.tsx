@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Pressable, Text, View } from '@/components/ui';
 import { DeleteIcon } from '@/components/ui/icons/delete';
-import { addArticle, deleteArticle, removeArticle } from '@/lib/state';
+import { useBasketStore } from '@/lib/state';
 import { type Article } from '@/lib/state';
 
 type ArticleQuantitySelectorProps = {
@@ -16,11 +16,17 @@ export const ArticleQuantitySelector = ({
 }: ArticleQuantitySelectorProps) => {
   const isRemoveButtonDisabled = item.quantity === 1;
 
+  const deleteArticle = useBasketStore.use.deleteArticle();
+  const addArticle = useBasketStore.use.addArticle();
+  const removeArticle = useBasketStore.use.removeArticle();
+
   return (
     <View className="items-center">
       {showSelectors && (
         <Pressable
-          onPress={() => deleteArticle(item.id)}
+          onPress={() => {
+            deleteArticle(item.barcode);
+          }}
           className="mb-2 rounded-full bg-red-100 p-2 active:bg-red-200 dark:bg-red-900/30 dark:active:bg-red-900/50"
         >
           <DeleteIcon
@@ -35,7 +41,9 @@ export const ArticleQuantitySelector = ({
       >
         {showSelectors && (
           <Pressable
-            onPress={() => removeArticle(item, 1)}
+            onPress={() => {
+              removeArticle(item, 1);
+            }}
             disabled={isRemoveButtonDisabled}
             className={`px-3 py-2 active:bg-neutral-100 dark:active:bg-neutral-600 ${isRemoveButtonDisabled ? 'opacity-40' : ''}`}
           >

@@ -13,13 +13,15 @@ export default function ClientBasket() {
   const [permission, requestPermission] = useCameraPermissions();
   const isPermissionGranted = Boolean(permission?.granted);
   const router = useRouter();
-  const { articles: articlesById } = useBasketStore();
+  const articlesByBarcode = useBasketStore.use.articlesByBarcode();
   const firstName = useAuthStore((state) => state.user?.firstName);
+
+  const nbArticles = Object.keys(articlesByBarcode).length;
 
   return (
     <View className="relative flex-1">
       <FocusAwareStatusBar />
-      {articlesById.size === 0 ? (
+      {nbArticles === 0 ? (
         <View className="flex-1 justify-center items-center m-4 gap-4">
           <Text className="text-center text-3xl tracking-tight">
             {translate('pages.basket.greeting', {
@@ -31,10 +33,10 @@ export default function ClientBasket() {
           </Text>
         </View>
       ) : (
-        <ArticleList articleByIds={articlesById} />
+        <ArticleList articlesByBarcode={articlesByBarcode} />
       )}
 
-      {articlesById.size !== 0 && (
+      {nbArticles !== 0 && (
         <Button
           variant="secondary"
           size="icon"

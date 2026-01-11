@@ -5,6 +5,7 @@ import React from 'react';
 import {
   Button,
   FocusAwareStatusBar,
+  Image,
   Loader,
   ScrollView,
   Text,
@@ -33,7 +34,18 @@ const ArticleRow = ({
           : 'border-neutral-200 dark:border-neutral-700'
       }`}
     >
-      <View className="flex-row items-center justify-between">
+      <View className="flex-row items-center">
+        {/* Article thumbnail */}
+        {article.thumb_url && (
+          <View className="mr-3 h-16 w-16 flex-none overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-700">
+            <Image
+              className="h-full w-full"
+              contentFit="contain"
+              source={{ uri: article.thumb_url }}
+            />
+          </View>
+        )}
+
         <View className="flex-1">
           <Text
             className="text-base font-semibold text-neutral-900 dark:text-neutral-100"
@@ -103,6 +115,7 @@ export default function CartDetailPage() {
         params: {
           articleId: article.id.toString(),
           expectedBarcode: article.barcode.toString(),
+          expectedArticleName: article.name,
         },
       });
     } else {
@@ -166,7 +179,7 @@ export default function CartDetailPage() {
               variant="default"
               size="lg"
               className="mt-6 bg-success-600"
-              onPress={() => router.push('/payment')}
+              onPress={() => router.push(`/${RECIPIENT_ROOT_PATH}/payment`)}
             >
               <Text className="font-semibold text-white">
                 {translate('pages.basket.checkout')}

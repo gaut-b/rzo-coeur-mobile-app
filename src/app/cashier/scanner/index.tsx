@@ -16,8 +16,9 @@ import {
 export default function CashierScannerPage() {
   useRoleProtectedRoute(['CASHIER']);
   const userRole = useAuthStore.use.user()?.role;
-  const setClientArticles = useCashierStore.use.setArticles();
-  const setCartId = useCashierStore.use.setCartId();
+  const setClientId = useCashierStore.use.setClientId();
+  const setClientData = useCashierStore.use.setClientData();
+  const setRecipientData = useCashierStore.use.setRecipientData();
 
   const qrLock = useRef(false);
   const appState = useRef(AppState.currentState);
@@ -67,17 +68,24 @@ export default function CashierScannerPage() {
           if (data && !qrLock.current && type === QRCODE_TYPE) {
             try {
               const parsedData = JSON.parse(data);
-
-              if (RecipientBasketQRCodeSchema.safeParse(parsedData).success) {
-                qrLock.current = true;
-                setCartId(parsedData.cartId);
-                setQrCodeData(parsedData);
-              } else if (
-                ClientBasketQRCodeSchema.safeParse(parsedData).success
-              ) {
-                qrLock.current = true;
-                setClientArticles(parsedData.articles);
-                setQrCodeData(parsedData);
+              qrLock.current = true;
+              const isRecipientQRCode =
+                RecipientBasketQRCodeSchema.safeParse(parsedData);
+              const isClientQRCode =
+                ClientBasketQRCodeSchema.safeParse(parsedData);
+              if (isRecipientQRCode.success) {
+                setClientId(isRecipientQRCode.data.clientId);
+                setRecipientData(
+                  isRecipientQRCode.data.clientId,
+                  isRecipientQRCode.data.cartId
+                );
+                setQrCodeData(isRecipientQRCode.data);
+              } else if (isClientQRCode.success) {
+                setClientData(
+                  isClientQRCode.data.clientId,
+                  isClientQRCode.data.articles
+                );
+                setQrCodeData(isClientQRCode.data);
               } else {
                 // TODO: HANDLE ERROR
                 console.error('Invalid QR code data');

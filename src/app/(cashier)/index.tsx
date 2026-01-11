@@ -16,7 +16,7 @@ export default function CashierScanner() {
     <View className="relative flex-1 items-center justify-center">
       <FocusAwareStatusBar />
       <Text className="text-center text-3xl tracking-tight px-4">
-        {translate('pages.payment.content-cashier')}
+        {translate('pages.payment.cashier.content')}
       </Text>
 
       <Button

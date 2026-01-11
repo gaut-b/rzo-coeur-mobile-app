@@ -6,21 +6,28 @@ import { ScrollView } from '@/components/ui';
 import { type Article } from '@/lib/state';
 
 type ArticleListProps = {
-  readonly articleByIds: Map<string, Article>;
+  readonly articlesByBarcode: Record<string, Article>;
+  readonly renderItem?: ({ item }: { item: Article }) => React.ReactElement;
 };
 
-export default function ArticleList({ articleByIds }: ArticleListProps) {
-  const renderItem = React.useCallback(
+export default function ArticleList({
+  articlesByBarcode,
+  renderItem: customRenderItem,
+}: ArticleListProps) {
+  const defaultRenderItem = React.useCallback(
     ({ item }: { item: Article }) => <ArticleDetail item={item} />,
     []
   );
 
+  const renderItem = customRenderItem || defaultRenderItem;
+
   return (
-    <ScrollView>
+    <ScrollView className="py-8">
       <FlashList
-        data={Array.from(articleByIds.values())}
+        data={Object.values(articlesByBarcode)}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
+        estimatedItemSize={108}
       />
     </ScrollView>
   );

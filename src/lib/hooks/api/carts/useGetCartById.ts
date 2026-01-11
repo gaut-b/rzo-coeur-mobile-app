@@ -5,7 +5,7 @@ import { authenticatedRzoApiClient } from '@/lib/http';
 import { type CartResponse } from './types';
 
 type GetRecipientCartsParams = {
-  cartId: string;
+  cartId: string | null;
 };
 
 const getCartByIdRequest = async (
@@ -20,4 +20,5 @@ export const useGetCartById = (params: GetRecipientCartsParams) =>
   useQuery({
     queryKey: ['cart', params.cartId],
     queryFn: () => getCartByIdRequest(params),
+    enabled: !!params.cartId,
   });

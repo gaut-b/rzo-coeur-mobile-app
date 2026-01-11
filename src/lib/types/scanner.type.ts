@@ -9,7 +9,18 @@ export const BasketQRCodeBaseSchema = z.object({
 
 export const ClientBasketQRCodeSchema = BasketQRCodeBaseSchema.extend({
   type: z.literal(QR_FORMAT_CLIENT_BASKET),
-  articles: z.record(z.string(), z.any()),
+  articles: z.record(
+    z.string(),
+    z.object({
+      id: z.number().nullable(),
+      barcode: z.string(),
+      quantity: z.number(),
+      productLabel: z.string().optional(),
+      productImgUrl: z.string().optional(),
+      productThumbUrl: z.string().optional(),
+      productBrand: z.string().optional(),
+    })
+  ),
 });
 
 export const RecipientBasketQRCodeSchema = BasketQRCodeBaseSchema.extend({

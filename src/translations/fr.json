@@ -1,4 +1,12 @@
 {
+  "cashier": {
+    "articles-scanned": "articles scannés",
+    "scan": "Scanner",
+    "scanned": "Scanné"
+  },
+  "common": {
+    "loading": "Chargement..."
+  },
   "onboarding": {
     "message": "Welcome to obytes app site"
   },
@@ -33,11 +41,27 @@
       "title": "Connexion"
     },
     "payment": {
-      "content-cashier": "Veuillez scanner le QR code d'un client afin d'obtenir la liste des articles",
-      "content-client": "Veuillez montrer ce QR code en caisse afin de régler les articles suspendus",
-      "content-recipient": "Veuillez montrer ce QR code en caisse après avoir récupéré vos articles suspendus",
-      "title": "Paiement",
-      "validate": "Valider le paiement "
+      "cashier": {
+        "content": "Veuillez scanner le QR code d'un client afin d'obtenir la liste des articles",
+        "error-loading-cart": "Erreur lors de la récupération du panier",
+        "go-home": "Retour à l'accueil",
+        "success-message": "Le panier a été validé avec succès",
+        "success-title": "Panier validé",
+        "validate": "Valider le panier"
+      },
+      "client": {
+        "content": "Veuillez montrer ce QR code en caisse afin de régler les articles suspendus",
+        "success-message": "Le paiement a été enregistré avec succès",
+        "success-title": "Paiement validé",
+        "validate": "Valider le paiement"
+      },
+      "recipient": {
+        "content": "Veuillez montrer ce QR code en caisse après avoir récupéré vos articles suspendus",
+        "success-message": "Le panier a été validé avec succès",
+        "success-title": "Panier validé",
+        "validate": "Valider le panier"
+      },
+      "title": "Paiement"
     },
     "product": {
       "add": "Ajouter au panier",
@@ -53,6 +77,7 @@
       "barcode-mismatch-message": "Le code barre scanné ({{scannedBarcode}}) ne correspond pas à l'article attendu ({{expectedBarcode}}).",
       "barcode-mismatch-title": "Code barre incorrect",
       "cancel": "Annuler",
+      "expected-article": "Article attendu",
       "retry": "Réessayer"
     },
     "sign-up": {

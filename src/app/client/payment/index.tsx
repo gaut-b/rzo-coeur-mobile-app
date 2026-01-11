@@ -13,7 +13,7 @@ import {
 export default function ClientPaymentPage() {
   useRoleProtectedRoute(['CLIENT']);
   const user = useAuthStore.use.user();
-  const { articles: articlesById } = useBasketStore();
+  const articlesByBarcode = useBasketStore.use.articlesByBarcode();
 
   if (!user) {
     return <Redirect href="/sign-in" />;
@@ -22,7 +22,7 @@ export default function ClientPaymentPage() {
   const qrValue: ClientBasketQRCodeType = {
     type: QR_FORMAT_CLIENT_BASKET,
     clientId: user.pk.toString(),
-    articles: Object.fromEntries(articlesById),
+    articles: articlesByBarcode,
   };
 
   return (
@@ -35,7 +35,7 @@ export default function ClientPaymentPage() {
       <FocusAwareStatusBar />
       <View>
         <Text className="text-center text-3xl tracking-tight">
-          {translate('pages.payment.content-client')}
+          {translate('pages.payment.client.content')}
         </Text>
       </View>
       <View className="flex-2">
