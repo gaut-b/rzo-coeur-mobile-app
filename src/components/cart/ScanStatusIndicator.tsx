@@ -24,9 +24,9 @@ export const ScanStatusIndicator = ({
 
   if (isScanned) {
     return (
-      <View className="items-center justify-center px-4 text-success-500 dark:text-success-400">
+      <View className="w-24 items-center justify-center text-success-500 dark:text-success-400">
         <CheckCircleIcon fill="currentColor" width={24} height={24} />
-        <Text className="mt-1 text-xs font-medium text-success-600 dark:text-success-400">
+        <Text className="mt-1 text-center text-xs font-medium text-success-600 dark:text-success-400">
           {translate('cashier.scanned')}
           {showProgress && ` (${scannedCount}/${totalCount})`}
         </Text>
@@ -35,7 +35,7 @@ export const ScanStatusIndicator = ({
   }
 
   return (
-    <View className="px-3">
+    <View className="w-24 items-center justify-center">
       <Button
         label={translate('cashier.scan')}
         onPress={onPress}

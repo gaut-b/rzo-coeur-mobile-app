@@ -1,7 +1,10 @@
 import { Stack } from 'expo-router';
 import * as React from 'react';
 
-import { ArticleDetail } from '@/components/cart/ArticleDetail';
+import {
+  ArticleCard,
+  transformArticleToCardProps,
+} from '@/components/cart/ArticleCard';
 import ArticleList from '@/components/cart/ArticleList';
 import { BarcodeDisplayModal } from '@/components/cart/BarcodeDisplayModal';
 import { ScanStatusIndicator } from '@/components/cart/ScanStatusIndicator';
@@ -80,9 +83,8 @@ export function PaymentValidation({
           const isScanned = scannedCount >= item.quantity;
 
           return (
-            <ArticleDetail
-              item={item}
-              onPress={() => onArticleClick(item)}
+            <ArticleCard
+              article={transformArticleToCardProps(item)}
               renderRight={() => (
                 <ScanStatusIndicator
                   isScanned={isScanned}

@@ -2,10 +2,10 @@ import { useCameraPermissions } from 'expo-camera';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 
+import { ArticleCard } from '@/components/cart/ArticleCard';
 import {
   Button,
   FocusAwareStatusBar,
-  Image,
   Loader,
   ScrollView,
   Text,
@@ -16,62 +16,6 @@ import { type CartArticle, useGetRecipientCarts } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useRecipientCartStore } from '@/lib/state';
 import { RECIPIENT_ROOT_PATH } from '@/lib/types';
-
-const ArticleRow = ({
-  article,
-  isScanned,
-  onScan,
-}: {
-  article: CartArticle;
-  isScanned: boolean;
-  onScan: () => void;
-}) => {
-  return (
-    <View
-      className={`mb-3 overflow-hidden rounded-xl border bg-white p-4 shadow-sm dark:bg-neutral-800 ${
-        isScanned
-          ? 'border-success-300 dark:border-success-700'
-          : 'border-neutral-200 dark:border-neutral-700'
-      }`}
-    >
-      <View className="flex-row items-center">
-        {/* Article thumbnail */}
-        {article.thumb_url && (
-          <View className="mr-3 h-16 w-16 flex-none overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-700">
-            <Image
-              className="h-full w-full"
-              contentFit="contain"
-              source={{ uri: article.thumb_url }}
-            />
-          </View>
-        )}
-
-        <View className="flex-1">
-          <Text
-            className="text-base font-semibold text-neutral-900 dark:text-neutral-100"
-            numberOfLines={2}
-          >
-            {article.name}
-          </Text>
-          <Text className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-            {article.barcode}
-          </Text>
-        </View>
-        {isScanned ? (
-          <View className="ml-3 text-success-500 dark:text-success-400">
-            <CheckCircleIcon fill="currentColor" width={32} height={32} />
-          </View>
-        ) : (
-          <Button variant="outline" size="sm" className="ml-3" onPress={onScan}>
-            <Text className="text-sm font-medium">
-              {translate('pages.recipient.scan-button')}
-            </Text>
-          </Button>
-        )}
-      </View>
-    </View>
-  );
-};
 
 export default function CartDetailPage() {
   const { id } = useLocalSearchParams<{
@@ -95,7 +39,7 @@ export default function CartDetailPage() {
   // Find the specific cart (memoized to avoid repeated linear searches on every render)
   const cart = React.useMemo(
     () =>
-      numericCartId != null
+      typeof numericCartId === 'number'
         ? cartListResponse?.results.find((c) => c.id === numericCartId)
         : undefined,
     [numericCartId, cartListResponse]
@@ -164,14 +108,37 @@ export default function CartDetailPage() {
           </View>
 
           {/* Articles list */}
-          {cart.articles.map((article) => (
-            <ArticleRow
-              key={article.id}
-              article={article}
-              isScanned={article.id in scannedArticles}
-              onScan={() => handleScanArticle(article)}
-            />
-          ))}
+          {cart.articles.map((article) => {
+            const isScanned = article.id in scannedArticles;
+            return (
+              <ArticleCard
+                key={article.id}
+                article={article}
+                variant={isScanned ? 'success' : 'default'}
+                renderRight={() =>
+                  isScanned ? (
+                    <View className="text-success-500 dark:text-success-400">
+                      <CheckCircleIcon
+                        fill="currentColor"
+                        width={32}
+                        height={32}
+                      />
+                    </View>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onPress={() => handleScanArticle(article)}
+                    >
+                      <Text className="text-sm font-medium">
+                        {translate('pages.recipient.scan-button')}
+                      </Text>
+                    </Button>
+                  )
+                }
+              />
+            );
+          })}
 
           {/* Checkout button */}
           {allArticlesScanned && (

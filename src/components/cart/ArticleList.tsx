@@ -1,7 +1,10 @@
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 
-import { ArticleDetail } from '@/components/cart/ArticleDetail';
+import {
+  ArticleCard,
+  transformArticleToCardProps,
+} from '@/components/cart/ArticleCard';
 import { ScrollView } from '@/components/ui';
 import { type Article } from '@/lib/state';
 
@@ -15,7 +18,9 @@ export default function ArticleList({
   renderItem: customRenderItem,
 }: ArticleListProps) {
   const defaultRenderItem = React.useCallback(
-    ({ item }: { item: Article }) => <ArticleDetail item={item} />,
+    ({ item }: { item: Article }) => (
+      <ArticleCard article={transformArticleToCardProps(item)} />
+    ),
     []
   );
 
