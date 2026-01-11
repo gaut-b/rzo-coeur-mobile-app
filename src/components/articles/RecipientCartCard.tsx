@@ -2,11 +2,12 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 
 import { Button, Text, View } from '@/components/ui';
-import { type Cart } from '@/lib/hooks';
+import { type CartResponse } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
+import { RECIPIENT_ROOT_PATH } from '@/lib/types';
 
 type CartCardProps = {
-  cart: Cart;
+  cart: CartResponse;
 };
 
 const statusColors = {
@@ -62,7 +63,7 @@ export const RecipientCartCard: React.FC<CartCardProps> = ({ cart }) => {
         <Button
           variant="default"
           className="w-full"
-          onPress={() => router.push(`/(recipient)/cart/${cart.id}`)}
+          onPress={() => router.push(`/${RECIPIENT_ROOT_PATH}/cart/${cart.id}`)}
         >
           <Text className="font-semibold text-white">
             {translate('pages.basket.pickup-basket')}

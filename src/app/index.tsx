@@ -3,6 +3,11 @@ import React, { useEffect } from 'react';
 
 import { useInitState } from '@/lib/hooks';
 import { useAuthStore } from '@/lib/state';
+import {
+  CASHIER_ROOT_PATH,
+  CLIENT_ROOT_PATH,
+  RECIPIENT_ROOT_PATH,
+} from '@/lib/types';
 
 export default function Index() {
   useInitState();
@@ -33,11 +38,11 @@ export default function Index() {
 
   // Role-based redirection
   if (user?.role === 'CLIENT') {
-    return <Redirect href="/(client)" />;
+    return <Redirect href={`/(${CLIENT_ROOT_PATH})`} />;
   } else if (user?.role === 'CASHIER') {
-    return <Redirect href="/(cashier)" />;
+    return <Redirect href={`/(${CASHIER_ROOT_PATH})`} />;
   } else if (user?.role === 'RECIPIENT') {
-    return <Redirect href="/(recipient)" />;
+    return <Redirect href={`/(${RECIPIENT_ROOT_PATH})`} />;
   }
 
   // Fallback if role is not recognized

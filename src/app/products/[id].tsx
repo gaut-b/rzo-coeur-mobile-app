@@ -56,7 +56,8 @@ const ProductDetail = () => {
         onPress={async () => {
           addArticle(
             {
-              id: productId,
+              id: null,
+              barcode: data.product.code,
               productBrand: data.product.brands,
               productLabel: data.product.product_name_fr,
               productImgUrl: data.product.image_front_small_url,

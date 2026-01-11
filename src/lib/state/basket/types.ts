@@ -1,10 +1,11 @@
 export interface Article {
-  id: string;
+  id: number | null;
+  barcode: string;
   quantity: number;
-  productLabel: string | undefined;
-  productImgUrl: string | undefined;
-  productThumbUrl: string | undefined;
-  productBrand: string | undefined;
+  productLabel?: string;
+  productImgUrl?: string;
+  productThumbUrl?: string;
+  productBrand?: string;
 }
 
 export type ArticleInfos = Omit<Article, 'quantity'>;

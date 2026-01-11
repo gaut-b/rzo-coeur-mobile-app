@@ -16,6 +16,6 @@ const getProductInfoRequest = async (
 
 export const useGetProduct = (productId: string) =>
   useQuery({
-    queryKey: ['products', productId],
+    queryKey: ['product', productId],
     queryFn: () => getProductInfoRequest(productId),
   });
