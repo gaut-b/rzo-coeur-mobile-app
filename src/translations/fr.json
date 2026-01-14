@@ -87,6 +87,7 @@
       "password2_label": "Confirmez le mot de passe",
       "password_label": "Mot de passe",
       "submit": "Créer son compte",
+      "success_message": "Votre compte a été créé avec succès ! Vous allez être redirigé vers la page de connexion",
       "title": "Inscription"
     },
     "tabs": {
