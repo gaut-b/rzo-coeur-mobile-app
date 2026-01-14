@@ -2,20 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 
 import { rzoApiClient } from '@/lib/http';
 
-type SignUpRequestResponse = {
-  access: string;
-  refresh: string;
-  access_expiration: string;
-  refresh_expiration: string;
-  user: {
-    pk: number;
-    email: string;
-    first_name: string;
-    last_name: string;
-    role: 'CLIENT' | 'CASHIER' | 'RECIPIENT';
-  };
-};
-
 type SignUpRequestBody = {
   email: string;
   password1: string;
@@ -24,14 +10,12 @@ type SignUpRequestBody = {
   last_name: string;
 };
 
-const signUpRequest = async (
-  requestBody: SignUpRequestBody
-): Promise<SignUpRequestResponse> => {
+const signUpRequest = async (requestBody: SignUpRequestBody): Promise<void> => {
   return await rzoApiClient
     .post('api/auth/registration', {
       json: requestBody,
     })
-    .json<SignUpRequestResponse>();
+    .json();
 };
 
 export function useSignUp() {

@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
+import { showMessage } from 'react-native-flash-message';
 
 import {
   SignUpForm,
@@ -7,13 +8,13 @@ import {
 } from '@/components/sign-up/sign-up-form';
 import { FocusAwareStatusBar, showError } from '@/components/ui';
 import { useSignUp } from '@/lib/hooks';
+import { translate } from '@/lib/i18n';
 import { useAuthStore } from '@/lib/state';
 
 export default function SignUp() {
   const router = useRouter();
   const signUpMutation = useSignUp();
   const status = useAuthStore.use.status();
-  const signIn = useAuthStore.use.signIn();
 
   if (status === 'LOGGED_IN') {
     router.push('/');
@@ -36,20 +37,11 @@ export default function SignUp() {
         last_name: lastName,
       },
       {
-        onSuccess: (data) => {
-          signIn(
-            {
-              access: data.access,
-              refresh: data.refresh,
-              access_expiration: data.access_expiration,
-              refresh_expiration: data.refresh_expiration,
-            },
-            {
-              ...data.user,
-              firstName: data.user.first_name,
-              lastName: data.user.last_name,
-            }
-          );
+        onSuccess: () => {
+          showMessage({
+            message: translate('pages.sign-up.success_message'),
+            type: 'success',
+          });
           router.push('/sign-in');
         },
         //@ts-expect-error. TODO: fix errors
