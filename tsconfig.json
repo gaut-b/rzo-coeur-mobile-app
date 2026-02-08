@@ -9,6 +9,7 @@
       "@/lib/i18n": ["./src/lib/i18n"],
       "@/lib/state": ["./src/lib/state"],
       "@/lib/storage": ["./src/lib/storage"],
+      "@/lib/utils": ["./src/lib/utils"],
       "@/lib/test": ["./src/lib/test"],
       "@/lib/types": ["./src/lib/types"],
       "@/components": ["./src/components"],
