@@ -1,7 +1,8 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 
-import { Button, Text, View } from '@/components/ui';
+import { Button, Pressable, Text, View } from '@/components/ui';
+import { MapPin } from '@/components/ui/icons';
 import { type CartResponse } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { RECIPIENT_ROOT_PATH } from '@/lib/types';
@@ -38,7 +39,13 @@ export const RecipientCartCard: React.FC<CartCardProps> = ({ cart }) => {
   return (
     <View className="mb-4 rounded-xl bg-white p-4 shadow-sm dark:bg-neutral-800">
       {/* Header with shop and status */}
-      <View className="mb-3 flex-row items-center justify-between">
+      <Pressable
+        onPress={() =>
+          router.push(`/${RECIPIENT_ROOT_PATH}/stores/${cart.shop}`)
+        }
+        className="mb-3 flex-row items-center gap-2"
+      >
+        <MapPin color="#6b7280" size={20} />
         <Text className="flex-1 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
           {cart.shop_name}
         </Text>
@@ -49,7 +56,7 @@ export const RecipientCartCard: React.FC<CartCardProps> = ({ cart }) => {
             {getStatusTranslation()}
           </Text>
         </View>
-      </View>
+      </Pressable>
 
       {/* Article count */}
       <View className="mb-3 flex-row items-center">
