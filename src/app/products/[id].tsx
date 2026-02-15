@@ -2,7 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { showMessage } from 'react-native-flash-message';
 
-import { Button, Image, Text, View } from '@/components/ui';
+import { Button, Image, showError, Text, View } from '@/components/ui';
 import { useGetProduct } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { addArticle } from '@/lib/state';
@@ -14,6 +14,12 @@ const ProductDetail = () => {
   const { id: productId } = useLocalSearchParams<{ id: string }>();
   const { data, isPending, isError, error } = useGetProduct(productId);
 
+  React.useEffect(() => {
+    if (isError) {
+      showError(error);
+    }
+  }, [isError, error]);
+
   if (isPending) {
     return (
       <ProductPageLayout className="justify-center" showActivityIndicator />
@@ -22,8 +28,9 @@ const ProductDetail = () => {
   if (isError) {
     return (
       <ProductPageLayout className="justify-center">
-        <Text className="text-center">Error loading post</Text>;
-        <Text>{JSON.stringify(error)}</Text>
+        <Text className="text-center text-lg text-neutral-600 dark:text-neutral-400">
+          {translate('errors.generic.not-found')}
+        </Text>
       </ProductPageLayout>
     );
   }

@@ -7,6 +7,35 @@
   "common": {
     "loading": "Chargement..."
   },
+  "errors": {
+    "auth": {
+      "invalid-credentials": "Identifiants invalides.",
+      "token-invalid": "Votre session a expiré. Veuillez vous reconnecter."
+    },
+    "boundary": {
+      "description": "Une erreur inattendue est survenue. Vous pouvez réessayer.",
+      "retry": "Réessayer",
+      "title": "Oups, une erreur est survenue"
+    },
+    "cart": {
+      "already-collected": "Ce panier a déjà été récupéré.",
+      "not-found": "Panier introuvable."
+    },
+    "generic": {
+      "bad-request": "La requête est invalide.",
+      "conflict": "L'opération est en conflit avec l'état actuel.",
+      "forbidden": "Vous n'avez pas les permissions nécessaires.",
+      "gateway-timeout": "Le serveur met trop de temps à répondre.",
+      "not-found": "La ressource demandée est introuvable.",
+      "server": "Une erreur serveur est survenue.",
+      "service-unavailable": "Le service est temporairement indisponible.",
+      "too-many-requests": "Trop de requêtes, veuillez réessayer plus tard.",
+      "unauthorized": "Vous devez être connecté pour effectuer cette action.",
+      "unknown": "Une erreur est survenue.",
+      "validation": "Certaines données sont invalides."
+    },
+    "title": "Erreur"
+  },
   "onboarding": {
     "message": "Welcome to obytes app site"
   },

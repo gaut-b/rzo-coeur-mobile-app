@@ -20,6 +20,12 @@ export default function CashierPaymentPage() {
 
   const collectCartMutation = useCollectCart();
 
+  React.useEffect(() => {
+    if (error) {
+      showError(error);
+    }
+  }, [error]);
+
   // Clear cart on unmount
   React.useEffect(() => {
     return () => {
@@ -90,7 +96,6 @@ export default function CashierPaymentPage() {
           });
           router.push('/');
         },
-        //@ts-expect-error. TODO: fix errors
         onError: showError,
       }
     );

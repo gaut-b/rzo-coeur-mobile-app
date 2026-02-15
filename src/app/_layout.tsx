@@ -6,14 +6,15 @@ import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StatusBar, StyleSheet } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 
+import { Button, Text, View } from '@/components/ui';
 import { useThemeConfig } from '@/lib/hooks';
 import { APIProvider } from '@/lib/http';
-export { ErrorBoundary } from 'expo-router';
+import { translate } from '@/lib/i18n';
 export const unstable_settings = {
   initialRouteName: 'index',
 };
@@ -45,8 +46,44 @@ export default function RootLayout() {
   );
 }
 
+export function ErrorBoundary({
+  error,
+  retry,
+}: {
+  readonly error: Error;
+  readonly retry: () => Promise<void>;
+}) {
+  return (
+    <View className="flex-1 items-center justify-center gap-4 px-6">
+      <Text className="text-center text-2xl font-bold">
+        {translate('errors.boundary.title' as never)}
+      </Text>
+      <Text className="text-center text-base text-neutral-600 dark:text-neutral-400">
+        {translate('errors.boundary.description' as never)}
+      </Text>
+      {__DEV__ && error?.message ? (
+        <Text className="text-center text-sm text-neutral-500 dark:text-neutral-400">
+          {error.message}
+        </Text>
+      ) : null}
+      <Button
+        variant="secondary"
+        onPress={() => {
+          void retry();
+        }}
+      >
+        <Text className="font-bold text-white">
+          {translate('errors.boundary.retry' as never)}
+        </Text>
+      </Button>
+    </View>
+  );
+}
+
 function Providers({ children }: { readonly children: React.ReactNode }) {
   const theme = useThemeConfig();
+  const statusBarHeight =
+    Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) : 0;
 
   return (
     <GestureHandlerRootView
@@ -58,7 +95,11 @@ function Providers({ children }: { readonly children: React.ReactNode }) {
           <ThemeProvider value={theme}>
             <BottomSheetModalProvider>
               {children}
-              <FlashMessage position="top" />
+              <FlashMessage
+                position="top"
+                floating
+                statusBarHeight={statusBarHeight}
+              />
             </BottomSheetModalProvider>
           </ThemeProvider>
         </APIProvider>

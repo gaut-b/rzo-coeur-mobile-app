@@ -5,6 +5,7 @@ import {
   FocusAwareStatusBar,
   Loader,
   ScrollView,
+  showError,
   Text,
   View,
 } from '@/components/ui';
@@ -14,10 +15,32 @@ import { useAuthStore } from '@/lib/state';
 
 export default function RecipientBaskets() {
   const firstName = useAuthStore((state) => state.user?.firstName);
-  const { data: cartListResponse, isLoading } = useGetRecipientCarts();
+  const {
+    data: cartListResponse,
+    isLoading,
+    isError,
+    error,
+  } = useGetRecipientCarts();
+
+  React.useEffect(() => {
+    if (isError) {
+      showError(error);
+    }
+  }, [isError, error]);
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (isError) {
+    return (
+      <View className="flex-1 items-center justify-center px-4">
+        <FocusAwareStatusBar />
+        <Text className="text-center text-lg text-neutral-600 dark:text-neutral-400">
+          {translate('errors.generic.unknown')}
+        </Text>
+      </View>
+    );
   }
 
   const carts = cartListResponse?.results || [];

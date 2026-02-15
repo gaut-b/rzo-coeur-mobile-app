@@ -8,6 +8,7 @@ import {
   FocusAwareStatusBar,
   Loader,
   ScrollView,
+  showError,
   Text,
   View,
 } from '@/components/ui';
@@ -28,7 +29,18 @@ export default function CartDetailPage() {
   const scannedArticles = useRecipientCartStore.use.scannedArticles();
   const setCartId = useRecipientCartStore.use.setCartId();
 
-  const { data: cartListResponse, isLoading } = useGetRecipientCarts();
+  const {
+    data: cartListResponse,
+    isLoading,
+    isError,
+    error,
+  } = useGetRecipientCarts();
+
+  React.useEffect(() => {
+    if (isError) {
+      showError(error);
+    }
+  }, [isError, error]);
 
   // Memoize the parsed cart ID
   const numericCartId = React.useMemo(
@@ -69,6 +81,17 @@ export default function CartDetailPage() {
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (isError) {
+    return (
+      <View className="flex-1 items-center justify-center p-4">
+        <FocusAwareStatusBar />
+        <Text className="text-center text-lg text-neutral-600 dark:text-neutral-400">
+          {translate('errors.generic.unknown')}
+        </Text>
+      </View>
+    );
   }
 
   if (!cart) {
