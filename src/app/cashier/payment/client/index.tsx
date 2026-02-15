@@ -38,7 +38,6 @@ export default function CashierPaymentPage() {
             duration: 4000,
           });
         },
-        //@ts-expect-error. TODO: fix errors
         onError: showError,
       }
     );

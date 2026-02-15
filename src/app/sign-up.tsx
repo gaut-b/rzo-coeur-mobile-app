@@ -44,7 +44,6 @@ export default function SignUp() {
           });
           router.push('/sign-in');
         },
-        //@ts-expect-error. TODO: fix errors
         onError: showError,
       }
     );

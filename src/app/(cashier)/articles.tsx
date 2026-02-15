@@ -6,6 +6,7 @@ import {
   FocusAwareStatusBar,
   Loader,
   ScrollView,
+  showError,
   Text,
   View,
 } from '@/components/ui';
@@ -13,7 +14,13 @@ import { type Article, type ArticleCart, useGetArticles } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 
 export default function CashierArticlesList() {
-  const { data: articleList, isLoading } = useGetArticles();
+  const { data: articleList, isLoading, isError, error } = useGetArticles();
+
+  React.useEffect(() => {
+    if (isError) {
+      showError(error);
+    }
+  }, [isError, error]);
 
   // Group articles by cart
   const { cartGroups, standaloneArticles } = useMemo(() => {
@@ -54,6 +61,17 @@ export default function CashierArticlesList() {
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (isError) {
+    return (
+      <View className="flex-1 items-center justify-center px-4">
+        <FocusAwareStatusBar />
+        <Text className="text-center text-lg text-neutral-600 dark:text-neutral-400">
+          {translate('errors.generic.unknown')}
+        </Text>
+      </View>
+    );
   }
 
   if (!articleList || articleList.articles.length === 0) {

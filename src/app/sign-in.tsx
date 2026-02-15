@@ -50,7 +50,6 @@ export default function SignIn() {
           );
           router.push('/');
         },
-        //@ts-expect-error. TODO: fix errors
         onError: showError,
       }
     );
