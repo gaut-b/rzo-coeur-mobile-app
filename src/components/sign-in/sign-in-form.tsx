@@ -68,7 +68,8 @@ export const SignInForm = ({
           onPress={handleSubmit(onSubmit)}
           loading={isLoading}
         />
-        <Link href="/forgot-password">
+        {/*TODO: IMPLEMENT forgot password page*/}
+        <Link href={'/forgot-password' as any}>
           <Text
             testID="sign-up"
             className="pb-6 text-center text-base font-bold"

@@ -19,7 +19,7 @@ interface RoleBasedTabLayoutProps {
 export function RoleBasedTabLayout({
   role,
   tabs,
-  screenOptions = { tabBarShowLabel: false },
+  screenOptions = { tabBarShowLabel: false, headerShown: false },
 }: RoleBasedTabLayoutProps) {
   useInitState();
   const status = useAuthStore((state) => state.status);

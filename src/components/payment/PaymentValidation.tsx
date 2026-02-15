@@ -1,4 +1,5 @@
-import { Stack } from 'expo-router';
+import { useCameraPermissions } from 'expo-camera';
+import { Stack, usePathname, useRouter } from 'expo-router';
 import * as React from 'react';
 
 import {
@@ -8,7 +9,13 @@ import {
 import ArticleList from '@/components/cart/ArticleList';
 import { BarcodeDisplayModal } from '@/components/cart/BarcodeDisplayModal';
 import { ScanStatusIndicator } from '@/components/cart/ScanStatusIndicator';
-import { Button, Text, useModal, View } from '@/components/ui';
+import {
+  Button,
+  showErrorMessage,
+  Text,
+  useModal,
+  View,
+} from '@/components/ui';
 import { translate, type TxKeyPath } from '@/lib/i18n';
 import { type Article, useCashierStore } from '@/lib/state';
 
@@ -25,8 +32,17 @@ export function PaymentValidation({
   validateButtonLabel,
   emptyStateMessage = 'pages.recipient.empty-baskets',
 }: PaymentValidationProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [permission, requestPermission] = useCameraPermissions();
+  const isPermissionGranted = Boolean(permission?.granted);
   const scannedArticles = useCashierStore.use.scannedBarcodes();
   const clearScannedArticles = useCashierStore.use.clearScannedArticles();
+
+  // Auto-detect scan mode based on route: recipient uses camera, client uses barcode display
+  const scanMode = pathname.includes('/recipient')
+    ? 'camera'
+    : 'barcode-display';
 
   const [selectedArticle, setSelectedArticle] = React.useState<Article | null>(
     null
@@ -44,17 +60,45 @@ export function PaymentValidation({
           return scannedCount >= article.quantity;
         });
 
-  // Clear scanned articles on mount to start fresh
+  // Clear scanned articles on mount to start fresh for barcode-display mode
   React.useEffect(() => {
-    clearScannedArticles();
-  }, [clearScannedArticles]);
+    if (scanMode === 'barcode-display') {
+      clearScannedArticles();
+    }
+  }, [clearScannedArticles, scanMode]);
 
   const onScanSuccess = () => {
     barcodeModal.dismiss();
     setSelectedArticle(null);
   };
 
-  const onArticleClick = (article: Article) => {
+  const openCameraScanner = (article: Article) => {
+    router.push({
+      pathname: '/cashier/scanner',
+      params: {
+        mode: 'article',
+        expectedBarcode: String(article.barcode),
+        expectedArticleName: article.productLabel ?? '',
+      },
+    });
+  };
+
+  const onArticleClick = async (article: Article) => {
+    if (scanMode === 'camera') {
+      if (isPermissionGranted) {
+        openCameraScanner(article);
+      } else {
+        const permissionResult = await requestPermission();
+
+        if (permissionResult.granted) {
+          openCameraScanner(article);
+        } else {
+          showErrorMessage(translate('errors.generic.forbidden'));
+        }
+      }
+      return;
+    }
+
     setSelectedArticle(article);
     barcodeModal.present();
   };
@@ -71,7 +115,7 @@ export function PaymentValidation({
     <View className="flex size-full flex-col">
       <Stack.Screen
         options={{
-          title: translate('pages.payment.title'),
+          headerShown: false,
         }}
       />
 
@@ -110,12 +154,13 @@ export function PaymentValidation({
         </Button>
       </View>
 
-      {/* Barcode display modal */}
-      <BarcodeDisplayModal
-        ref={barcodeModal.ref}
-        article={selectedArticle}
-        onScanComplete={onScanSuccess}
-      />
+      {scanMode === 'barcode-display' && (
+        <BarcodeDisplayModal
+          ref={barcodeModal.ref}
+          article={selectedArticle}
+          onScanComplete={onScanSuccess}
+        />
+      )}
     </View>
   );
 }

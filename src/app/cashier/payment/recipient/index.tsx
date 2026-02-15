@@ -26,13 +26,6 @@ export default function CashierPaymentPage() {
     }
   }, [error]);
 
-  // Clear cart on unmount
-  React.useEffect(() => {
-    return () => {
-      useCashierStore.getState().clear();
-    };
-  }, []);
-
   if (isLoading) {
     return <Loader />;
   }
@@ -44,6 +37,27 @@ export default function CashierPaymentPage() {
           {translate('pages.payment.cashier.error-loading-cart')}
         </Text>
         <Button variant="secondary" onPress={() => router.push('/')}>
+          <Text className="font-bold text-white">
+            {translate('pages.payment.cashier.go-home')}
+          </Text>
+        </Button>
+      </View>
+    );
+  }
+
+  if (recipientCart.status === 'COLLECTED') {
+    return (
+      <View className="flex-1 items-center justify-center gap-4 p-4">
+        <Text className="text-center text-lg text-red-600 dark:text-red-400">
+          {translate('errors.cart.already-collected')}
+        </Text>
+        <Button
+          variant="secondary"
+          onPress={() => {
+            useCashierStore.getState().clear();
+            router.replace('/');
+          }}
+        >
           <Text className="font-bold text-white">
             {translate('pages.payment.cashier.go-home')}
           </Text>
@@ -88,6 +102,7 @@ export default function CashierPaymentPage() {
       },
       {
         onSuccess: () => {
+          useCashierStore.getState().clear();
           showMessage({
             message: translate('pages.payment.recipient.success-title'),
             description: translate('pages.payment.recipient.success-message'),
