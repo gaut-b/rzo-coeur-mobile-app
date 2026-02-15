@@ -5,6 +5,7 @@ import {
   Basket as BasketIcon,
   History as HistoryIcon,
   Settings as SettingsIcon,
+  Store as StoreIcon,
 } from '@/components/ui/icons';
 import { translate } from '@/lib/i18n';
 
@@ -27,6 +28,14 @@ export default function ClientLayout() {
             title: translate('pages.tabs.client.purchases'),
             tabBarIcon: ({ color }) => <HistoryIcon color={color} />,
             tabBarButtonTestID: 'articles-tab',
+          },
+        },
+        {
+          name: 'stores',
+          options: {
+            title: translate('pages.tabs.client.stores'),
+            tabBarIcon: ({ color }) => <StoreIcon color={color} />,
+            tabBarButtonTestID: 'stores-tab',
           },
         },
         {

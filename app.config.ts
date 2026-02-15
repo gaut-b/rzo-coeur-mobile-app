@@ -83,6 +83,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         recordAudioAndroid: true,
       },
     ],
+    [
+      'expo-location',
+      {
+        locationAlwaysAndWhenInUsePermission:
+          'Allow $(PRODUCT_NAME) to use your location to find nearby partner stores.',
+      },
+    ],
   ],
   extra: {
     ...ClientEnv,

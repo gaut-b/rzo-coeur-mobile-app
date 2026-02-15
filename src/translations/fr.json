@@ -80,6 +80,19 @@
       "expected-article": "Article attendu",
       "retry": "Réessayer"
     },
+    "shops": {
+      "address": "Adresse",
+      "city": "Ville",
+      "distance": "Distance",
+      "empty": "Aucun magasin trouvé",
+      "error": "Erreur lors du chargement des magasins",
+      "list-title": "Magasins Partenaires",
+      "loading": "Chargement des magasins...",
+      "permission-denied": "L'accès à votre position est nécessaire pour afficher les magasins à proximité.",
+      "permission-request": "Demander l'autorisation",
+      "retry": "Réessayer",
+      "view-on-map": "Voir sur la carte"
+    },
     "sign-up": {
       "email_label": "Adresse e-mail",
       "firstName_label": "Prénom",
@@ -99,7 +112,8 @@
       "client": {
         "basket": "Mon Panier",
         "purchases": "Mes Achats",
-        "settings_tab": "Paramètres"
+        "settings_tab": "Paramètres",
+        "stores": "Magasins"
       },
       "recipient": {
         "baskets": "Mes Paniers",
