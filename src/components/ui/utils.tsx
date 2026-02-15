@@ -1,4 +1,3 @@
-import { HTTPError } from 'ky';
 import { Dimensions, Platform } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -51,6 +50,34 @@ const isObjectRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === 'object' && value !== null;
 };
 
+type HttpResponseLike = {
+  status?: number;
+  headers?: { get: (name: string) => string | null };
+  clone?: () => HttpResponseLike;
+  json?: () => Promise<unknown>;
+  text?: () => Promise<string>;
+};
+
+type HttpErrorLike = {
+  response?: HttpResponseLike;
+};
+
+const isHttpResponseLike = (value: unknown): value is HttpResponseLike => {
+  if (!isObjectRecord(value)) {
+    return false;
+  }
+
+  return typeof value.status === 'number';
+};
+
+const isHttpErrorLike = (value: unknown): value is HttpErrorLike => {
+  if (!isObjectRecord(value)) {
+    return false;
+  }
+
+  return isHttpResponseLike(value.response);
+};
+
 const mapCodeToTranslation = (code?: string): string | undefined => {
   if (!code) return undefined;
 
@@ -99,20 +126,22 @@ const getHumanReadableMessage = (payload: unknown): string => {
   return extractError(payload).trim();
 };
 
-const readResponseBody = async (error: HTTPError): Promise<unknown> => {
+const readResponseBody = async (error: HttpErrorLike): Promise<unknown> => {
   const response = error.response;
   if (!response) {
     return undefined;
   }
 
   try {
+    const responseParser = response.clone?.() ?? response;
     const contentType =
-      response.headers.get('content-type')?.toLowerCase() ?? '';
+      response.headers?.get('content-type')?.toLowerCase() ?? '';
+
     if (contentType.includes('application/json')) {
-      return await response.clone().json();
+      return await responseParser.json?.();
     }
 
-    const rawText = await response.clone().text();
+    const rawText = (await responseParser.text?.()) ?? '';
     return rawText.length > 0 ? rawText : undefined;
   } catch {
     return undefined;
@@ -120,7 +149,7 @@ const readResponseBody = async (error: HTTPError): Promise<unknown> => {
 };
 
 const resolveHttpErrorDescription = async (
-  error: HTTPError
+  error: HttpErrorLike
 ): Promise<string> => {
   const payload = await readResponseBody(error);
   const errorCode = getErrorCodeFromPayload(payload);
@@ -157,7 +186,7 @@ const resolveHttpErrorDescription = async (
 };
 
 const resolveErrorDescription = async (error: unknown): Promise<string> => {
-  if (error instanceof HTTPError) {
+  if (isHttpErrorLike(error)) {
     return resolveHttpErrorDescription(error);
   }
 
