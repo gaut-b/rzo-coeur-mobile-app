@@ -33,7 +33,7 @@ export default function RecipientPaymentPage() {
     <View className="flex h-full items-center justify-center gap-4">
       <Stack.Screen
         options={{
-          title: translate('pages.payment.title'),
+          headerShown: false,
         }}
       />
       <FocusAwareStatusBar />

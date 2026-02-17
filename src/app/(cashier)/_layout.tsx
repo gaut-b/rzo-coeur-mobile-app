@@ -4,7 +4,6 @@ import { RoleBasedTabLayout } from '@/components/layouts';
 import {
   Feed as FeedIcon,
   Settings as SettingsIcon,
-  Style as StyleIcon,
 } from '@/components/ui/icons';
 import { translate } from '@/lib/i18n';
 
@@ -19,14 +18,6 @@ export default function CashierLayout() {
             title: translate('pages.tabs.cashier.scanner'),
             tabBarIcon: ({ color }) => <FeedIcon color={color} />,
             tabBarButtonTestID: 'scanner-tab',
-          },
-        },
-        {
-          name: 'articles',
-          options: {
-            title: translate('pages.tabs.cashier.history_tab'),
-            tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-            tabBarButtonTestID: 'history-tab',
           },
         },
         {

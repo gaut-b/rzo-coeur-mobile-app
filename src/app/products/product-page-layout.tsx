@@ -3,7 +3,6 @@ import { type ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { ActivityIndicator, FocusAwareStatusBar, View } from '@/components/ui';
-import { translate } from '@/lib/i18n';
 
 type ProductPageLayoutProps = {
   children?: ReactNode;
@@ -20,7 +19,7 @@ const ProductPageLayout = ({
     <View className={twMerge(className, 'flex-1 p-3')}>
       <Stack.Screen
         options={{
-          title: translate('pages.product.title'),
+          headerShown: false,
         }}
       />
       <FocusAwareStatusBar />
