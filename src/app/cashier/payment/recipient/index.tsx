@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import * as React from 'react';
 import { showMessage } from 'react-native-flash-message';
 
-import { PaymentValidation } from '@/components/payment/PaymentValidation';
+import { CameraPaymentValidation } from '@/components/payment/CameraPaymentValidation';
 import { Button, Loader, showError, Text, View } from '@/components/ui';
 import { useCollectCart, useGetCartById } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
@@ -117,7 +117,7 @@ export default function CashierPaymentPage() {
   };
 
   return (
-    <PaymentValidation
+    <CameraPaymentValidation
       articlesByBarcode={cartArticlesByBarcode}
       onValidatePayment={onValidatePayment}
       validateButtonLabel={translate('pages.payment.recipient.validate')}

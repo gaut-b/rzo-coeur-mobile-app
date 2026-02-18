@@ -1,7 +1,7 @@
 import { showMessage } from 'react-native-flash-message';
 import { type CreateArticlesRequestBody, useCreateArticles } from 'src/lib';
 
-import { PaymentValidation } from '@/components/payment/PaymentValidation';
+import { BarcodePaymentValidation } from '@/components/payment/BarcodePaymentValidation';
 import { showError } from '@/components/ui';
 import { translate } from '@/lib/i18n';
 import { useCashierStore } from '@/lib/state';
@@ -44,7 +44,7 @@ export default function CashierPaymentPage() {
   };
 
   return (
-    <PaymentValidation
+    <BarcodePaymentValidation
       articlesByBarcode={clientArticlesByBarcode}
       onValidatePayment={onValidatePayment}
       validateButtonLabel={translate('pages.payment.client.validate')}

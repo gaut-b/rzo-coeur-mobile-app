@@ -1,5 +1,4 @@
-import { useCameraPermissions } from 'expo-camera';
-import { Stack, usePathname, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as React from 'react';
 
 import {
@@ -9,47 +8,35 @@ import {
 import ArticleList from '@/components/cart/ArticleList';
 import { BarcodeDisplayModal } from '@/components/cart/BarcodeDisplayModal';
 import { ScanStatusIndicator } from '@/components/cart/ScanStatusIndicator';
-import {
-  Button,
-  showErrorMessage,
-  Text,
-  useModal,
-  View,
-} from '@/components/ui';
+import { Button, Text, useModal, View } from '@/components/ui';
 import { translate, type TxKeyPath } from '@/lib/i18n';
 import { type Article, useCashierStore } from '@/lib/state';
 
-interface PaymentValidationProps {
+interface BarcodePaymentValidationProps {
   readonly articlesByBarcode: Record<string, Article> | null;
   readonly onValidatePayment: () => void;
   readonly validateButtonLabel: string;
   readonly emptyStateMessage?: TxKeyPath;
 }
 
-export function PaymentValidation({
+export function BarcodePaymentValidation({
   articlesByBarcode,
   onValidatePayment,
   validateButtonLabel,
   emptyStateMessage = 'pages.recipient.empty-baskets',
-}: PaymentValidationProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [permission, requestPermission] = useCameraPermissions();
-  const isPermissionGranted = Boolean(permission?.granted);
+}: BarcodePaymentValidationProps) {
   const scannedArticles = useCashierStore.use.scannedBarcodes();
   const clearScannedArticles = useCashierStore.use.clearScannedArticles();
-
-  // Auto-detect scan mode based on route: recipient uses camera, client uses barcode display
-  const scanMode = pathname.includes('/recipient')
-    ? 'camera'
-    : 'barcode-display';
-
   const [selectedArticle, setSelectedArticle] = React.useState<Article | null>(
     null
   );
   const barcodeModal = useModal();
 
-  // Calculate if all articles are scanned
+  // Clear scanned articles on mount to start fresh
+  React.useEffect(() => {
+    clearScannedArticles();
+  }, [clearScannedArticles]);
+
   const articleIds = articlesByBarcode ? Object.keys(articlesByBarcode) : [];
   const allArticlesScanned =
     !articlesByBarcode || articleIds.length === 0
@@ -60,45 +47,12 @@ export function PaymentValidation({
           return scannedCount >= article.quantity;
         });
 
-  // Clear scanned articles on mount to start fresh for barcode-display mode
-  React.useEffect(() => {
-    if (scanMode === 'barcode-display') {
-      clearScannedArticles();
-    }
-  }, [clearScannedArticles, scanMode]);
-
   const onScanSuccess = () => {
     barcodeModal.dismiss();
     setSelectedArticle(null);
   };
 
-  const openCameraScanner = (article: Article) => {
-    router.push({
-      pathname: '/cashier/scanner',
-      params: {
-        mode: 'article',
-        expectedBarcode: String(article.barcode),
-        expectedArticleName: article.productLabel ?? '',
-      },
-    });
-  };
-
-  const onArticleClick = async (article: Article) => {
-    if (scanMode === 'camera') {
-      if (isPermissionGranted) {
-        openCameraScanner(article);
-      } else {
-        const permissionResult = await requestPermission();
-
-        if (permissionResult.granted) {
-          openCameraScanner(article);
-        } else {
-          showErrorMessage(translate('errors.generic.forbidden'));
-        }
-      }
-      return;
-    }
-
+  const onArticleClick = (article: Article) => {
     setSelectedArticle(article);
     barcodeModal.present();
   };
@@ -113,13 +67,8 @@ export function PaymentValidation({
 
   return (
     <View className="flex size-full flex-col">
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen options={{ headerShown: false }} />
 
-      {/* Article list with scan status */}
       <ArticleList
         articlesByBarcode={articlesByBarcode}
         renderItem={({ item }) => {
@@ -142,7 +91,6 @@ export function PaymentValidation({
         }}
       />
 
-      {/* Validation button */}
       <View className="border-t border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800">
         <Button
           variant="secondary"
@@ -154,13 +102,11 @@ export function PaymentValidation({
         </Button>
       </View>
 
-      {scanMode === 'barcode-display' && (
-        <BarcodeDisplayModal
-          ref={barcodeModal.ref}
-          article={selectedArticle}
-          onScanComplete={onScanSuccess}
-        />
-      )}
+      <BarcodeDisplayModal
+        ref={barcodeModal.ref}
+        article={selectedArticle}
+        onScanComplete={onScanSuccess}
+      />
     </View>
   );
 }
