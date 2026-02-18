@@ -3,7 +3,6 @@ import {
   DarkTheme as _DarkTheme,
   DefaultTheme,
 } from '@react-navigation/native';
-import { useEffect } from 'react';
 
 import colors from '@/components/ui/colors';
 import { useThemeStore } from '@/lib/state';
@@ -30,13 +29,7 @@ const LightTheme: Theme = {
 };
 
 export function useThemeConfig() {
-  const { hydrateTheme, selectedTheme } = useThemeStore();
-
-  useEffect(() => {
-    if (!selectedTheme) {
-      hydrateTheme();
-    }
-  }, [hydrateTheme, selectedTheme]);
+  const selectedTheme = useThemeStore((state) => state.selectedTheme);
 
   return selectedTheme === 'dark' ? DarkTheme : LightTheme;
 }
