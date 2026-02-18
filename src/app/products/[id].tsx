@@ -1,8 +1,7 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React from 'react';
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { showMessage } from 'react-native-flash-message';
 
-import { Button, Image, showError, Text, View } from '@/components/ui';
+import { Button, Image, Text, View } from '@/components/ui';
 import { useGetProduct } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { addArticle } from '@/lib/state';
@@ -12,13 +11,7 @@ import ProductPageLayout from './product-page-layout';
 const ProductDetail = () => {
   const router = useRouter();
   const { id: productId } = useLocalSearchParams<{ id: string }>();
-  const { data, isPending, isError, error } = useGetProduct(productId);
-
-  React.useEffect(() => {
-    if (isError) {
-      showError(error);
-    }
-  }, [isError, error]);
+  const { data, isPending, isError } = useGetProduct(productId);
 
   if (isPending) {
     return (
@@ -27,11 +20,17 @@ const ProductDetail = () => {
   }
   if (isError) {
     return (
-      <ProductPageLayout className="justify-center">
-        <Text className="text-center text-lg text-neutral-600 dark:text-neutral-400">
-          {translate('errors.generic.not-found')}
-        </Text>
-      </ProductPageLayout>
+      <Redirect
+        href={`/products/manual-entry?barcode=${encodeURIComponent(productId ?? '')}`}
+      />
+    );
+  }
+
+  if (data?.status === 0) {
+    return (
+      <Redirect
+        href={`/products/manual-entry?barcode=${encodeURIComponent(productId ?? '')}`}
+      />
     );
   }
 
