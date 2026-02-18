@@ -1,0 +1,66 @@
+# ✍️ Description:
+# Generates a staging APK directly on a GitHub runner (no EAS required).
+# The APK is uploaded as a GitHub Actions artifact and can be downloaded
+# from the Actions run summary page.
+#
+# 🚨 GITHUB SECRETS REQUIRED (Settings → Secrets and variables → Actions):
+#   - SECRET_KEY
+#   - RZO_API_BASE_URL
+#   - GOOGLE_MAPS_API_KEY
+
+name: Build QA APK (Android)
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build QA APK (Android)
+    runs-on: ubuntu-latest
+
+    env:
+      APP_ENV: staging
+      EXPO_NO_DOTENV: '1'
+      # Secrets (Settings → Secrets and variables → Secrets)
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+      RZO_API_BASE_URL: ${{ secrets.RZO_API_BASE_URL }}
+      # Variables (Settings → Secrets and variables → Variables)
+      OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
+
+    steps:
+      - name: 📦 Checkout project repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: ☕ Set Up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '17'
+
+      - name: 🐘 Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: 🏗️ Prebuild (generate android/ folder)
+        run: pnpm prebuild:staging
+
+      - name: 🔨 Build release APK
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --no-daemon
+          cd ..
+
+      - name: 📤 Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-staging-${{ github.run_number }}.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 14

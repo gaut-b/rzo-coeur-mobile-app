@@ -16,6 +16,12 @@ yarn-error.log
 android/
 ios/
 
+# Environment files — secrets managed via GitHub Actions secrets
+# Only .env.development is committed (local dev, no real secrets)
+.env.*
+!.env.example
+!.env.js
+
 # macOS
 .DS_Store
 
