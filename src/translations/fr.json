@@ -69,6 +69,26 @@
       "submit": "Se connecter",
       "title": "Connexion"
     },
+    "manual-entry": {
+      "add-to-cart": "Ajouter au panier",
+      "back": "← Retour",
+      "brand-label": "Marque",
+      "brand-placeholder": "ex : Bonduelle",
+      "brand-required": "La marque est requise",
+      "label-label": "Nom du produit",
+      "label-placeholder": "ex : Haricots verts extra-fins",
+      "label-required": "Le nom du produit est requis",
+      "photo-button": "Prendre en photo",
+      "photo-required": "Une photo est requise",
+      "photo-retake": "Reprendre",
+      "photo-uploading": "Envoi de la photo...",
+      "photo-use": "Utiliser cette photo",
+      "subtitle": "Ce produit n'a pas été trouvé. Renseignez les informations manuellement pour aider les utilisateurs à retrouver l'article dans les rayons.",
+      "success-description": "Vous allez être redirigé vers la page d'accueil. Appuyez ici pour scanner directement un nouvel article",
+      "success-message": "🥑 Article correctement ajouté au Panier ! 🥦",
+      "title": "Produit introuvable",
+      "upload-error": "Erreur lors de l'envoi de la photo"
+    },
     "payment": {
       "cashier": {
         "content": "Veuillez scanner le QR code d'un client afin d'obtenir la liste des articles",
