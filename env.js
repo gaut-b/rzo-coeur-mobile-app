@@ -82,8 +82,6 @@ const client = z.object({
   OPEN_FOOD_FACTS_API_BASE_URL: z.string(),
   RZO_API_BASE_URL: z.string(),
   GOOGLE_MAPS_API_KEY: z.string(),
-  VAR_NUMBER: z.number(),
-  VAR_BOOL: z.boolean(),
 });
 
 const buildTime = z.object({
@@ -108,8 +106,6 @@ const _clientEnv = {
   OPEN_FOOD_FACTS_API_BASE_URL: process.env.OPEN_FOOD_FACTS_API_BASE_URL,
   RZO_API_BASE_URL: process.env.RZO_API_BASE_URL,
   GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-  VAR_NUMBER: Number(process.env.VAR_NUMBER),
-  VAR_BOOL: process.env.VAR_BOOL === 'true',
 };
 
 /**

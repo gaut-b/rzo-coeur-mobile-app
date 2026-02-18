@@ -25,12 +25,10 @@ jobs:
       EXPO_NO_DOTENV: '1'
       # Secrets (Settings → Secrets and variables → Secrets)
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      RZO_API_BASE_URL: ${{ secrets.RZO_API_BASE_URL }}
       GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+      RZO_API_BASE_URL: ${{ secrets.RZO_API_BASE_URL }}
       # Variables (Settings → Secrets and variables → Variables)
       OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
-      VAR_NUMBER: ${{ vars.VAR_NUMBER }}
-      VAR_BOOL: ${{ vars.VAR_BOOL }}
 
     steps:
       - name: 📦 Checkout project repo
