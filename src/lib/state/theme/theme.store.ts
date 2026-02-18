@@ -12,8 +12,19 @@ type ThemeState = {
   hydrateTheme: () => void;
 };
 
+// Read theme synchronously at module load to avoid flash on first render
+const _storedTheme = getTheme();
+const _initialTheme: ColorSchemeType =
+  _storedTheme && _storedTheme !== ''
+    ? (_storedTheme as ColorSchemeType)
+    : 'light';
+Appearance.setColorScheme(_initialTheme as ColorSchemeName);
+if (!_storedTheme || _storedTheme === '') {
+  persistTheme('light');
+}
+
 export const themeStore = create<ThemeState>((set) => ({
-  selectedTheme: null,
+  selectedTheme: _initialTheme,
   setSelectedTheme: (theme: ColorSchemeName) => {
     persistTheme(theme);
     set({ selectedTheme: theme });
@@ -22,9 +33,9 @@ export const themeStore = create<ThemeState>((set) => ({
   hydrateTheme: () => {
     const theme = getTheme();
     if (theme && theme !== '') {
+      set({ selectedTheme: theme as ColorSchemeType });
       Appearance.setColorScheme(theme as ColorSchemeName);
     } else {
-      // const userTheme = Appearance.getColorScheme();
       persistTheme('light');
       set({ selectedTheme: 'light' });
     }
