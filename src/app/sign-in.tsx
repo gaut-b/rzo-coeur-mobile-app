@@ -1,6 +1,5 @@
 import { Redirect, useRouter } from 'expo-router';
 import React from 'react';
-import { useAuthStore } from 'src/lib';
 
 import {
   SignInForm,
@@ -8,6 +7,7 @@ import {
 } from '@/components/sign-in/sign-in-form';
 import { FocusAwareStatusBar, showError } from '@/components/ui';
 import { useSignIn } from '@/lib/hooks';
+import { useAuthStore } from '@/lib/state';
 
 export default function SignIn() {
   const router = useRouter();

@@ -2,9 +2,9 @@ import { CameraView } from 'expo-camera';
 import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Alert, AppState, Platform, StatusBar, StyleSheet } from 'react-native';
-import { useRoleProtectedRoute } from 'src/lib/hooks/routing';
 
 import { View } from '@/components/ui';
+import { useRoleProtectedRoute } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useRecipientCartStore } from '@/lib/state';
 import { BARCODE_TYPE, RECIPIENT_ROOT_PATH } from '@/lib/types';
@@ -47,7 +47,6 @@ export default function RecipientScannerPage() {
     <View style={StyleSheet.absoluteFillObject}>
       <Stack.Screen
         options={{
-          title: 'Overview',
           headerShown: false,
         }}
       />

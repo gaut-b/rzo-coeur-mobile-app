@@ -2,9 +2,9 @@ import { CameraView } from 'expo-camera';
 import { Redirect, Stack } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { AppState, Platform, StatusBar, StyleSheet } from 'react-native';
-import { useRoleProtectedRoute } from 'src/lib/hooks/routing';
 
 import { View } from '@/components/ui';
+import { useRoleProtectedRoute } from '@/lib/hooks';
 import { BARCODE_TYPE } from '@/lib/types';
 
 export default function ClientScannerPage() {
@@ -38,7 +38,6 @@ export default function ClientScannerPage() {
     <View style={StyleSheet.absoluteFillObject}>
       <Stack.Screen
         options={{
-          title: 'Overview',
           headerShown: false,
         }}
       />

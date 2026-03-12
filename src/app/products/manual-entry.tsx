@@ -3,16 +3,16 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { useRoleProtectedRoute } from 'src/lib/hooks/routing';
 
 import {
   ManualEntryForm,
   type ManualEntryFormType,
   manualEntrySchema,
 } from '@/components/articles/ManualEntryForm';
-import { Button, Image, Text, View } from '@/components/ui';
+import { Button, Image, Pressable, Text, View } from '@/components/ui';
+import { useRoleProtectedRoute } from '@/lib/hooks';
 import { useUploadArticlePhoto } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { addArticle } from '@/lib/state';
@@ -122,10 +122,7 @@ export default function ManualEntryPage() {
           facing="back"
         />
         <View className="absolute bottom-12 w-full items-center">
-          <TouchableOpacity
-            onPress={handleCapture}
-            style={styles.captureButton}
-          />
+          <Pressable onPress={handleCapture} style={styles.captureButton} />
         </View>
         <View className="absolute top-12 left-4">
           <Button

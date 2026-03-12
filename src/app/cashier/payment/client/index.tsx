@@ -1,8 +1,8 @@
 import { showMessage } from 'react-native-flash-message';
-import { type CreateArticlesRequestBody, useCreateArticles } from 'src/lib';
 
 import { BarcodePaymentValidation } from '@/components/payment/BarcodePaymentValidation';
 import { showError } from '@/components/ui';
+import { type CreateArticlesRequestBody, useCreateArticles } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useCashierStore } from '@/lib/state';
 

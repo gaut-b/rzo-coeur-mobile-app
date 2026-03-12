@@ -15,11 +15,11 @@ export default function Index() {
   const status = useAuthStore((state) => state.status);
 
   useEffect(() => {
-    // Hide splash screen after initialization
     if (status !== 'NOT_INITIALIZED') {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         SplashScreen.hideAsync();
       }, 500);
+      return () => clearTimeout(timer);
     }
   }, [status]);
 

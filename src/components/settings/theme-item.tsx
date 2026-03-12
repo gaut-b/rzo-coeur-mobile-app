@@ -1,8 +1,8 @@
 import React from 'react';
-import { type ColorSchemeType } from 'src/lib';
 
 import type { OptionType } from '@/components/ui';
 import { Options, useModal } from '@/components/ui';
+import { type ColorSchemeType } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useThemeStore } from '@/lib/state';
 

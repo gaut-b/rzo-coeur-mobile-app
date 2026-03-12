@@ -13,7 +13,7 @@ export type Article = {
   created_at: string;
 };
 
-export type ArticleStatus = 'AVAILABLE' | 'ASSIGNED' | 'COLLECTED';
+export type ArticleStatus = 'AVAILABLE' | 'PENDING' | 'COLLECTED';
 
 export type ArticleShop = { id: string; name: string };
 

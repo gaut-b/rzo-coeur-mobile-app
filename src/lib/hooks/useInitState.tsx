@@ -5,12 +5,10 @@ import { useAuthStore } from '@/lib/state';
 import { useGetUser } from './api/user/useGetUser';
 
 export function useInitState() {
-  const {
-    status,
-    user: currentUser,
-    hydrate: hydrateAuthStore,
-    setUser,
-  } = useAuthStore();
+  const status = useAuthStore.use.status();
+  const currentUser = useAuthStore.use.user();
+  const hydrateAuthStore = useAuthStore.use.hydrate();
+  const setUser = useAuthStore.use.setUser();
 
   const shouldFetchUser = currentUser == null && status === 'LOGGED_IN';
 
