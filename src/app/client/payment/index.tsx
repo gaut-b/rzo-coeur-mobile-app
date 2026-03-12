@@ -1,8 +1,8 @@
 import { Redirect, Stack } from 'expo-router';
-import { useRoleProtectedRoute } from 'src/lib/hooks/routing';
 
 import CartQrCode from '@/components/cart/CartQrCode';
 import { FocusAwareStatusBar, Text, View } from '@/components/ui';
+import { useRoleProtectedRoute } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useAuthStore, useBasketStore } from '@/lib/state';
 import {

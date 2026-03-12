@@ -1,8 +1,8 @@
 import { Redirect, Tabs } from 'expo-router';
 import type { ComponentProps } from 'react';
 import React from 'react';
-import { useInitState } from 'src/lib';
 
+import { useInitState } from '@/lib/hooks';
 import { type Role, useAuthStore } from '@/lib/state';
 
 interface TabConfig {

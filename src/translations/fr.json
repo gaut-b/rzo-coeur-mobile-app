@@ -55,8 +55,8 @@
       "empty": "Aucun article pour le moment",
       "standalone_articles": "Articles individuels",
       "status": {
-        "assigned": "Assigné",
-        "available": "Disponible",
+        "assigned": "En attente",
+        "available": "En attente",
         "collected": "Récupéré"
       },
       "title": "Historique"

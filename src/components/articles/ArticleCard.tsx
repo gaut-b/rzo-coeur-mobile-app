@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Text, View } from '@/components/ui';
-import type { Article } from '@/lib/hooks';
+import type { Article, ArticleStatus } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 
 interface ArticleCardProps {
@@ -11,20 +11,23 @@ interface ArticleCardProps {
 const STATUS_CONFIG = {
   AVAILABLE: {
     label: translate('pages.history.status.available'),
-    color: 'bg-blue-100 text-blue-800',
+    color: 'bg-neutral-100 text-neutral-600',
   },
-  ASSIGNED: {
-    label: translate('pages.history.status.assigned'),
-    color: 'bg-yellow-100 text-yellow-800',
+  PENDING: {
+    label: translate('pages.history.status.available'),
+    color: 'bg-neutral-100 text-neutral-600',
   },
   COLLECTED: {
     label: translate('pages.history.status.collected'),
     color: 'bg-green-100 text-green-800',
   },
-};
+} satisfies Record<ArticleStatus, { label: string; color: string }>;
 
 export const ArticleCard = ({ article }: ArticleCardProps) => {
-  const statusConfig = STATUS_CONFIG[article.status];
+  const statusConfig = STATUS_CONFIG[article.status] ?? {
+    label: article.status as string,
+    color: 'bg-neutral-100 text-neutral-800',
+  };
   const date = new Date(article.created_at).toLocaleDateString('fr-FR', {
     day: 'numeric',
     month: 'long',
@@ -51,14 +54,6 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
             {date}
           </Text>
         </View>
-
-        {article.cart && (
-          <View className="ml-2 rounded-md bg-neutral-100 px-2 py-1 dark:bg-neutral-700">
-            <Text className="text-xs text-neutral-600 dark:text-neutral-400">
-              {translate('pages.history.cart')} #{article.cart.id}
-            </Text>
-          </View>
-        )}
       </View>
     </View>
   );

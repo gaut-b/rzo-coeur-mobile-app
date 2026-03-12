@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
 
 import type { Role } from '@/lib/state';
 import { useAuthStore } from '@/lib/state';
@@ -6,12 +7,19 @@ import { useAuthStore } from '@/lib/state';
 export const useRoleProtectedRoute = (authorizedRoles: Role[]) => {
   const router = useRouter();
   const status = useAuthStore((state) => state.status);
-  const user = useAuthStore((state) => state.user);
+  const userRole = useAuthStore((state) => state.user?.role);
 
-  if (status === 'LOGGED_IN' && user != null && authorizedRoles.length > 0) {
-    const userRole = user.role;
-    if (!authorizedRoles.includes(userRole)) {
-      router.push('/'); // Redirect to home if role is not authorized
+  useEffect(() => {
+    if (
+      status === 'LOGGED_IN' &&
+      userRole != null &&
+      authorizedRoles.length > 0
+    ) {
+      if (!authorizedRoles.includes(userRole)) {
+        router.replace('/');
+      }
     }
-  }
+    // authorizedRoles is intentionally omitted: callers always pass static literals
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, userRole, router]);
 };

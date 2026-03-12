@@ -69,7 +69,6 @@ export default function CashierScannerPage() {
     <View style={StyleSheet.absoluteFillObject}>
       <Stack.Screen
         options={{
-          title: 'Overview',
           headerShown: false,
         }}
       />
