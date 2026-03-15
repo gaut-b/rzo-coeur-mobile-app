@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 
 import { ShopCard } from '@/components/shops/ShopCard';
-import { Button, FocusAwareStatusBar, Text, View } from '@/components/ui';
+import {
+  ActivityIndicator,
+  Button,
+  FocusAwareStatusBar,
+  Text,
+  View,
+} from '@/components/ui';
 import { useGetShops, useLocation } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 

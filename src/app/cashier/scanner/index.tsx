@@ -1,7 +1,8 @@
 import { CameraView } from 'expo-camera';
 import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, AppState, Platform, StatusBar, StyleSheet } from 'react-native';
+import { Alert, AppState, Platform, StyleSheet } from 'react-native';
+import { SystemBars } from 'react-native-edge-to-edge';
 
 import { showErrorMessage, View } from '@/components/ui';
 import { useRoleProtectedRoute } from '@/lib/hooks';
@@ -72,7 +73,7 @@ export default function CashierScannerPage() {
           headerShown: false,
         }}
       />
-      {Platform.OS === 'android' ? <StatusBar hidden /> : null}
+      {Platform.OS === 'android' ? <SystemBars hidden /> : null}
       <CameraView
         style={StyleSheet.absoluteFillObject}
         facing="back"

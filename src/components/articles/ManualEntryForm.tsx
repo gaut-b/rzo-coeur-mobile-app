@@ -20,6 +20,7 @@ export type ManualEntryFormProps = {
   photoError?: boolean;
   isLoading?: boolean;
   isUploadingPhoto?: boolean;
+  disabled?: boolean;
 };
 
 export const ManualEntryForm = ({
@@ -30,6 +31,7 @@ export const ManualEntryForm = ({
   photoError = false,
   isLoading = false,
   isUploadingPhoto = false,
+  disabled = false,
 }: ManualEntryFormProps) => {
   return (
     <KeyboardAvoidingView
@@ -89,7 +91,7 @@ export const ManualEntryForm = ({
           label={translate('pages.manual-entry.add-to-cart')}
           onPress={onSubmit}
           loading={isLoading}
-          disabled={isLoading}
+          disabled={isLoading || disabled}
         />
       </View>
     </KeyboardAvoidingView>

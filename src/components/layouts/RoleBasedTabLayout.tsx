@@ -1,9 +1,11 @@
 import { Redirect, Tabs } from 'expo-router';
 import type { ComponentProps } from 'react';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { useInitState } from '@/lib/hooks';
 import { type Role, useAuthStore } from '@/lib/state';
+
+import { RoleBasedTabBar } from './RoleBasedTabBar';
 
 interface TabConfig {
   name: string;
@@ -19,11 +21,17 @@ interface RoleBasedTabLayoutProps {
 export function RoleBasedTabLayout({
   role,
   tabs,
-  screenOptions = { tabBarShowLabel: false, headerShown: false },
+  screenOptions = { headerShown: true },
 }: RoleBasedTabLayoutProps) {
   useInitState();
   const status = useAuthStore((state) => state.status);
   const user = useAuthStore((state) => state.user);
+  const renderTabBar = useCallback(
+    (
+      props: Parameters<NonNullable<ComponentProps<typeof Tabs>['tabBar']>>[0]
+    ) => <RoleBasedTabBar {...props} />,
+    []
+  );
 
   // Wait for initialization
   if (status === 'NOT_INITIALIZED') {
@@ -42,7 +50,7 @@ export function RoleBasedTabLayout({
   }
 
   return (
-    <Tabs screenOptions={screenOptions}>
+    <Tabs screenOptions={screenOptions} tabBar={renderTabBar}>
       {tabs.map((tab) => (
         <Tabs.Screen key={tab.name} name={tab.name} options={tab.options} />
       ))}

@@ -42,6 +42,8 @@
   "pages": {
     "basket": {
       "checkout": "Passer en caisse",
+      "checkout-count": "{{count}} article",
+      "checkout-count_plural": "{{count}} articles",
       "empty-basket": "Votre panier est vide. Scannez des articles en cliquant sur le bouton ci-dessous pour les voir apparaître ici.",
       "greeting": "👋 Bonjour, {{firstName}}",
       "pickup-basket": "Récupérer le panier",
@@ -102,6 +104,7 @@
         "content": "Veuillez montrer ce QR code en caisse afin de régler les articles suspendus",
         "success-message": "Le paiement a été enregistré avec succès",
         "success-title": "Paiement validé",
+        "title": "Passage en caisse",
         "validate": "Valider le paiement"
       },
       "recipient": {
@@ -114,6 +117,7 @@
     },
     "product": {
       "add": "Ajouter au panier",
+      "success-message": "🥑 Article correctement ajouté au Panier ! 🥦",
       "title": "Produit"
     },
     "recipient": {
@@ -127,6 +131,7 @@
       "barcode-mismatch-title": "Code barre incorrect",
       "cancel": "Annuler",
       "expected-article": "Article attendu",
+      "product-instructions": "Pointez le code-barres du produit vers la fenêtre",
       "retry": "Réessayer"
     },
     "shops": {
@@ -140,7 +145,8 @@
       "permission-denied": "L'accès à votre position est nécessaire pour afficher les magasins à proximité.",
       "permission-request": "Demander l'autorisation",
       "retry": "Réessayer",
-      "view-on-map": "Voir sur la carte"
+      "view-details": "Voir le détail",
+      "view-on-map": "Itinéraire"
     },
     "sign-up": {
       "email_label": "Adresse e-mail",
@@ -160,7 +166,7 @@
       },
       "client": {
         "basket": "Mon Panier",
-        "purchases": "Mes Achats",
+        "purchases": "Historique",
         "settings_tab": "Paramètres",
         "stores": "Magasins"
       },

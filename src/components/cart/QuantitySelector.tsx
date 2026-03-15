@@ -14,62 +14,51 @@ export const ArticleQuantitySelector = ({
   item,
   showSelectors = true,
 }: ArticleQuantitySelectorProps) => {
-  const isRemoveButtonDisabled = item.quantity === 1;
-
   const deleteArticle = useBasketStore.use.deleteArticle();
   const addArticle = useBasketStore.use.addArticle();
   const removeArticle = useBasketStore.use.removeArticle();
 
   return (
-    <View className="items-center">
+    <View className="flex-row items-center overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
       {showSelectors && (
         <Pressable
-          onPress={() => {
-            deleteArticle(item.barcode);
-          }}
-          className="mb-2 rounded-full bg-red-100 p-2 active:bg-red-200 dark:bg-red-900/30 dark:active:bg-red-900/50"
+          onPress={() =>
+            item.quantity === 1
+              ? deleteArticle(item.barcode)
+              : removeArticle(item, 1)
+          }
+          className="px-3 py-2.5 active:bg-neutral-100 dark:active:bg-neutral-700"
         >
-          <DeleteIcon
-            className="text-red-600 dark:text-red-400"
-            width={18}
-            height={18}
-          />
-        </Pressable>
-      )}
-      <View
-        className={`flex-row items-center overflow-hidden rounded-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-700 ${showSelectors ? '' : ''}`}
-      >
-        {showSelectors && (
-          <Pressable
-            onPress={() => {
-              removeArticle(item, 1);
-            }}
-            disabled={isRemoveButtonDisabled}
-            className={`px-3 py-2 active:bg-neutral-100 dark:active:bg-neutral-600 ${isRemoveButtonDisabled ? 'opacity-40' : ''}`}
-          >
-            <Text className="text-xl font-bold text-neutral-700 dark:text-neutral-200">
+          {item.quantity === 1 ? (
+            <DeleteIcon
+              className="text-red-500 dark:text-red-400"
+              width={16}
+              height={16}
+            />
+          ) : (
+            <Text className="text-lg font-bold leading-none text-neutral-700 dark:text-neutral-200">
               −
             </Text>
-          </Pressable>
-        )}
-        <View
-          className={`items-center justify-center ${showSelectors ? 'min-w-[40px] border-x border-neutral-200 dark:border-neutral-600' : 'px-3'}`}
-        >
-          <Text className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
-            {item.quantity}
-          </Text>
-        </View>
-        {showSelectors && (
-          <Pressable
-            onPress={() => addArticle(item, 1)}
-            className="px-3 py-2 active:bg-neutral-100 dark:active:bg-neutral-600"
-          >
-            <Text className="text-xl font-bold text-neutral-700 dark:text-neutral-200">
-              +
-            </Text>
-          </Pressable>
-        )}
+          )}
+        </Pressable>
+      )}
+
+      <View className="min-w-[32px] items-center justify-center border-x border-neutral-200 px-2 py-2.5 dark:border-neutral-600">
+        <Text className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+          {item.quantity}
+        </Text>
       </View>
+
+      {showSelectors && (
+        <Pressable
+          onPress={() => addArticle(item, 1)}
+          className="px-3 py-2.5 active:bg-neutral-100 dark:active:bg-neutral-700"
+        >
+          <Text className="text-lg font-bold leading-none text-neutral-700 dark:text-neutral-200">
+            +
+          </Text>
+        </Pressable>
+      )}
     </View>
   );
 };
