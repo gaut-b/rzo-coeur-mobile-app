@@ -19,7 +19,8 @@ const ProductPageLayout = ({
     <View className={twMerge(className, 'flex-1 p-3')}>
       <Stack.Screen
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerTitle: '',
         }}
       />
       <FocusAwareStatusBar />

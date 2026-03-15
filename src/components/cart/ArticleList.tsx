@@ -27,7 +27,7 @@ export default function ArticleList({
   const renderItem = customRenderItem || defaultRenderItem;
 
   return (
-    <ScrollView className="py-8">
+    <ScrollView className="py-2">
       <FlashList
         data={Object.values(articlesByBarcode)}
         renderItem={renderItem}

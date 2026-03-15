@@ -16,10 +16,9 @@ export default function Index() {
 
   useEffect(() => {
     if (status !== 'NOT_INITIALIZED') {
-      const timer = setTimeout(() => {
+      setTimeout(() => {
         SplashScreen.hideAsync();
       }, 500);
-      return () => clearTimeout(timer);
     }
   }, [status]);
 

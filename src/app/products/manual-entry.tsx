@@ -34,9 +34,14 @@ export default function ManualEntryPage() {
   const [uploadedUrl, setUploadedUrl] = useState<string | undefined>();
   const [photoError, setPhotoError] = useState(false);
 
-  const { control, handleSubmit } = useForm<ManualEntryFormType>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<ManualEntryFormType>({
     resolver: zodResolver(manualEntrySchema),
     defaultValues: { label: '', brand: '' },
+    mode: 'onChange',
   });
 
   const cameraRef = useRef<CameraView>(null);
@@ -183,6 +188,7 @@ export default function ManualEntryPage() {
         photoUri={uploadedUrl}
         photoError={photoError}
         isUploadingPhoto={isUploadingPhoto}
+        disabled={!isValid || !uploadedUrl}
       />
     </ProductPageLayout>
   );

@@ -12,6 +12,7 @@ export type ArticleCardProps = {
   };
   renderRight?: () => React.ReactNode;
   variant?: 'default' | 'success';
+  hideQuantity?: boolean;
 };
 
 export const transformArticleToCardProps = (
@@ -27,8 +28,10 @@ export const ArticleCard = ({
   article,
   renderRight,
   variant = 'default',
+  hideQuantity = false,
 }: ArticleCardProps) => {
-  const showQuantity = article.quantity != null && article.quantity > 1;
+  const showQuantity =
+    !hideQuantity && article.quantity != null && article.quantity > 1;
 
   return (
     <View

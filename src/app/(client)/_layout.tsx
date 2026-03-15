@@ -20,6 +20,7 @@ export default function ClientLayout() {
             title: translate('pages.tabs.client.basket'),
             tabBarIcon: ({ color }) => <BasketIcon color={color} />,
             tabBarButtonTestID: 'basket-tab',
+            headerShown: true,
           },
         },
         {
