@@ -14,7 +14,7 @@ const STATUS_CONFIG = {
     color: 'bg-neutral-100 text-neutral-600',
   },
   PENDING: {
-    label: translate('pages.history.status.available'),
+    label: translate('pages.history.status.pending'),
     color: 'bg-neutral-100 text-neutral-600',
   },
   COLLECTED: {

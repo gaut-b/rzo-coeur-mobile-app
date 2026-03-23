@@ -150,11 +150,11 @@ export const BarcodeDisplayModal = React.forwardRef<
 
             {/* Scan progress indicator */}
             {article.quantity > 1 && (
-              <View className="mb-4 rounded-lg bg-blue-50 px-4 py-3 dark:bg-blue-900/30">
-                <Text className="text-center text-lg font-semibold text-blue-600 dark:text-blue-400">
+              <View className="mb-4 rounded-lg bg-info-100 px-4 py-3 dark:bg-info-900">
+                <Text className="text-center text-lg font-semibold text-info-700 dark:text-info-300">
                   {scannedBarcodes[article.barcode] || 0} / {article.quantity}
                 </Text>
-                <Text className="mt-1 text-center text-xs text-blue-600 dark:text-blue-400">
+                <Text className="mt-1 text-center text-xs text-info-700 dark:text-info-300">
                   {translate('cashier.articles-scanned')}
                 </Text>
               </View>

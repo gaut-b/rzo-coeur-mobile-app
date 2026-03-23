@@ -8,6 +8,7 @@ export * from './list';
 export * from './loader';
 export * from './modal';
 export * from './progress-bar';
+export * from './scanner-viewfinder';
 export * from './select';
 export * from './text';
 export * from './utils';

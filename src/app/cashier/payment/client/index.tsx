@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { showMessage } from 'react-native-flash-message';
 
 import { BarcodePaymentValidation } from '@/components/payment/BarcodePaymentValidation';
@@ -37,6 +38,7 @@ export default function CashierPaymentPage() {
             type: 'success',
             duration: 4000,
           });
+          router.push('/');
         },
         onError: showError,
       }

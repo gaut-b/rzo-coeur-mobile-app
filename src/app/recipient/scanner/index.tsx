@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { Alert, AppState, Platform, StyleSheet } from 'react-native';
 import { SystemBars } from 'react-native-edge-to-edge';
 
-import { View } from '@/components/ui';
+import { ScannerViewfinder, View } from '@/components/ui';
 import { useRoleProtectedRoute } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useRecipientCartStore } from '@/lib/state';
@@ -49,6 +49,7 @@ export default function RecipientScannerPage() {
       <Stack.Screen
         options={{
           headerShown: false,
+          title: '',
         }}
       />
       {Platform.OS === 'android' ? <SystemBars hidden /> : null}
@@ -100,6 +101,10 @@ ${translate('pages.scanner.expected-article')} : ${params.expectedArticleName ||
             }
           }
         }}
+      />
+
+      <ScannerViewfinder
+        instruction={translate('pages.scanner.product-instructions')}
       />
     </View>
   );

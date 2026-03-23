@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as React from 'react';
 import { showMessage } from 'react-native-flash-message';
 
@@ -33,13 +33,11 @@ export default function CashierPaymentPage() {
   if (error || !recipientCart) {
     return (
       <View className="flex-1 items-center justify-center gap-4 p-4">
-        <Text className="text-center text-lg text-red-600 dark:text-red-400">
+        <Text className="text-center text-lg text-error-600 dark:text-error-400">
           {translate('pages.payment.cashier.error-loading-cart')}
         </Text>
-        <Button variant="secondary" onPress={() => router.push('/')}>
-          <Text className="font-bold text-white">
-            {translate('pages.payment.cashier.go-home')}
-          </Text>
+        <Button variant="outline" onPress={() => router.push('/')}>
+          <Text>{translate('pages.payment.cashier.go-home')}</Text>
         </Button>
       </View>
     );
@@ -48,19 +46,17 @@ export default function CashierPaymentPage() {
   if (recipientCart.status === 'COLLECTED') {
     return (
       <View className="flex-1 items-center justify-center gap-4 p-4">
-        <Text className="text-center text-lg text-red-600 dark:text-red-400">
+        <Text className="text-center text-lg text-error-600 dark:text-error-400">
           {translate('errors.cart.already-collected')}
         </Text>
         <Button
-          variant="secondary"
+          variant="outline"
           onPress={() => {
             useCashierStore.getState().clear();
             router.replace('/');
           }}
         >
-          <Text className="font-bold text-white">
-            {translate('pages.payment.cashier.go-home')}
-          </Text>
+          <Text>{translate('pages.payment.cashier.go-home')}</Text>
         </Button>
       </View>
     );
@@ -117,10 +113,13 @@ export default function CashierPaymentPage() {
   };
 
   return (
-    <CameraPaymentValidation
-      articlesByBarcode={cartArticlesByBarcode}
-      onValidatePayment={onValidatePayment}
-      validateButtonLabel={translate('pages.payment.recipient.validate')}
-    />
+    <>
+      <Stack.Screen options={{ title: '' }} />
+      <CameraPaymentValidation
+        articlesByBarcode={cartArticlesByBarcode}
+        onValidatePayment={onValidatePayment}
+        validateButtonLabel={translate('pages.payment.recipient.validate')}
+      />
+    </>
   );
 }

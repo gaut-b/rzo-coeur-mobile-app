@@ -1,5 +1,5 @@
 import { useCameraPermissions } from 'expo-camera';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 
 import { ArticleCard } from '@/components/cart/ArticleCard';
@@ -111,6 +111,7 @@ export default function CartDetailPage() {
 
   return (
     <View className="flex-1">
+      <Stack.Screen options={{ title: '' }} />
       <FocusAwareStatusBar />
       <ScrollView className="flex-1 bg-neutral-50 dark:bg-neutral-900">
         <View className="p-4">
@@ -162,22 +163,21 @@ export default function CartDetailPage() {
               />
             );
           })}
-
-          {/* Checkout button */}
-          {allArticlesScanned && (
-            <Button
-              variant="default"
-              size="lg"
-              className="mt-6 bg-success-600"
-              onPress={() => router.push(`/${RECIPIENT_ROOT_PATH}/payment`)}
-            >
-              <Text className="font-semibold text-white">
-                {translate('pages.basket.checkout')}
-              </Text>
-            </Button>
-          )}
         </View>
       </ScrollView>
+      <View className="border-t border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-800">
+        <Button
+          variant="default"
+          size="lg"
+          className="bg-success-600"
+          onPress={() => router.push(`/${RECIPIENT_ROOT_PATH}/payment`)}
+          disabled={!allArticlesScanned}
+        >
+          <Text className="font-semibold text-white">
+            {translate('pages.basket.checkout')}
+          </Text>
+        </Button>
+      </View>
     </View>
   );
 }

@@ -3,10 +3,12 @@ import { Link } from 'expo-router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { Pressable } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import * as z from 'zod';
 
 import { Button, ControlledInput, Text, View } from '@/components/ui';
+import { EyeIcon, EyeOffIcon } from '@/components/ui/icons/eye-icon';
 import { translate } from '@/lib/i18n';
 
 const schema = z.object({
@@ -32,19 +34,20 @@ export const SignInForm = ({
       password: '',
     },
   });
+  const [showPassword, setShowPassword] = React.useState(false);
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
       keyboardVerticalOffset={10}
     >
-      <View className="flex-1 justify-center p-4">
-        <View className="items-center justify-center">
-          <Text
-            testID="form-title"
-            className="pb-6 text-center text-4xl font-bold"
-          >
+      <View className="flex-1 justify-center gap-4 p-6">
+        <View className="mb-2 items-center gap-1">
+          <Text testID="form-title" className="text-center text-3xl font-bold">
             {translate('pages.login.title')}
+          </Text>
+          <Text className="text-center text-base text-neutral-500 dark:text-neutral-400">
+            {translate('pages.login.subtitle')}
           </Text>
         </View>
 
@@ -53,6 +56,8 @@ export const SignInForm = ({
           control={control}
           name="email"
           label={translate('pages.login.email_label')}
+          keyboardType="email-address"
+          autoCapitalize="none"
         />
         <ControlledInput
           testID="password-input"
@@ -60,28 +65,29 @@ export const SignInForm = ({
           name="password"
           label={translate('pages.login.password_label')}
           placeholder="***"
-          secureTextEntry={true}
+          secureTextEntry={!showPassword}
+          rightElement={
+            <Pressable onPress={() => setShowPassword((v) => !v)} hitSlop={8}>
+              {showPassword ? (
+                <EyeOffIcon color="#9ca3af" />
+              ) : (
+                <EyeIcon color="#9ca3af" />
+              )}
+            </Pressable>
+          }
         />
+        {/*TODO: IMPLEMENT forgot password page*/}
+        <Text className="text-center text-sm text-neutral-400 dark:text-neutral-600">
+          {translate('pages.login.forgot_password')}
+        </Text>
         <Button
           testID="login-button"
           label={translate('pages.login.submit')}
           onPress={handleSubmit(onSubmit)}
           loading={isLoading}
         />
-        {/*TODO: IMPLEMENT forgot password page*/}
-        <Link href={'/forgot-password' as any}>
-          <Text
-            testID="sign-up"
-            className="pb-6 text-center text-base font-bold"
-          >
-            {translate('pages.login.forgot_password')}
-          </Text>
-        </Link>
         <Link href="/sign-up">
-          <Text
-            testID="sign-up"
-            className="pb-6 text-center text-base font-bold"
-          >
+          <Text className="text-center text-sm text-neutral-500 dark:text-neutral-400">
             {translate('pages.login.sign_up')}
           </Text>
         </Link>

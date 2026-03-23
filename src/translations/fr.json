@@ -58,8 +58,9 @@
       "standalone_articles": "Articles individuels",
       "status": {
         "assigned": "En attente",
-        "available": "En attente",
-        "collected": "Récupéré"
+        "available": "Disponible",
+        "collected": "Récupéré",
+        "pending": "En attente"
       },
       "title": "Historique"
     },
@@ -69,6 +70,7 @@
       "password_label": "Mot de passe",
       "sign_up": "Vous n'avez pas de compte ? Inscrivez-vous",
       "submit": "Se connecter",
+      "subtitle": "Bienvenue sur Les Réseaux du Cœur",
       "title": "Connexion"
     },
     "manual-entry": {
@@ -154,7 +156,9 @@
       "lastName_label": "Nom de famille",
       "password2_label": "Confirmez le mot de passe",
       "password_label": "Mot de passe",
+      "sign_in": "Vous avez déjà un compte ? Connectez-vous",
       "submit": "Créer son compte",
+      "subtitle": "Créez votre compte gratuitement",
       "success_message": "Votre compte a été créé avec succès ! Vous allez être redirigé vers la page de connexion",
       "title": "Inscription"
     },
