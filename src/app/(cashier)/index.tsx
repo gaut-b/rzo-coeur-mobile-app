@@ -1,6 +1,7 @@
 import { useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, FocusAwareStatusBar, Text, View } from '@/components/ui';
 import BarcodeIcon from '@/components/ui/icons/barcode-icon';
@@ -11,33 +12,40 @@ export default function CashierScanner() {
   const [permission, requestPermission] = useCameraPermissions();
   const isPermissionGranted = Boolean(permission?.granted);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   return (
-    <View className="relative flex-1 items-center justify-center">
+    <View className="flex-1">
       <FocusAwareStatusBar />
-      <Text className="text-center text-3xl tracking-tight px-4">
-        {translate('pages.payment.cashier.content')}
-      </Text>
-
-      <Button
-        variant="secondary"
-        size="icon"
-        className="absolute bottom-10 h-16 w-2/3 rounded-2xl bg-success-600"
-        onPress={() => {
-          if (isPermissionGranted) {
-            router.navigate(`/${CASHIER_ROOT_PATH}/scanner`);
-          } else {
-            requestPermission();
-          }
-        }}
+      <View className="flex-1 items-center justify-center px-4">
+        <Text className="text-center text-2xl font-bold tracking-tight">
+          {translate('pages.payment.cashier.content')}
+        </Text>
+      </View>
+      <View
+        className="border-t border-neutral-200 px-4 pt-3 dark:border-neutral-700"
+        style={{ paddingBottom: Math.max(insets.bottom, 8) }}
       >
-        <View className="w-full flex-row items-center justify-evenly">
-          <BarcodeIcon fill="white" />
-          <Text className="font-bold text-white">
-            {translate('pages.basket.scan-qr')}
-          </Text>
-        </View>
-      </Button>
+        <Button
+          variant="secondary"
+          size="lg"
+          className="h-16 rounded-2xl bg-success-600"
+          onPress={() => {
+            if (isPermissionGranted) {
+              router.navigate(`/${CASHIER_ROOT_PATH}/scanner`);
+            } else {
+              requestPermission();
+            }
+          }}
+        >
+          <View className="w-full flex-row items-center justify-evenly">
+            <BarcodeIcon fill="white" />
+            <Text className="font-bold text-white">
+              {translate('pages.basket.scan-qr')}
+            </Text>
+          </View>
+        </Button>
+      </View>
     </View>
   );
 }

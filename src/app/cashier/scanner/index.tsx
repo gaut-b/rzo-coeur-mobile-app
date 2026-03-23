@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Alert, AppState, Platform, StyleSheet } from 'react-native';
 import { SystemBars } from 'react-native-edge-to-edge';
 
-import { showErrorMessage, View } from '@/components/ui';
+import { ScannerViewfinder, showErrorMessage, View } from '@/components/ui';
 import { useRoleProtectedRoute } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useAuthStore, useCashierStore } from '@/lib/state';
@@ -161,6 +161,7 @@ export default function CashierScannerPage() {
           }
         }}
       />
+      <ScannerViewfinder />
     </View>
   );
 }

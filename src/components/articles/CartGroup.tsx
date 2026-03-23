@@ -15,8 +15,8 @@ interface CartGroupProps {
 export const CartGroup = ({ cartId, articles, cartStatus }: CartGroupProps) => {
   const statusColor =
     cartStatus === 'COLLECTED'
-      ? 'bg-green-600 dark:bg-green-700'
-      : 'bg-yellow-600 dark:bg-yellow-700';
+      ? 'bg-success-600 dark:bg-success-700'
+      : 'bg-warning-600 dark:bg-warning-700';
 
   return (
     <View className="mb-4">

@@ -1,5 +1,5 @@
 import { useCameraPermissions } from 'expo-camera';
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import * as React from 'react';
 
 import {
@@ -74,8 +74,6 @@ export function CameraPaymentValidation({
 
   return (
     <View className="flex size-full flex-col">
-      <Stack.Screen options={{ headerShown: false }} />
-
       <ArticleList
         articlesByBarcode={articlesByBarcode}
         renderItem={({ item }) => {

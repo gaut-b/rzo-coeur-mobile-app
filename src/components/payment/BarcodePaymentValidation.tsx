@@ -67,7 +67,7 @@ export function BarcodePaymentValidation({
 
   return (
     <View className="flex size-full flex-col">
-      <Stack.Screen options={{ headerShown: false }} />
+      <Stack.Screen options={{ title: '' }} />
 
       <ArticleList
         articlesByBarcode={articlesByBarcode}

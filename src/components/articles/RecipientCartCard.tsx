@@ -33,6 +33,9 @@ export const RecipientCartCard: React.FC<CartCardProps> = ({ cart }) => {
     if (cart.status === 'COLLECTED') {
       return translate('pages.history.status.collected');
     }
+    if (cart.status === 'PENDING') {
+      return translate('pages.history.status.pending');
+    }
     return translate('pages.history.status.available');
   };
 
