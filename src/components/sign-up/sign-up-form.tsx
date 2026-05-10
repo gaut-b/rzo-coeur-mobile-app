@@ -17,13 +17,18 @@ import {
 import { EyeIcon, EyeOffIcon } from '@/components/ui/icons/eye-icon';
 import { translate } from '@/lib/i18n';
 
-const schema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email format'),
-  password1: z.string().min(1, 'Password is required'),
-  password2: z.string().min(1, 'Password is required'),
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-});
+const schema = z
+  .object({
+    email: z.string().min(1, 'Email is required').email('Invalid email format'),
+    password1: z.string().min(8, 'Password must be at least 8 characters'),
+    password2: z.string().min(8, 'Password must be at least 8 characters'),
+    firstName: z.string().min(1, 'First name is required'),
+    lastName: z.string().min(1, 'Last name is required'),
+  })
+  .refine((data) => data.password1 === data.password2, {
+    message: 'Passwords do not match',
+    path: ['password2'],
+  });
 
 export type FormType = z.infer<typeof schema>;
 
@@ -97,7 +102,16 @@ export const SignUpForm = ({
             placeholder="***"
             secureTextEntry={!showPassword}
             rightElement={
-              <Pressable onPress={() => setShowPassword((v) => !v)} hitSlop={8}>
+              <Pressable
+                onPress={() => setShowPassword((v) => !v)}
+                hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  showPassword
+                    ? 'Masquer le mot de passe'
+                    : 'Afficher le mot de passe'
+                }
+              >
                 {showPassword ? (
                   <EyeOffIcon color="#9ca3af" />
                 ) : (
@@ -117,6 +131,12 @@ export const SignUpForm = ({
               <Pressable
                 onPress={() => setShowPassword2((v) => !v)}
                 hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  showPassword2
+                    ? 'Masquer la confirmation'
+                    : 'Afficher la confirmation'
+                }
               >
                 {showPassword2 ? (
                   <EyeOffIcon color="#9ca3af" />

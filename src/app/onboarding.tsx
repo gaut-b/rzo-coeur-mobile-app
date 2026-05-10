@@ -21,28 +21,29 @@ export default function Onboarding() {
       </View>
       <View className="justify-end ">
         <Text className="my-3 text-center text-5xl font-bold">
-          Obytes Starter
+          Les Réseaux du Cœur
         </Text>
         <Text className="mb-2 text-center text-lg text-gray-600">
-          The right way to build your mobile app
+          Faites un geste solidaire en offrant des produits à ceux qui en ont
+          besoin
         </Text>
 
         <Text className="my-1 pt-6 text-left text-lg">
-          🚀 Production-ready{' '}
+          🛒 Achetez des produits en magasin{' '}
         </Text>
         <Text className="my-1 text-left text-lg">
-          🥷 Developer experience + Productivity
+          🤝 Laissez-les disponibles pour des bénéficiaires
         </Text>
         <Text className="my-1 text-left text-lg">
-          🧩 Minimal code and dependencies
+          💚 Contribuez à la solidarité alimentaire
         </Text>
         <Text className="my-1 text-left text-lg">
-          💪 well maintained third-party libraries
+          📱 Gérez tout depuis l'application
         </Text>
       </View>
       <SafeAreaView className="mt-6">
         <Button
-          label="Let's Get Started "
+          label="Commencer"
           onPress={() => {
             setIsFirstTime(false);
             router.replace('/sign-in');

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { ArticleCard } from '@/components/articles/ArticleCard';
+import { ArticleHistoryCard } from '@/components/articles/ArticleCard';
 import {
   FocusAwareStatusBar,
   Loader,
@@ -61,7 +61,7 @@ export default function ClientArticlesList() {
       <ScrollView className="flex-1 bg-neutral-50 dark:bg-neutral-900">
         <View className="p-4">
           {sortedArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} />
+            <ArticleHistoryCard key={article.id} article={article} />
           ))}
         </View>
       </ScrollView>

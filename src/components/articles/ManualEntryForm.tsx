@@ -5,12 +5,17 @@ import * as z from 'zod';
 import { Button, ControlledInput, Image, Text, View } from '@/components/ui';
 import { translate } from '@/lib/i18n';
 
-export const manualEntrySchema = z.object({
-  label: z.string().min(1, translate('pages.manual-entry.label-required')),
-  brand: z.string().min(1, translate('pages.manual-entry.brand-required')),
-});
+// Schema is built lazily (inside a function) so that translate() is called
+// at render time — not at module-load time — allowing runtime language changes.
+export const createManualEntrySchema = () =>
+  z.object({
+    label: z.string().min(1, translate('pages.manual-entry.label-required')),
+    brand: z.string().min(1, translate('pages.manual-entry.brand-required')),
+  });
 
-export type ManualEntryFormType = z.infer<typeof manualEntrySchema>;
+export type ManualEntryFormType = z.infer<
+  ReturnType<typeof createManualEntrySchema>
+>;
 
 export type ManualEntryFormProps = {
   onSubmit: () => void;

@@ -10,6 +10,9 @@ type PostCollectCartParams = {
 const collectCartRequest = async (
   params: PostCollectCartParams
 ): Promise<void> => {
+  if (!params.cartId || !params.recipientId) {
+    throw new Error('cartId and recipientId are required');
+  }
   return await authenticatedRzoApiClient
     .post(
       `api/recipients/${params.recipientId}/carts/${params.cartId}/collect/`

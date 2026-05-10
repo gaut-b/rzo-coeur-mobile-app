@@ -57,6 +57,29 @@ export function BarcodePaymentValidation({
     barcodeModal.present();
   };
 
+  const renderArticleItem = React.useCallback(
+    ({ item }: { item: Article }) => {
+      const scannedCount = scannedArticles[item.barcode] || 0;
+      const isScanned = scannedCount >= item.quantity;
+
+      return (
+        <ArticleCard
+          article={transformArticleToCardProps(item)}
+          renderRight={() => (
+            <ScanStatusIndicator
+              isScanned={isScanned}
+              onPress={() => onArticleClick(item)}
+              scannedCount={scannedCount}
+              totalCount={item.quantity}
+            />
+          )}
+        />
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [scannedArticles]
+  );
+
   if (articlesByBarcode === null) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -71,24 +94,7 @@ export function BarcodePaymentValidation({
 
       <ArticleList
         articlesByBarcode={articlesByBarcode}
-        renderItem={({ item }) => {
-          const scannedCount = scannedArticles[item.barcode] || 0;
-          const isScanned = scannedCount >= item.quantity;
-
-          return (
-            <ArticleCard
-              article={transformArticleToCardProps(item)}
-              renderRight={() => (
-                <ScanStatusIndicator
-                  isScanned={isScanned}
-                  onPress={() => onArticleClick(item)}
-                  scannedCount={scannedCount}
-                  totalCount={item.quantity}
-                />
-              )}
-            />
-          );
-        }}
+        renderItem={renderArticleItem}
       />
 
       <View className="border-t border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800">

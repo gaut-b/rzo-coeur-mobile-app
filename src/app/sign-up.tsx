@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import React from 'react';
 import { showMessage } from 'react-native-flash-message';
 
@@ -17,8 +17,7 @@ export default function SignUp() {
   const status = useAuthStore.use.status();
 
   if (status === 'LOGGED_IN') {
-    router.push('/');
-    return null;
+    return <Redirect href="/" />;
   }
 
   const onSubmit: SignUpFormProps['onSubmit'] = ({

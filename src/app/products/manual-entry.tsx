@@ -7,9 +7,9 @@ import { StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
 import {
+  createManualEntrySchema,
   ManualEntryForm,
   type ManualEntryFormType,
-  manualEntrySchema,
 } from '@/components/articles/ManualEntryForm';
 import { Button, Image, Pressable, Text, View } from '@/components/ui';
 import { useRoleProtectedRoute } from '@/lib/hooks';
@@ -34,12 +34,13 @@ export default function ManualEntryPage() {
   const [uploadedUrl, setUploadedUrl] = useState<string | undefined>();
   const [photoError, setPhotoError] = useState(false);
 
+  const schema = createManualEntrySchema();
   const {
     control,
     handleSubmit,
     formState: { isValid },
   } = useForm<ManualEntryFormType>({
-    resolver: zodResolver(manualEntrySchema),
+    resolver: zodResolver(schema),
     defaultValues: { label: '', brand: '' },
     mode: 'onChange',
   });

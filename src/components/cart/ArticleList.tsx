@@ -5,7 +5,6 @@ import {
   ArticleCard,
   transformArticleToCardProps,
 } from '@/components/cart/ArticleCard';
-import { ScrollView } from '@/components/ui';
 import { type Article } from '@/lib/state';
 
 type ArticleListProps = {
@@ -27,13 +26,12 @@ export default function ArticleList({
   const renderItem = customRenderItem || defaultRenderItem;
 
   return (
-    <ScrollView className="py-2">
-      <FlashList
-        data={Object.values(articlesByBarcode)}
-        renderItem={renderItem}
-        keyExtractor={(_, index) => `item-${index}`}
-        estimatedItemSize={108}
-      />
-    </ScrollView>
+    <FlashList
+      data={Object.values(articlesByBarcode)}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.barcode}
+      estimatedItemSize={108}
+      contentContainerStyle={{ paddingVertical: 8 }}
+    />
   );
 }

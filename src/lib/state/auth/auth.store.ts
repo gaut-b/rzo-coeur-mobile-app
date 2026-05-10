@@ -74,7 +74,9 @@ const authStore = create<AuthState>((set, get) => ({
         get().signOut();
       }
     } catch (e) {
-      console.error('Error hydrating auth store', e);
+      if (__DEV__) {
+        console.error('Error hydrating auth store', e);
+      }
       get().signOut();
     }
   },

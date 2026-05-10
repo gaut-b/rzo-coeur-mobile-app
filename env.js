@@ -38,7 +38,8 @@ const BUNDLE_ID = 'com.rzocoeurmobileapp'; // ios bundle id
 const PACKAGE = 'com.rzocoeurmobileapp'; // android package name
 const NAME = 'rzo_coeur_mobile_app'; // app name
 const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
-const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044'; // eas project id
+const EAS_PROJECT_ID =
+  process.env.EAS_PROJECT_ID ?? 'c3e1075b-6fe7-4686-aa49-35b46a229044'; // set EAS_PROJECT_ID in .env to override
 const SCHEME = 'rzo_coeur_mobile_app'; // app scheme
 
 /**
@@ -147,6 +148,17 @@ if (parsed.success === false) {
 
 const Env = parsed.data;
 const ClientEnv = client.parse(_clientEnv);
+
+// H2: Enforce HTTPS for the backend API URL in non-development environments
+if (
+  APP_ENV !== 'development' &&
+  ClientEnv.RZO_API_BASE_URL &&
+  !ClientEnv.RZO_API_BASE_URL.startsWith('https://')
+) {
+  throw new Error(
+    `RZO_API_BASE_URL must use HTTPS in '${APP_ENV}' environment. Got: ${ClientEnv.RZO_API_BASE_URL}`
+  );
+}
 
 module.exports = {
   Env,

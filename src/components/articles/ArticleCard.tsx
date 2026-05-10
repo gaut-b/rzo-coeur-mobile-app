@@ -4,30 +4,22 @@ import { Text, View } from '@/components/ui';
 import type { Article, ArticleStatus } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 
-interface ArticleCardProps {
+interface ArticleHistoryCardProps {
   article: Article;
 }
 
-const STATUS_CONFIG = {
-  AVAILABLE: {
-    label: translate('pages.history.status.available'),
-    color: 'bg-neutral-100 text-neutral-600',
-  },
-  PENDING: {
-    label: translate('pages.history.status.pending'),
-    color: 'bg-neutral-100 text-neutral-600',
-  },
-  COLLECTED: {
-    label: translate('pages.history.status.collected'),
-    color: 'bg-green-100 text-green-800',
-  },
-} satisfies Record<ArticleStatus, { label: string; color: string }>;
+const STATUS_COLOR: Record<ArticleStatus, string> = {
+  AVAILABLE: 'bg-neutral-100 text-neutral-600',
+  PENDING: 'bg-neutral-100 text-neutral-600',
+  COLLECTED: 'bg-green-100 text-green-800',
+};
 
-export const ArticleCard = ({ article }: ArticleCardProps) => {
-  const statusConfig = STATUS_CONFIG[article.status] ?? {
-    label: article.status as string,
-    color: 'bg-neutral-100 text-neutral-800',
-  };
+export const ArticleHistoryCard = ({ article }: ArticleHistoryCardProps) => {
+  const color =
+    STATUS_COLOR[article.status] ?? 'bg-neutral-100 text-neutral-800';
+  const label = translate(
+    `pages.history.status.${article.status.toLowerCase()}` as never
+  );
   const date = new Date(article.created_at).toLocaleDateString('fr-FR', {
     day: 'numeric',
     month: 'long',
@@ -40,8 +32,12 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
         <Text className="flex-1 text-base font-semibold text-neutral-900 dark:text-neutral-100">
           {article.name}
         </Text>
-        <View className={`rounded-full px-3 py-1 ${statusConfig.color}`}>
-          <Text className="text-xs font-medium">{statusConfig.label}</Text>
+        <View
+          className={`rounded-full px-3 py-1 ${color}`}
+          accessibilityLabel={label}
+          accessible={true}
+        >
+          <Text className="text-xs font-medium">{label}</Text>
         </View>
       </View>
 

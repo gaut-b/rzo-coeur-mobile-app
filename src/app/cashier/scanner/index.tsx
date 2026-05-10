@@ -1,11 +1,11 @@
 import { CameraView } from 'expo-camera';
 import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
-import { Alert, AppState, Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Alert, Platform, StyleSheet } from 'react-native';
 import { SystemBars } from 'react-native-edge-to-edge';
 
 import { ScannerViewfinder, showErrorMessage, View } from '@/components/ui';
-import { useRoleProtectedRoute } from '@/lib/hooks';
+import { useQrLock, useRoleProtectedRoute } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useAuthStore, useCashierStore } from '@/lib/state';
 import {
@@ -34,25 +34,8 @@ export default function CashierScannerPage() {
   const isArticleScanMode =
     params.mode === 'article' && typeof params.expectedBarcode === 'string';
 
-  const qrLock = useRef(false);
-  const appState = useRef(AppState.currentState);
+  const qrLock = useQrLock();
   const [qrCodeData, setQrCodeData] = useState<BasketQRCodeType | null>(null);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        qrLock.current = false;
-      }
-      appState.current = nextAppState;
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   if (userRole !== 'CASHIER') {
     return <Redirect href="/" />;
@@ -152,8 +135,10 @@ export default function CashierScannerPage() {
                 router.replace('/');
               }
             } catch (error) {
-              qrLock.current = false;
-              console.error(error, 'Invalid QR code data');
+              if (__DEV__) {
+                console.error(error, 'Invalid QR code data');
+              }
+              useCashierStore.getState().clear();
               showErrorMessage();
               qrLock.current = true;
               router.replace('/');

@@ -67,7 +67,16 @@ export const SignInForm = ({
           placeholder="***"
           secureTextEntry={!showPassword}
           rightElement={
-            <Pressable onPress={() => setShowPassword((v) => !v)} hitSlop={8}>
+            <Pressable
+              onPress={() => setShowPassword((v) => !v)}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel={
+                showPassword
+                  ? 'Masquer le mot de passe'
+                  : 'Afficher le mot de passe'
+              }
+            >
               {showPassword ? (
                 <EyeOffIcon color="#9ca3af" />
               ) : (

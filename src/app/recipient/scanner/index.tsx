@@ -1,11 +1,10 @@
 import { CameraView } from 'expo-camera';
 import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useRef } from 'react';
-import { Alert, AppState, Platform, StyleSheet } from 'react-native';
+import { Alert, Platform, StyleSheet } from 'react-native';
 import { SystemBars } from 'react-native-edge-to-edge';
 
 import { ScannerViewfinder, View } from '@/components/ui';
-import { useRoleProtectedRoute } from '@/lib/hooks';
+import { useQrLock, useRoleProtectedRoute } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
 import { useRecipientCartStore } from '@/lib/state';
 import { BARCODE_TYPE, RECIPIENT_ROOT_PATH } from '@/lib/types';
@@ -21,24 +20,7 @@ export default function RecipientScannerPage() {
     expectedArticleName: string;
   }>();
 
-  const qrLock = useRef(false);
-  const appState = useRef(AppState.currentState);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        qrLock.current = false;
-      }
-      appState.current = nextAppState;
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  const qrLock = useQrLock();
 
   if (!cartId) {
     return <Redirect href={'/'} />;

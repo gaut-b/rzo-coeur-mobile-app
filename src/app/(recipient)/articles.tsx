@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { ArticleCard } from '@/components/articles/ArticleCard';
+import { ArticleHistoryCard } from '@/components/articles/ArticleCard';
 import { CartGroup } from '@/components/articles/CartGroup';
 import {
   FocusAwareStatusBar,
@@ -109,7 +109,7 @@ export default function RecipientArticlesList() {
                 </Text>
               )}
               {standaloneArticles.map((article) => (
-                <ArticleCard key={article.id} article={article} />
+                <ArticleHistoryCard key={article.id} article={article} />
               ))}
             </View>
           )}
