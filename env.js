@@ -38,8 +38,6 @@ const BUNDLE_ID = 'com.rzocoeurmobileapp'; // ios bundle id
 const PACKAGE = 'com.rzocoeurmobileapp'; // android package name
 const NAME = 'rzo_coeur_mobile_app'; // app name
 const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
-const EAS_PROJECT_ID =
-  process.env.EAS_PROJECT_ID ?? 'c3e1075b-6fe7-4686-aa49-35b46a229044'; // set EAS_PROJECT_ID in .env to override
 const SCHEME = 'rzo_coeur_mobile_app'; // app scheme
 
 /**
@@ -87,7 +85,6 @@ const client = z.object({
 
 const buildTime = z.object({
   EXPO_ACCOUNT_OWNER: z.string(),
-  EAS_PROJECT_ID: z.string(),
   // ADD YOUR BUILD TIME ENV VARS HERE
   SECRET_KEY: z.string(),
 });
@@ -114,7 +111,6 @@ const _clientEnv = {
  */
 const _buildTimeEnv = {
   EXPO_ACCOUNT_OWNER,
-  EAS_PROJECT_ID,
   // ADD YOUR ENV VARS HERE TOO
   SECRET_KEY: process.env.SECRET_KEY,
 };

@@ -98,8 +98,5 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   extra: {
     ...ClientEnv,
-    eas: {
-      projectId: Env.EAS_PROJECT_ID,
-    },
   },
 });
