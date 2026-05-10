@@ -29,12 +29,12 @@ export default function CartDetailPage() {
   const scannedArticles = useRecipientCartStore.use.scannedArticles();
   const setCartId = useRecipientCartStore.use.setCartId();
 
-  const {
-    data: cartListResponse,
-    isLoading,
-    isError,
-    error,
-  } = useGetRecipientCarts();
+  const { data: cartsData, isLoading, isError, error } = useGetRecipientCarts();
+
+  const cart = React.useMemo(
+    () => cartsData?.results.find((c) => String(c.id) === id),
+    [cartsData, id]
+  );
 
   React.useEffect(() => {
     if (isError) {
@@ -42,20 +42,6 @@ export default function CartDetailPage() {
     }
   }, [isError, error]);
 
-  // Memoize the parsed cart ID
-  const numericCartId = React.useMemo(
-    () => (id ? Number.parseInt(id, 10) : undefined),
-    [id]
-  );
-
-  // Find the specific cart (memoized to avoid repeated linear searches on every render)
-  const cart = React.useMemo(
-    () =>
-      typeof numericCartId === 'number'
-        ? cartListResponse?.results.find((c) => c.id === numericCartId)
-        : undefined,
-    [numericCartId, cartListResponse]
-  );
   // Set the current cart ID when component mounts or cart ID changes
   React.useEffect(() => {
     if (id) {
@@ -111,7 +97,7 @@ export default function CartDetailPage() {
 
   return (
     <View className="flex-1">
-      <Stack.Screen options={{ title: '' }} />
+      <Stack.Screen options={{ headerShown: false }} />
       <FocusAwareStatusBar />
       <ScrollView className="flex-1 bg-neutral-50 dark:bg-neutral-900">
         <View className="p-4">

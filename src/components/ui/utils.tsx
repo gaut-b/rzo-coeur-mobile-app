@@ -204,7 +204,9 @@ const resolveErrorDescription = async (error: unknown): Promise<string> => {
 
 // for onError react queries and mutations
 export const showError = (error: unknown) => {
-  console.error('An error occurred:', error);
+  if (__DEV__) {
+    console.error('An error occurred:', error);
+  }
   void resolveErrorDescription(error).then((description) => {
     showMessage({
       message: translate('errors.title'),

@@ -52,7 +52,11 @@ export const RecipientCartCard: React.FC<CartCardProps> = ({ cart }) => {
         <Text className="flex-1 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
           {cart.shop_name}
         </Text>
-        <View className={`rounded-full px-3 py-1 ${statusColors[cart.status]}`}>
+        <View
+          className={`rounded-full px-3 py-1 ${statusColors[cart.status]}`}
+          accessibilityLabel={getStatusTranslation()}
+          accessible={true}
+        >
           <Text
             className={`text-xs font-medium ${statusTextColors[cart.status]}`}
           >

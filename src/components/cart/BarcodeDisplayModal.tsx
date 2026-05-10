@@ -108,6 +108,8 @@ export const BarcodeDisplayModal = React.forwardRef<
                 setScannedCode('');
               }}
               showSoftInputOnFocus={false}
+              importantForAccessibility="no-hide-descendants"
+              accessibilityElementsHidden={true}
               style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
             />
 

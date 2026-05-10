@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { authenticatedRzoApiClient } from '@/lib/http';
+import type { Role } from '@/lib/state';
 
 type GetUserRequestResponse = {
   pk: number;
   email: string;
   first_name: string;
   last_name: string;
-  role: 'CLIENT' | 'CASHIER' | 'RECIPIENT';
+  role: Role;
 };
 
 const getUserRequest = async (): Promise<GetUserRequestResponse> => {

@@ -26,7 +26,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  
+
 jobs:
   doctor:
     name: Expo Doctor (expo)
@@ -45,16 +45,28 @@ jobs:
         uses: ./.github/actions/setup-node-pnpm-install
 
       - name: Run prebuild
+        env:
+          APP_ENV: development
+          RZO_API_BASE_URL: https://example.invalid
+          GOOGLE_MAPS_API_KEY: dummy-ci-key
+          OPEN_FOOD_FACTS_API_BASE_URL: https://example.invalid
+          SECRET_KEY: dummy-ci-secret
         run: pnpm run prebuild
 
       - name: 🚑 Run Doctor Checks
+        env:
+          APP_ENV: development
+          RZO_API_BASE_URL: https://example.invalid
+          GOOGLE_MAPS_API_KEY: dummy-ci-key
+          OPEN_FOOD_FACTS_API_BASE_URL: https://example.invalid
+          SECRET_KEY: dummy-ci-secret
         run: |
           chmod +x .github/scripts/expo-doctor.sh
           rm -rf ios android
           .github/scripts/expo-doctor.sh
 
       - name: Add doctor report as comment on PR
-        if: github.event_name == 'pull_request' && always()
+        if: github.event_name == 'pull_request' && always() && hashFiles('.expo/expo-doctor.md') != ''
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: expo-doctor

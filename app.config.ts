@@ -25,7 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   description: `${Env.NAME} Mobile App`,
   owner: Env.EXPO_ACCOUNT_OWNER,
   scheme: Env.SCHEME,
-  slug: 'obytesapp',
+  slug: Env.SCHEME,
   version: Env.VERSION.toString(),
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     bundleIdentifier: Env.BUNDLE_ID,
     infoPlist: {
-      ITSAppUsesNonExemptEncryption: false,
+      ITSAppUsesNonExemptEncryption: true,
     },
   },
   experiments: {
@@ -85,21 +85,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera',
         microphonePermission: 'Allow $(PRODUCT_NAME) to access your microphone',
-        recordAudioAndroid: true,
+        recordAudioAndroid: false,
       },
     ],
     [
       'expo-location',
       {
-        locationAlwaysAndWhenInUsePermission:
+        locationWhenInUsePermission:
           'Allow $(PRODUCT_NAME) to use your location to find nearby partner stores.',
       },
     ],
   ],
   extra: {
     ...ClientEnv,
-    eas: {
-      projectId: Env.EAS_PROJECT_ID,
-    },
   },
 });

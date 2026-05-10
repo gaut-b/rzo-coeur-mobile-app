@@ -10,6 +10,10 @@ export const useRoleProtectedRoute = (authorizedRoles: Role[]) => {
   const userRole = useAuthStore((state) => state.user?.role);
 
   useEffect(() => {
+    if (status === 'LOGGED_OUT') {
+      router.replace('/sign-in');
+      return;
+    }
     if (
       status === 'LOGGED_IN' &&
       userRole != null &&

@@ -30,7 +30,9 @@ export const useLocation = () => {
         status,
       });
     } catch (error) {
-      console.error('Failed to check location permission:', error);
+      if (__DEV__) {
+        console.error('Failed to check location permission:', error);
+      }
       setError('Failed to check location permission');
     }
   }, []);
@@ -55,7 +57,9 @@ export const useLocation = () => {
         longitude: currentLocation.coords.longitude,
       };
     } catch (error) {
-      console.error('Failed to get current location:', error);
+      if (__DEV__) {
+        console.error('Failed to get current location:', error);
+      }
       setError('Failed to get current location');
       return null;
     } finally {
@@ -83,7 +87,9 @@ export const useLocation = () => {
 
       return granted;
     } catch (error) {
-      console.error('Failed to request location permission:', error);
+      if (__DEV__) {
+        console.error('Failed to request location permission:', error);
+      }
       setError('Failed to request location permission');
       return false;
     } finally {

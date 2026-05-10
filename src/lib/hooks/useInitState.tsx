@@ -17,9 +17,11 @@ export function useInitState() {
   useEffect(() => {
     if (isSuccess && fetchedUser && currentUser == null) {
       setUser({
-        ...fetchedUser,
+        pk: fetchedUser.pk,
+        email: fetchedUser.email,
         firstName: fetchedUser.first_name,
         lastName: fetchedUser.last_name,
+        role: fetchedUser.role,
       });
     }
   }, [isSuccess, fetchedUser, currentUser, setUser]);

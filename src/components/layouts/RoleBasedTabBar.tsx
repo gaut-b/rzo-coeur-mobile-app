@@ -67,18 +67,21 @@ export function RoleBasedTabBar({
         };
 
         return (
-          <View
-            key={route.key}
-            style={styles.tab}
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-          >
+          <View key={route.key} style={styles.tab}>
             <View style={styles.iconWrapper}>
               <Pressable
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={options.tabBarButtonTestID}
+                accessibilityRole="button"
+                accessibilityState={isFocused ? { selected: true } : {}}
+                accessibilityLabel={
+                  typeof options.tabBarAccessibilityLabel === 'string'
+                    ? options.tabBarAccessibilityLabel
+                    : typeof label === 'string'
+                      ? label
+                      : undefined
+                }
                 android_ripple={
                   Platform.OS === 'android'
                     ? { borderless: false, color: rippleColor }

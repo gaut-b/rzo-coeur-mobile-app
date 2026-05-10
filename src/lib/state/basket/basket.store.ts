@@ -25,6 +25,11 @@ const basketStore = create<BasketState>((set, get) => ({
       },
     });
   },
+  /**
+   * Decrements the quantity of an article by `articleQuantity`.
+   * The minimum quantity is 1 — this action cannot remove an article entirely.
+   * Use `deleteArticle` to fully remove an article from the basket.
+   */
   removeArticle: (article: ArticleInfos, articleQuantity: number) => {
     const articles = get().articlesByBarcode;
     const currentArticleQuantity = articles[article.barcode]?.quantity ?? 0;

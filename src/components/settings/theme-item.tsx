@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { OptionType } from '@/components/ui';
 import { Options, useModal } from '@/components/ui';
-import { type ColorSchemeType } from '@/lib/hooks';
 import { translate } from '@/lib/i18n';
+import { type ColorSchemeType } from '@/lib/state';
 import { useThemeStore } from '@/lib/state';
 
 import { Item } from './item';

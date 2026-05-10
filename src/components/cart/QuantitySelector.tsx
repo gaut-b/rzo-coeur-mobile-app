@@ -27,6 +27,12 @@ export const ArticleQuantitySelector = ({
               ? deleteArticle(item.barcode)
               : removeArticle(item, 1)
           }
+          accessibilityRole="button"
+          accessibilityLabel={
+            item.quantity === 1
+              ? 'Supprimer cet article'
+              : 'Diminuer la quantité'
+          }
           className="px-3 py-2.5 active:bg-neutral-100 dark:active:bg-neutral-700"
         >
           {item.quantity === 1 ? (
@@ -52,6 +58,8 @@ export const ArticleQuantitySelector = ({
       {showSelectors && (
         <Pressable
           onPress={() => addArticle(item, 1)}
+          accessibilityRole="button"
+          accessibilityLabel="Augmenter la quantité"
           className="px-3 py-2.5 active:bg-neutral-100 dark:active:bg-neutral-700"
         >
           <Text className="text-lg font-bold leading-none text-neutral-700 dark:text-neutral-200">

@@ -1,14 +1,14 @@
 import { Appearance, type ColorSchemeName } from 'react-native';
 import { create } from 'zustand';
 
-import type { ColorSchemeType } from '@/lib/hooks';
-
 import { createSelectors } from '../utils';
 import { getTheme, persistTheme } from './utils';
 
+export type ColorSchemeType = 'light' | 'dark' | 'system';
+
 type ThemeState = {
   selectedTheme: ColorSchemeType;
-  setSelectedTheme: (theme: ColorSchemeName) => void;
+  setSelectedTheme: (theme: ColorSchemeType) => void;
   hydrateTheme: () => void;
 };
 
@@ -25,10 +25,14 @@ if (!_storedTheme || _storedTheme === '') {
 
 export const themeStore = create<ThemeState>((set) => ({
   selectedTheme: _initialTheme,
-  setSelectedTheme: (theme: ColorSchemeName) => {
+  setSelectedTheme: (theme: ColorSchemeType) => {
     persistTheme(theme);
     set({ selectedTheme: theme });
-    Appearance.setColorScheme(theme);
+    if (theme !== 'system') {
+      Appearance.setColorScheme(theme);
+    } else {
+      Appearance.setColorScheme(null);
+    }
   },
   hydrateTheme: () => {
     const theme = getTheme();

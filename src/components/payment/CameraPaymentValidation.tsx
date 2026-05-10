@@ -51,18 +51,45 @@ export function CameraPaymentValidation({
     });
   };
 
-  const onArticleClick = async (article: Article) => {
-    if (isPermissionGranted) {
-      openCameraScanner(article);
-    } else {
-      const permissionResult = await requestPermission();
-      if (permissionResult.granted) {
+  const onArticleClick = React.useCallback(
+    async (article: Article) => {
+      if (isPermissionGranted) {
         openCameraScanner(article);
       } else {
-        showErrorMessage(translate('errors.generic.forbidden'));
+        const permissionResult = await requestPermission();
+        if (permissionResult.granted) {
+          openCameraScanner(article);
+        } else {
+          showErrorMessage(translate('errors.generic.forbidden'));
+        }
       }
-    }
-  };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isPermissionGranted, requestPermission]
+  );
+
+  const renderArticleItem = React.useCallback(
+    ({ item }: { item: Article }) => {
+      const scannedCount = scannedArticles[item.barcode] || 0;
+      const isScanned = scannedCount >= item.quantity;
+
+      return (
+        <ArticleCard
+          article={transformArticleToCardProps(item)}
+          renderRight={() => (
+            <ScanStatusIndicator
+              isScanned={isScanned}
+              onPress={() => onArticleClick(item)}
+              scannedCount={scannedCount}
+              totalCount={item.quantity}
+            />
+          )}
+        />
+      );
+    },
+
+    [scannedArticles, onArticleClick]
+  );
 
   if (articlesByBarcode === null) {
     return (
@@ -76,24 +103,7 @@ export function CameraPaymentValidation({
     <View className="flex size-full flex-col">
       <ArticleList
         articlesByBarcode={articlesByBarcode}
-        renderItem={({ item }) => {
-          const scannedCount = scannedArticles[item.barcode] || 0;
-          const isScanned = scannedCount >= item.quantity;
-
-          return (
-            <ArticleCard
-              article={transformArticleToCardProps(item)}
-              renderRight={() => (
-                <ScanStatusIndicator
-                  isScanned={isScanned}
-                  onPress={() => onArticleClick(item)}
-                  scannedCount={scannedCount}
-                  totalCount={item.quantity}
-                />
-              )}
-            />
-          );
-        }}
+        renderItem={renderArticleItem}
       />
 
       <View className="border-t border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800">
