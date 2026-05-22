@@ -74,7 +74,7 @@ export default function ClientBasket() {
           <Button
             variant="secondary"
             size="lg"
-            className="rounded-2xl bg-success-600"
+            className="rounded-2xl"
             onPress={() => {
               if (isPermissionGranted) {
                 router.navigate(`/${CLIENT_ROOT_PATH}/payment`);
@@ -97,7 +97,7 @@ export default function ClientBasket() {
         <Button
           variant="secondary"
           size="lg"
-          className="rounded-2xl bg-success-600"
+          className="rounded-2xl"
           onPress={navigateToScanner}
         >
           <BarcodeIcon fill="white" />

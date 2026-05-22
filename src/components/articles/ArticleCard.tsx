@@ -8,15 +8,17 @@ interface ArticleHistoryCardProps {
   article: Article;
 }
 
-const STATUS_COLOR: Record<ArticleStatus, string> = {
-  AVAILABLE: 'bg-neutral-100 text-neutral-600',
-  PENDING: 'bg-neutral-100 text-neutral-600',
-  COLLECTED: 'bg-green-100 text-green-800',
+const STATUS_COLOR: Record<ArticleStatus, { bg: string; text: string }> = {
+  AVAILABLE: { bg: 'bg-primary-50', text: 'text-primary-900' },
+  PENDING: { bg: 'bg-warning-100', text: 'text-warning-800' },
+  COLLECTED: { bg: 'bg-primary-900', text: 'text-white' },
 };
 
 export const ArticleHistoryCard = ({ article }: ArticleHistoryCardProps) => {
-  const color =
-    STATUS_COLOR[article.status] ?? 'bg-neutral-100 text-neutral-800';
+  const { bg, text } = STATUS_COLOR[article.status] ?? {
+    bg: 'bg-neutral-100',
+    text: 'text-neutral-800',
+  };
   const label = translate(
     `pages.history.status.${article.status.toLowerCase()}` as never
   );
@@ -33,11 +35,11 @@ export const ArticleHistoryCard = ({ article }: ArticleHistoryCardProps) => {
           {article.name}
         </Text>
         <View
-          className={`rounded-full px-3 py-1 ${color}`}
+          className={`rounded-full px-3 py-1 ${bg}`}
           accessibilityLabel={label}
           accessible={true}
         >
-          <Text className="text-xs font-medium">{label}</Text>
+          <Text className={`text-xs font-medium ${text}`}>{label}</Text>
         </View>
       </View>
 

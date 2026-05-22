@@ -10,6 +10,7 @@ import {
   View,
 } from '@/components/ui';
 import { useIsFirstTime } from '@/lib/hooks';
+import { translate } from '@/lib/i18n';
 export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function Onboarding() {
       </View>
       <View className="justify-end ">
         <Text className="my-3 text-center text-5xl font-bold">
-          Les Réseaux du Cœur
+          {translate('onboarding.title')}
         </Text>
         <Text className="mb-2 text-center text-lg text-gray-600">
           Faites un geste solidaire en offrant des produits à ceux qui en ont

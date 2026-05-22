@@ -29,7 +29,7 @@ export default function CashierScanner() {
         <Button
           variant="secondary"
           size="lg"
-          className="h-16 rounded-2xl bg-success-600"
+          className="h-16 rounded-2xl"
           onPress={() => {
             if (isPermissionGranted) {
               router.navigate(`/${CASHIER_ROOT_PATH}/scanner`);

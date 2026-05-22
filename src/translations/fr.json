@@ -37,7 +37,8 @@
     "title": "Erreur"
   },
   "onboarding": {
-    "message": "Bienvenue sur Les Réseaux du Cœur"
+    "message": "Bienvenue sur le reSOS du coeur",
+    "title": "le reSOS du coeur"
   },
   "pages": {
     "basket": {
@@ -70,7 +71,7 @@
       "password_label": "Mot de passe",
       "sign_up": "Vous n'avez pas de compte ? Inscrivez-vous",
       "submit": "Se connecter",
-      "subtitle": "Bienvenue sur Les Réseaux du Cœur",
+      "subtitle": "Bienvenue sur le reSOS du coeur",
       "title": "Connexion"
     },
     "manual-entry": {
@@ -183,7 +184,7 @@
   },
   "settings": {
     "about": "A propos",
-    "app_name": "Les Réseaux du Cœur",
+    "app_name": "Nom",
     "arabic": "Arabic",
     "cashier": "caissier",
     "client": "client",
@@ -213,5 +214,5 @@
     "version": "Version",
     "website": "Site Web"
   },
-  "welcome": "Bienvenue sur Les Réseaux du Cœur"
+  "welcome": "Bienvenue sur le reSOS du coeur"
 }

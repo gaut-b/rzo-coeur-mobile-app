@@ -15,10 +15,12 @@ export function RoleBasedTabBar({
   const selectedTheme = useThemeStore((s) => s.selectedTheme);
   const isDark = selectedTheme === 'dark';
 
-  const activeColor = isDark ? colors.primary[200] : colors.primary[400];
-  const inactiveColor = isDark ? colors.charcoal[400] : colors.neutral[400];
-  const backgroundColor = isDark ? colors.charcoal[850] : colors.white;
-  const borderColor = isDark ? colors.charcoal[700] : colors.neutral[200];
+  const activeColor = colors.white;
+  const inactiveColor = isDark
+    ? colors.charcoal[400]
+    : 'rgba(255,255,255,0.45)';
+  const backgroundColor = isDark ? colors.charcoal[850] : colors.primary[900];
+  const borderColor = isDark ? colors.charcoal[700] : colors.primary[800];
   const rippleColor = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)';
 
   return (
