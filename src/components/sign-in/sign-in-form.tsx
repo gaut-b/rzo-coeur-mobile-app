@@ -48,6 +48,8 @@ export const SignInForm = ({
             source={require('../../../assets/splash_screen.png')}
             style={{ width: 180, height: 74 }}
             contentFit="contain"
+            accessible={false}
+            accessibilityElementsHidden={true}
           />
           <Text testID="form-title" className="text-center text-3xl font-bold">
             {translate('pages.login.title')}

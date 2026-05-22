@@ -15,7 +15,7 @@ export function RoleBasedTabBar({
   const selectedTheme = useThemeStore((s) => s.selectedTheme);
   const isDark = selectedTheme === 'dark';
 
-  const activeColor = isDark ? colors.white : colors.white;
+  const activeColor = colors.white;
   const inactiveColor = isDark
     ? colors.charcoal[400]
     : 'rgba(255,255,255,0.45)';
