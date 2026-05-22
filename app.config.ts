@@ -28,7 +28,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: Env.SCHEME,
   version: Env.VERSION.toString(),
   orientation: 'portrait',
-  icon: './assets/icon.png',
+  icon: './assets/resos_logo_new.png',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   updates: {
@@ -47,8 +47,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#2E3C4B',
+      foregroundImage: './assets/resos_logo_new.png',
+      backgroundColor: '#043313',
     },
     package: Env.PACKAGE,
     config: {
@@ -65,9 +65,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-splash-screen',
       {
-        backgroundColor: '#2E3C4B',
-        image: './assets/splash-icon.png',
-        imageWidth: 150,
+        backgroundColor: '#043313',
+        image: './assets/splash_screen.png',
+        imageWidth: 250,
       },
     ],
     [

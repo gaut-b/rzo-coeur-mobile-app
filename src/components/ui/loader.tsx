@@ -6,7 +6,7 @@ interface LoaderProps {
   color?: string;
 }
 
-export const Loader = ({ size = 'large', color = '#10b981' }: LoaderProps) => {
+export const Loader = ({ size = 'large', color = '#043313' }: LoaderProps) => {
   return (
     <View className="flex-1 items-center justify-center">
       <ActivityIndicator size={size} color={color} />

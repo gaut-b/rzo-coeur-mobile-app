@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -43,6 +44,11 @@ export const SignInForm = ({
     >
       <View className="flex-1 justify-center gap-4 p-6">
         <View className="mb-2 items-center gap-1">
+          <Image
+            source={require('../../../assets/splash_screen.png')}
+            style={{ width: 180, height: 74 }}
+            contentFit="contain"
+          />
           <Text testID="form-title" className="text-center text-3xl font-bold">
             {translate('pages.login.title')}
           </Text>

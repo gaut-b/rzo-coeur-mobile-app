@@ -60,7 +60,7 @@ export default function RecipientBaskets() {
           </Text>
         </View>
       ) : (
-        <ScrollView className="flex-1 bg-neutral-50 dark:bg-neutral-900">
+        <ScrollView className="flex-1 bg-cream dark:bg-neutral-900">
           <View className="p-4">
             <Text className="mb-4 text-2xl font-bold tracking-tight">
               {translate('pages.basket.greeting', {

@@ -1,8 +1,8 @@
 <h1 align="center">
-  <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
-Les réseaux du coeur (app mobile)</h1>
+  <img alt="logo" src="./assets/resos_logo_no_name.png" width="124px" style="border-radius:10px"/><br/>
+le reSOS du coeur (app mobile)</h1>
 
-rzo-coeur-mobile-app is a mobile application built with React Native and Expo. This project is the mobile part of a project called “Les réseaux du coeur”, whose principle is similar to the "pending coffee" but for food products.
+rzo-coeur-mobile-app is a mobile application built with React Native and Expo. This project is the mobile part of a project called "le reSOS du coeur", whose principle is similar to the "pending coffee" but for food products.
 
 > This Project is based on [Obytes starter](https://starter.obytes.com)
 

@@ -14,13 +14,13 @@ const button = tv({
   variants: {
     variant: {
       default: {
-        container: 'bg-black dark:bg-white',
+        container: 'bg-primary-900 dark:bg-white',
         label: 'text-white dark:text-black',
         indicator: 'text-white dark:text-black',
       },
       secondary: {
-        container: 'bg-primary-600',
-        label: 'text-secondary-600',
+        container: 'bg-primary-900',
+        label: 'text-white',
         indicator: 'text-white',
       },
       outline: {
@@ -29,7 +29,7 @@ const button = tv({
         indicator: 'text-black dark:text-neutral-100',
       },
       destructive: {
-        container: 'bg-red-600',
+        container: 'bg-danger-500',
         label: 'text-white',
         indicator: 'text-white',
       },

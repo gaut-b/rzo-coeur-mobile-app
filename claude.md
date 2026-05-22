@@ -5,7 +5,7 @@ applyTo: ['**/*.ts', '**/*.tsx']
 
 # Project Context
 
-rzo_coeur_mobile_app is a mobile application built with React Native. This project is the frontend part of a project called "Les réseaux du coeur" (Heart Networks), whose principle is similar to the "pending coffee" but for food products.
+rzo_coeur_mobile_app is a mobile application built with React Native. This project is the frontend part of a project called "le reSOS du coeur" (Heart Networks), whose principle is similar to the "pending coffee" but for food products.
 
 The principle of this application is that "Client" users can purchase products in partner stores ("Shop") using the mobile application and leave them on the shelf. When these items are paid for, they appear in the list of available products for the partner social center to which the store is linked. "Social Worker" users can then create baskets grouping several items from the same store and assign this basket to a "Recipient" user. The latter can then collect the items from the store and check out without paying for the products by showing the mobile application at the cashier.
 

@@ -99,7 +99,7 @@ export default function CartDetailPage() {
     <View className="flex-1">
       <Stack.Screen options={{ headerShown: false }} />
       <FocusAwareStatusBar />
-      <ScrollView className="flex-1 bg-neutral-50 dark:bg-neutral-900">
+      <ScrollView className="flex-1 bg-cream dark:bg-neutral-900">
         <View className="p-4">
           {/* Cart header */}
           <View className="mb-6">
@@ -153,9 +153,8 @@ export default function CartDetailPage() {
       </ScrollView>
       <View className="border-t border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-800">
         <Button
-          variant="default"
+          variant="secondary"
           size="lg"
-          className="bg-success-600"
           onPress={() => router.push(`/${RECIPIENT_ROOT_PATH}/payment`)}
           disabled={!allArticlesScanned}
         >

@@ -58,7 +58,7 @@ export default function ClientArticlesList() {
   return (
     <View className="flex-1">
       <FocusAwareStatusBar />
-      <ScrollView className="flex-1 bg-neutral-50 dark:bg-neutral-900">
+      <ScrollView className="flex-1 bg-cream dark:bg-neutral-900">
         <View className="p-4">
           {sortedArticles.map((article) => (
             <ArticleHistoryCard key={article.id} article={article} />
