@@ -38,7 +38,7 @@ const BUNDLE_ID = 'com.rzocoeurmobileapp'; // ios bundle id
 const PACKAGE = 'com.rzocoeurmobileapp'; // android package name
 const NAME = 'le reSOS du coeur'; // app name
 const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
-const SCHEME = 'rzo_coeur_mobile_app'; // app scheme
+const SCHEME = 'rzo-coeur-mobile-app'; // app scheme
 
 /**
  * We declare a function withEnvSuffix that will add a suffix to the variable name based on the APP_ENV

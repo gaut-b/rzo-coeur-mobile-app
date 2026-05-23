@@ -233,6 +233,18 @@ export const showErrorMessage = (
   });
 };
 
+export const showSuccessMessage = (message: string, description?: string) => {
+  showMessage({
+    message,
+    description,
+    type: 'success',
+    duration: 4000,
+    icon: 'success',
+    position: 'top',
+    floating: true,
+  });
+};
+
 export const extractError = (data: unknown): string => {
   if (data === null || data === undefined) {
     return '';

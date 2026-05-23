@@ -37,6 +37,7 @@ export default function RootLayout() {
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
         <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+        <Stack.Screen name="reset-password" options={{ headerShown: false }} />
         <Stack.Screen name="recipient" options={{ headerShown: false }} />
         <Stack.Screen name="client" options={{ headerShown: false }} />
         <Stack.Screen name="cashier" options={{ headerShown: false }} />

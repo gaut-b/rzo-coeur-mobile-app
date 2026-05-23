@@ -53,10 +53,6 @@ export const ShopDetail: React.FC<ShopDetailProps> = ({ shopId }) => {
 
       {/* Shop Information */}
       <View className="bg-white p-6 dark:bg-neutral-800">
-        <Text className="mb-4 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-          {shop.name}
-        </Text>
-
         <View className="mb-2">
           <Text className="mb-1 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
             {translate('pages.shops.address')}
