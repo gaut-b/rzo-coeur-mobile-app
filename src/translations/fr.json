@@ -38,6 +38,55 @@
   },
   "onboarding": {
     "message": "Bienvenue sur le reSOS du coeur",
+    "next": "Suivant",
+    "start": "Commencer",
+    "steps": {
+      "cashier-client": {
+        "after": " et réglez le vendeur comme d'habitude.",
+        "before": "Utilisez le ",
+        "between": " généré par l'appli pour ",
+        "highlight1": "QR code",
+        "highlight2": "passer en caisse",
+        "role": "Donateur",
+        "title": "Passez en caisse"
+      },
+      "cashier-recipient": {
+        "after": " — les articles ont déjà été réglés par le donateur.",
+        "before": "Présentez le ",
+        "between": " en caisse et repartez ",
+        "highlight1": "QR code",
+        "highlight2": "sans payer",
+        "role": "Destinataire",
+        "title": "Passez en caisse sans payer"
+      },
+      "recipient-notification": {
+        "after": " a été mis à votre disposition en magasin.",
+        "before": "Vous recevez une ",
+        "between": " vous indiquant qu'un ",
+        "highlight1": "notification",
+        "highlight2": "panier de produits",
+        "role": "Destinataire",
+        "title": "Un panier vous attend"
+      },
+      "scan-client": {
+        "after": " pour les rendre disponibles aux bénéficiaires.",
+        "before": "Utilisez l'appli pour ",
+        "between": " et laissez-les ",
+        "highlight1": "scanner les produits",
+        "highlight2": "en rayons",
+        "role": "Donateur",
+        "title": "Scannez vos produits"
+      },
+      "scan-recipient": {
+        "after": ".",
+        "before": "Prenez vos articles en rayon et ",
+        "between": " directement avec ",
+        "highlight1": "scannez-les",
+        "highlight2": "l'application",
+        "role": "Destinataire",
+        "title": "Récupérez vos articles"
+      }
+    },
     "title": "le reSOS du coeur"
   },
   "pages": {
