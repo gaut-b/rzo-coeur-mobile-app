@@ -129,6 +129,14 @@
       "scan-button": "Scanner",
       "scanned-articles": "articles scannés"
     },
+    "reset-password": {
+      "back_to_login": "Retour à la connexion",
+      "email_label": "Adresse e-mail",
+      "submit": "Envoyer le lien",
+      "subtitle": "Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.",
+      "success": "Un e-mail de réinitialisation vous a été envoyé.",
+      "title": "Mot de passe oublié"
+    },
     "scanner": {
       "barcode-mismatch-message": "Le code barre scanné ({{scannedBarcode}}) ne correspond pas à l'article attendu ({{expectedBarcode}}).",
       "barcode-mismatch-title": "Code barre incorrect",
@@ -160,7 +168,7 @@
       "sign_in": "Vous avez déjà un compte ? Connectez-vous",
       "submit": "Créer son compte",
       "subtitle": "Créez votre compte gratuitement",
-      "success_message": "Votre compte a été créé avec succès ! Vous allez être redirigé vers la page de connexion",
+      "success_message": "Votre compte a été créé avec succès ! Vous allez recevoir un email pour confirmer votre adresse.",
       "title": "Inscription"
     },
     "tabs": {

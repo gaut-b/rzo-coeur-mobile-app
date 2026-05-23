@@ -93,16 +93,17 @@ export const SignInForm = ({
             </Pressable>
           }
         />
-        {/*TODO: IMPLEMENT forgot password page*/}
-        <Text className="text-center text-sm text-neutral-400 dark:text-neutral-600">
-          {translate('pages.login.forgot_password')}
-        </Text>
         <Button
           testID="login-button"
           label={translate('pages.login.submit')}
           onPress={handleSubmit(onSubmit)}
           loading={isLoading}
         />
+        <Link href={'/reset-password'}>
+          <Text className="text-center text-sm text-neutral-500 dark:text-neutral-400">
+            {translate('pages.login.forgot_password')}
+          </Text>
+        </Link>
         <Link href="/sign-up">
           <Text className="text-center text-sm text-neutral-500 dark:text-neutral-400">
             {translate('pages.login.sign_up')}
