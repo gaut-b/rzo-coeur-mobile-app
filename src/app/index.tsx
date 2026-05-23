@@ -1,7 +1,7 @@
 import { Redirect, SplashScreen } from 'expo-router';
 import React, { useEffect } from 'react';
 
-import { useInitState } from '@/lib/hooks';
+import { useInitState, useIsFirstTime } from '@/lib/hooks';
 import { useAuthStore } from '@/lib/state';
 import {
   CASHIER_ROOT_PATH,
@@ -13,6 +13,7 @@ export default function Index() {
   useInitState();
   const user = useAuthStore((state) => state.user);
   const status = useAuthStore((state) => state.status);
+  const [isFirstTime] = useIsFirstTime();
 
   useEffect(() => {
     if (status !== 'NOT_INITIALIZED') {
@@ -24,6 +25,10 @@ export default function Index() {
 
   if (status === 'NOT_INITIALIZED') {
     return null;
+  }
+
+  if (isFirstTime) {
+    return <Redirect href="/onboarding" />;
   }
 
   if (status === 'LOGGED_OUT') {
