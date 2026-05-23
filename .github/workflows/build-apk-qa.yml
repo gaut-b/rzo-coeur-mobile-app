@@ -7,6 +7,10 @@
 #   - SECRET_KEY
 #   - RZO_API_BASE_URL
 #   - GOOGLE_MAPS_API_KEY
+#   - KEYSTORE_BASE64      (base64 -i release.keystore | tr -d '\n')
+#   - KEYSTORE_PASSWORD    (mot de passe du keystore)
+#   - KEY_ALIAS            (alias de la clé)
+#   - KEY_PASSWORD         (mot de passe de la clé)
 
 name: Build QA APK (Android)
 
@@ -51,11 +55,19 @@ jobs:
       - name: 🏗️ Prebuild (generate android/ folder)
         run: pnpm prebuild:staging
 
+      - name: � Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/release.keystore
+
       - name: 🔨 Build release APK
         run: |
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file=${{ runner.temp }}/release.keystore \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
           cd ..
 
       - name: 📤 Upload APK artifact
