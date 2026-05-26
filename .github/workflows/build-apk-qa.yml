@@ -33,6 +33,9 @@ jobs:
       RZO_API_BASE_URL: ${{ secrets.RZO_API_BASE_URL }}
       # Variables (Settings → Secrets and variables → Variables)
       OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
+      KEYSTORE_BASE64: ${{ vars.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
     steps:
       - name: 📦 Checkout project repo
