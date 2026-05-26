@@ -1,5 +1,5 @@
 # ✍️ Description:
-# Generates a staging APK directly on a GitHub runner (no EAS required).
+# Generates a development APK directly on a GitHub runner (no EAS required).
 # The APK is uploaded as a GitHub Actions artifact and can be downloaded
 # from the Actions run summary page.
 #
@@ -57,7 +57,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: 🏗️ Prebuild (generate android/ folder)
-        run: pnpm prebuild:staging
+        run: pnpm prebuild:development
 
       - name: 🔑 Decode keystore
         run: |
@@ -77,13 +77,13 @@ jobs:
       - name: 📤 Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-staging-${{ github.run_number }}.apk
+          name: app-development-${{ github.run_number }}.apk
           path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 14
 
       - name: 📤 Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-staging-${{ github.run_number }}.aab
+          name: app-development-${{ github.run_number }}.aab
           path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 14
