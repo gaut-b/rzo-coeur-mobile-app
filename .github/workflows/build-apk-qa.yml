@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      APP_ENV: staging
+      APP_ENV: development
       EXPO_NO_DOTENV: '1'
       # Secrets (Settings → Secrets and variables → Secrets)
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
