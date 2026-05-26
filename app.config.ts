@@ -51,6 +51,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#043313',
     },
     package: Env.PACKAGE,
+    versionCode: process.env.VERSION_CODE
+      ? parseInt(process.env.VERSION_CODE, 10)
+      : 1,
     config: {
       googleMaps: {
         apiKey: ClientEnv.GOOGLE_MAPS_API_KEY,
