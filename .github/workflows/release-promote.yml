@@ -1,0 +1,93 @@
+# ✍️ Description:
+# Promotes a Release Candidate tag to a stable production tag.
+#
+# Steps:
+#   1. Validates the provided RC tag format (v1.2.3-rc.N)
+#   2. Checks out at the RC tag commit (no code changes, same exact commit)
+#   3. Creates the stable tag (v1.2.3) pointing to that commit
+#   4. Pushes the stable tag
+#   5. Creates a GitHub Release with auto-generated release notes
+#   → The push of the stable tag automatically triggers build-apk-prod.yml
+#
+# 🚨 GITHUB SECRETS REQUIRED:
+#   - RELEASE_APP_ID: GitHub App ID
+#   - RELEASE_APP_PRIVATE_KEY: GitHub App private key
+#   The app must have Contents: Read & Write permission and be added to the
+#   branch protection bypass list for main.
+
+name: Promote RC to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      rc-tag:
+        description: 'RC tag to promote (e.g. v1.2.3-rc.2)'
+        required: true
+
+jobs:
+  promote:
+    name: Promote RC tag to stable
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+
+    steps:
+      - name: 🤖 Generate bot token
+        id: app-token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.RELEASE_APP_ID }}
+          private_key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
+      - name: ✅ Validate RC tag format
+        run: |
+          RC_TAG="${{ github.event.inputs.rc-tag }}"
+          if ! echo "$RC_TAG" | grep -qP '^v\d+\.\d+\.\d+-rc\.\d+$'; then
+            echo "❌ Invalid RC tag format: '$RC_TAG'. Expected format: v1.2.3-rc.1"
+            exit 1
+          fi
+
+      - name: 📦 Checkout at RC tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.rc-tag }}
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: 🏷️ Extract stable version
+        id: version
+        run: |
+          RC_TAG="${{ github.event.inputs.rc-tag }}"
+          STABLE_TAG=$(echo "$RC_TAG" | sed 's/-rc\.[0-9]*$//')
+          echo "stable_tag=${STABLE_TAG}" >> $GITHUB_OUTPUT
+          echo "stable_version=${STABLE_TAG#v}" >> $GITHUB_OUTPUT
+
+      - name: ✅ Ensure stable tag does not already exist
+        run: |
+          STABLE_TAG="${{ steps.version.outputs.stable_tag }}"
+          git fetch --tags
+          if git rev-parse "$STABLE_TAG" >/dev/null 2>&1; then
+            echo "❌ Tag $STABLE_TAG already exists. Aborting."
+            exit 1
+          fi
+
+      - name: 🏷️ Create and push stable tag
+        run: |
+          git tag ${{ steps.version.outputs.stable_tag }}
+          git push origin ${{ steps.version.outputs.stable_tag }}
+
+      - name: 🚀 Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.version.outputs.stable_tag }}
+          generateReleaseNotes: true
+          draft: false
+
+      - name: 🎉 Summary
+        run: |
+          echo "### ✅ Promoted \`${{ github.event.inputs.rc-tag }}\` → \`${{ steps.version.outputs.stable_tag }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "A production APK build has been triggered automatically." >> $GITHUB_STEP_SUMMARY
