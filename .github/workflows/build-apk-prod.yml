@@ -1,8 +1,8 @@
 # ✍️ Description:
-# Builds a staging APK directly on a GitHub runner (no EAS required).
-# Triggered automatically when a Release Candidate tag (v*-rc*) is pushed,
+# Builds a production APK directly on a GitHub runner (no EAS required).
+# Triggered automatically when a stable release tag (v*) is pushed (excluding RC tags),
 # or manually from the Actions tab.
-# The APK is uploaded as a GitHub Actions artifact and can be downloaded
+# The APK and AAB are uploaded as GitHub Actions artifacts and can be downloaded
 # from the Actions run summary page.
 #
 # 🚨 GITHUB SECRETS REQUIRED (Settings → Secrets and variables → Actions):
@@ -14,18 +14,20 @@
 #   - KEY_ALIAS            (key alias)
 #   - KEY_PASSWORD         (key password)
 
-name: Build QA APK (Android)
+name: Build Production APK (Android)
 
 on:
   workflow_dispatch:
   push:
     tags:
-      - 'v*-rc*'
+      - 'v*'
 
 jobs:
   build:
-    name: Build QA APK (Android)
+    name: Build Production APK (Android)
     runs-on: ubuntu-latest
+    # Skip RC tags — production builds are for stable tags only
+    if: ${{ !contains(github.ref_name, '-rc') }}
 
     env:
       APP_ENV: production
@@ -60,7 +62,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: 🏗️ Prebuild (generate android/ folder)
-        run: pnpm prebuild:development
+        run: pnpm prebuild:production
 
       - name: 🔑 Decode keystore
         run: |
@@ -80,13 +82,13 @@ jobs:
       - name: 📤 Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-staging-${{ github.ref_name || github.run_number }}.apk
+          name: app-prod-${{ github.ref_name }}.apk
           path: android/app/build/outputs/apk/release/app-release.apk
-          retention-days: 14
+          retention-days: 30
 
       - name: 📤 Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-staging-${{ github.ref_name || github.run_number }}.aab
+          name: app-prod-${{ github.ref_name }}.aab
           path: android/app/build/outputs/bundle/release/app-release.aab
-          retention-days: 14
+          retention-days: 30
