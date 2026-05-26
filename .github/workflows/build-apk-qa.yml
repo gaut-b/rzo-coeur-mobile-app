@@ -63,11 +63,11 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/release-key.jks
 
-      - name: 🔨 Build release APK
+      - name: 🔨 Build release APK + AAB
         run: |
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleRelease --no-daemon \
+          ./gradlew assembleRelease bundleRelease --no-daemon \
             -Pandroid.injected.signing.store.file=${{ runner.temp }}/release-key.jks \
             -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
@@ -79,4 +79,11 @@ jobs:
         with:
           name: app-staging-${{ github.run_number }}.apk
           path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 14
+
+      - name: 📤 Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-staging-${{ github.run_number }}.aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 14
