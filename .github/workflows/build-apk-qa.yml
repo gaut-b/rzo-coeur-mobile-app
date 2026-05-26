@@ -34,6 +34,7 @@ jobs:
       # Variables (Settings → Secrets and variables → Variables)
       OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
       KEYSTORE_BASE64: ${{ vars.KEYSTORE_BASE64 }}
+      KEY_ALIAS: ${{ vars.KEY_ALIAS }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
@@ -58,9 +59,9 @@ jobs:
       - name: 🏗️ Prebuild (generate android/ folder)
         run: pnpm prebuild:staging
 
-      - name: � Decode keystore
+      - name: 🔑 Decode keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/release-key.jks
+          echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/release-key.jks
 
       - name: 🔨 Build release APK
         run: |
@@ -68,9 +69,9 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleRelease --no-daemon \
             -Pandroid.injected.signing.store.file=${{ runner.temp }}/release-key.jks \
-            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
-            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+            -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
           cd ..
 
       - name: 📤 Upload APK artifact
