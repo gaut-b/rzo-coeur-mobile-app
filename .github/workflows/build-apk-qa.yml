@@ -1,5 +1,5 @@
 # ✍️ Description:
-# Generates a staging APK directly on a GitHub runner (no EAS required).
+# Generates a development APK directly on a GitHub runner (no EAS required).
 # The APK is uploaded as a GitHub Actions artifact and can be downloaded
 # from the Actions run summary page.
 #
@@ -7,6 +7,10 @@
 #   - SECRET_KEY
 #   - RZO_API_BASE_URL
 #   - GOOGLE_MAPS_API_KEY
+#   - KEYSTORE_BASE64      (base64 -w 0 release-key.jks)
+#   - KEYSTORE_PASSWORD    (keystore password)
+#   - KEY_ALIAS            (key alias)
+#   - KEY_PASSWORD         (key password)
 
 name: Build QA APK (Android)
 
@@ -21,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      APP_ENV: staging
+      APP_ENV: development
       EXPO_NO_DOTENV: '1'
       # Secrets (Settings → Secrets and variables → Secrets)
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -29,6 +33,10 @@ jobs:
       RZO_API_BASE_URL: ${{ secrets.RZO_API_BASE_URL }}
       # Variables (Settings → Secrets and variables → Variables)
       OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
+      KEYSTORE_BASE64: ${{ vars.KEYSTORE_BASE64 }}
+      KEY_ALIAS: ${{ vars.KEY_ALIAS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
     steps:
       - name: 📦 Checkout project repo
@@ -49,18 +57,33 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: 🏗️ Prebuild (generate android/ folder)
-        run: pnpm prebuild:staging
+        run: pnpm prebuild:development
 
-      - name: 🔨 Build release APK
+      - name: 🔑 Decode keystore
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/release-key.jks
+
+      - name: 🔨 Build release APK + AAB
         run: |
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleRelease bundleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file=${{ runner.temp }}/release-key.jks \
+            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+            -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
           cd ..
 
       - name: 📤 Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-staging-${{ github.run_number }}.apk
+          name: app-development-${{ github.run_number }}.apk
           path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 14
+
+      - name: 📤 Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-development-${{ github.run_number }}.aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 14
