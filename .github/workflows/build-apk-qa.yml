@@ -7,7 +7,7 @@
 #   - SECRET_KEY
 #   - RZO_API_BASE_URL
 #   - GOOGLE_MAPS_API_KEY
-#   - KEYSTORE_BASE64      (base64 -i release.keystore | tr -d '\n')
+#   - KEYSTORE_BASE64      (base64 -w 0 release-key.jks)
 #   - KEYSTORE_PASSWORD    (keystore password)
 #   - KEY_ALIAS            (key alias)
 #   - KEY_PASSWORD         (key password)
@@ -57,14 +57,14 @@ jobs:
 
       - name: � Decode keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/release.keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/release-key.jks
 
       - name: 🔨 Build release APK
         run: |
           cd android
           chmod +x ./gradlew
           ./gradlew assembleRelease --no-daemon \
-            -Pandroid.injected.signing.store.file=${{ runner.temp }}/release.keystore \
+            -Pandroid.injected.signing.store.file=${{ runner.temp }}/release-key.jks \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
