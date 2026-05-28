@@ -1,93 +1,189 @@
-# ✍️ Description:
-# Promotes a Release Candidate tag to a stable production tag.
+# Description:
+# Promotes a Release Candidate tag to a stable production tag and builds a signed production APK.
 #
 # Steps:
-#   1. Validates the provided RC tag format (v1.2.3-rc.N)
-#   2. Checks out at the RC tag commit (no code changes, same exact commit)
-#   3. Creates the stable tag (v1.2.3) pointing to that commit
-#   4. Pushes the stable tag
+#   1. Triggered automatically when an RC tag (v*-rc.*) is pushed by release-rc.yml
+#   2. Pauses at the "production" environment gate until a reviewer approves
+#   3. Creates the stable tag (vX.Y.Z) pointing to the same commit as the RC
+#   4. Builds a signed production APK + AAB (APP_ENV=production) and uploads them
 #   5. Creates a GitHub Release with auto-generated release notes
-#   → The push of the stable tag automatically triggers build-apk-prod.yml
 #
-# 🚨 GITHUB SECRETS REQUIRED:
-#   - RELEASE_APP_ID: GitHub App ID
-#   - RELEASE_APP_PRIVATE_KEY: GitHub App private key
-#   The app must have Contents: Read & Write permission and be added to the
-#   branch protection bypass list for main.
+# Trigger:
+#   Runs automatically when an RC tag (v*-rc.*) is pushed, but pauses
+#   at the "production" environment gate until a reviewer approves it.
+#   Configure required reviewers at:
+#   Settings > Environments > production > Required reviewers
+#
+# GITHUB SECRETS/VARS REQUIRED:
+#   Repo-level secrets:
+#     - RELEASE_APP_ID            GitHub App ID (must bypass branch protection on main)
+#     - RELEASE_APP_PRIVATE_KEY   GitHub App private key
+#     - KEYSTORE_PASSWORD         Android signing keystore password
+#     - KEY_PASSWORD              Android signing key password
+#   Repo-level variables:
+#     - KEYSTORE_BASE64           base64-encoded release keystore (base64 -w 0 release-key.jks)
+#     - KEY_ALIAS                 Android signing key alias
+#     - OPEN_FOOD_FACTS_API_BASE_URL
+#   "production" environment secrets:
+#     - SECRET_KEY
+#     - GOOGLE_MAPS_API_KEY
+#   "production" environment variables:
+#     - RZO_API_BASE_URL          production API URL (e.g. https://api.example.com)
 
-name: Promote RC to Production
+name: Release Promote
 
 on:
-  workflow_dispatch:
-    inputs:
-      rc-tag:
-        description: 'RC tag to promote (e.g. v1.2.3-rc.2)'
-        required: true
+  push:
+    tags:
+      - 'v*-rc.*'
 
 jobs:
-  promote:
-    name: Promote RC tag to stable
+  release-promote:
+    name: Promote RC tag to stable + Build production APK
     runs-on: ubuntu-latest
+    environment: production
     concurrency:
       group: release
       cancel-in-progress: false
     permissions:
       contents: write
 
+    env:
+      APP_ENV: production
+      EXPO_NO_DOTENV: '1'
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+      RZO_API_BASE_URL: ${{ vars.RZO_API_BASE_URL }}
+      OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
+      KEYSTORE_BASE64: ${{ vars.KEYSTORE_BASE64 }}
+      KEY_ALIAS: ${{ vars.KEY_ALIAS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
     steps:
-      - name: 🤖 Generate bot token
+      - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ secrets.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
-      - name: ✅ Validate RC tag format
-        run: |
-          RC_TAG="${{ github.event.inputs.rc-tag }}"
-          if ! echo "$RC_TAG" | grep -qP '^v\d+\.\d+\.\d+-rc\.\d+$'; then
-            echo "❌ Invalid RC tag format: '$RC_TAG'. Expected format: v1.2.3-rc.1"
-            exit 1
-          fi
-
-      - name: 📦 Checkout at RC tag
+      - name: Checkout at RC tag
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.rc-tag }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
+
+      - name: Configure git
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
       - name: 🏷️ Extract stable version
         id: version
         run: |
-          RC_TAG="${{ github.event.inputs.rc-tag }}"
+          RC_TAG="${{ github.ref_name }}"
           STABLE_TAG=$(echo "$RC_TAG" | sed 's/-rc\.[0-9]*$//')
           echo "stable_tag=${STABLE_TAG}" >> $GITHUB_OUTPUT
-          echo "stable_version=${STABLE_TAG#v}" >> $GITHUB_OUTPUT
 
-      - name: ✅ Ensure stable tag does not already exist
+      - name: Ensure stable tag does not already exist
         run: |
           STABLE_TAG="${{ steps.version.outputs.stable_tag }}"
           git fetch --tags
           if git rev-parse "$STABLE_TAG" >/dev/null 2>&1; then
-            echo "❌ Tag $STABLE_TAG already exists. Aborting."
+            echo "❌ Stable tag $STABLE_TAG already exists. Aborting."
             exit 1
           fi
 
-      - name: 🏷️ Create and push stable tag
+      - name: Create and push stable tag
         run: |
-          git tag ${{ steps.version.outputs.stable_tag }}
+          git tag -a ${{ steps.version.outputs.stable_tag }} -m "${{ steps.version.outputs.stable_tag }}"
           git push origin ${{ steps.version.outputs.stable_tag }}
 
-      - name: 🚀 Create GitHub Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.version.outputs.stable_tag }}
-          generateReleaseNotes: true
-          draft: false
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
 
-      - name: 🎉 Summary
+      - name: ☕ Set Up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compute versionCode from semver
         run: |
-          echo "### ✅ Promoted \`${{ github.event.inputs.rc-tag }}\` → \`${{ steps.version.outputs.stable_tag }}\`" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const v = require('./package.json').version;
+            const m = v.match(/^(\\d+)\\.(\\d+)\\.(\\d+)$/);
+            if (!m) { console.error('Invalid version: ' + v); process.exit(1); }
+            const code = +m[1]*1000000 + +m[2]*1000 + +m[3];
+            console.log('VERSION_CODE=' + code);
+          " >> $GITHUB_ENV
+
+      - name: Prebuild (generate android/ folder)
+        run: pnpm prebuild:production
+
+      - name: Decode keystore
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/release-key.jks
+
+      - name: Build production APK + AAB
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew assembleRelease bundleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file=${{ runner.temp }}/release-key.jks \
+            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+            -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
+          cd ..
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          STABLE_TAG="${{ steps.version.outputs.stable_tag }}"
+
+          # Without --notes-start-tag, GitHub compares from the nearest git tag
+          # (the RC), which points to the same commit → zero PRs in range → empty notes.
+          # Force start from the previous stable tag.
+          PREV_STABLE=$(git tag -l "v[0-9]*.[0-9]*.[0-9]*" \
+            | grep -v '\-rc\.' | grep -v "^${STABLE_TAG}$" | sort -V | tail -1)
+
+          if [ -n "$PREV_STABLE" ]; then
+            gh release create "${STABLE_TAG}" \
+              --title "Release ${STABLE_TAG}" \
+              --generate-notes \
+              --notes-start-tag "${PREV_STABLE}" \
+              --verify-tag
+          else
+            gh release create "${STABLE_TAG}" \
+              --title "Release ${STABLE_TAG}" \
+              --generate-notes \
+              --verify-tag
+          fi
+
+      - name: Upload APK to release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh release upload "${{ steps.version.outputs.stable_tag }}" \
+            android/app/build/outputs/apk/release/app-release.apk \
+            --clobber
+
+      - name: Upload AAB to release
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh release upload "${{ steps.version.outputs.stable_tag }}" \
+            android/app/build/outputs/bundle/release/app-release.aab \
+            --clobber
+
+      - name: 📋 Summary
+        run: |
+          echo "### ✅ Promoted \`${{ github.ref_name }}\` → \`${{ steps.version.outputs.stable_tag }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "A production APK build has been triggered automatically." >> $GITHUB_STEP_SUMMARY
+          echo "Production APK built with \`APP_ENV=production\` and \`RZO_API_BASE_URL\` from the **production** environment." >> $GITHUB_STEP_SUMMARY
