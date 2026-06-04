@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     concurrency:
-      group: release
+      group: release-rc
       cancel-in-progress: false
     permissions:
       contents: write

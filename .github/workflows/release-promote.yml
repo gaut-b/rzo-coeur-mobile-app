@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     concurrency:
-      group: release
+      group: release-promote
       cancel-in-progress: false
     permissions:
       contents: write
@@ -212,6 +212,6 @@ jobs:
 
       - name: 📋 Summary
         run: |
-          echo "### ✅ Promoted \`${{ github.ref_name }}\` → \`${{ steps.version.outputs.stable_tag }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Promoted \`${{ steps.version.outputs.rc_tag }}\` → \`${{ steps.version.outputs.stable_tag }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Production APK built with \`APP_ENV=production\` and \`RZO_API_BASE_URL\` from the **production** environment." >> $GITHUB_STEP_SUMMARY
