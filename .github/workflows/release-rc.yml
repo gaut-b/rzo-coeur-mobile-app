@@ -1,16 +1,21 @@
 # Description:
 # Creates a Release Candidate (RC) tag on main and builds a signed staging APK.
 #
-# Steps:
+# Steps (full release):
 #   1. Computes the next version from conventional commits (feat → minor, fix/other → patch)
 #   2. Bumps package.json and commits it back to main [skip ci]
 #   3. Creates and pushes the vX.Y.Z-rc.N tag
 #   4. Creates a GitHub pre-release
 #   5. Builds a signed staging APK + AAB (APP_ENV=staging) and uploads them to the pre-release
 #
+# Rebuild only (workflow_dispatch with a tag):
+#   Skips the release steps and rebuilds the APK + AAB for the provided RC tag.
+#   Use this when you need to rebuild after changing a GitHub variable/secret.
+#
 # Trigger:
-#   Runs automatically on every push to main, but pauses at the
-#   "staging" environment gate until a reviewer approves it.
+#   - Automatically on every push to main (full release)
+#   - Manually via workflow_dispatch with a required RC tag (rebuild only)
+#   Both pause at the "staging" environment gate until a reviewer approves it.
 #   Configure required reviewers at:
 #   Settings > Environments > staging > Required reviewers
 #
@@ -36,6 +41,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'RC tag to rebuild (e.g. v1.2.3-rc.1). Skips the release steps — only rebuilds the APK + AAB.'
+        required: true
 
 jobs:
   release-rc:
@@ -68,10 +78,20 @@ jobs:
           app-id: ${{ secrets.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
-      - name: 📦 Checkout main
+      - name: Validate tag input
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          INPUT_TAG="${{ github.event.inputs.tag }}"
+          if [[ ! "$INPUT_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-rc\.[0-9]+$ ]]; then
+            echo "❌ Invalid tag format: '${INPUT_TAG}'. Expected e.g. v1.2.3-rc.1"
+            exit 1
+          fi
+
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.event_name == 'workflow_dispatch' && format('refs/tags/{0}', github.event.inputs.tag) || 'main' }}
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
@@ -82,6 +102,7 @@ jobs:
 
       - name: Compute next version and RC tag
         id: release
+        if: github.event_name == 'push'
         run: |
           git fetch --tags
 
@@ -129,6 +150,7 @@ jobs:
           echo "rc_tag=v${NEW_VERSION}-rc.${RC_NUMBER}" >> $GITHUB_OUTPUT
 
       - name: Bump package.json version
+        if: github.event_name == 'push'
         run: |
           node -e "
             const fs = require('fs');
@@ -138,17 +160,20 @@ jobs:
           "
 
       - name: Commit and push version bump
+        if: github.event_name == 'push'
         run: |
           git add package.json
           git commit -m "chore(release): bump version to ${{ steps.release.outputs.new_version }} [skip ci]"
           git push origin main
 
       - name: Create and push RC tag
+        if: github.event_name == 'push'
         run: |
           git tag -a ${{ steps.release.outputs.rc_tag }} -m "${{ steps.release.outputs.rc_tag }}"
           git push origin ${{ steps.release.outputs.rc_tag }}
 
       - name: Create GitHub pre-release
+        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
@@ -170,6 +195,18 @@ jobs:
               --verify-tag
           fi
 
+      - name: Resolve build tag
+        id: build-tag
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
+          fi
+            echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
 
@@ -185,7 +222,7 @@ jobs:
       - name: Compute versionCode from semver
         run: |
           node -e "
-            const v = '${{ steps.release.outputs.new_version }}';
+            const v = require('./package.json').version;
             const m = v.match(/^(\\d+)\\.(\\d+)\\.(\\d+)$/);
             if (!m) { console.error('Invalid version: ' + v); process.exit(1); }
             const code = +m[1]*1000000 + +m[2]*1000 + +m[3];
@@ -214,7 +251,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          gh release upload "${{ steps.release.outputs.rc_tag }}" \
+          gh release upload "${{ steps.build-tag.outputs.tag }}" \
             android/app/build/outputs/apk/release/app-release.apk \
             --clobber
 
@@ -222,7 +259,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          gh release upload "${{ steps.release.outputs.rc_tag }}" \
+          gh release upload "${{ steps.build-tag.outputs.tag }}" \
             android/app/build/outputs/bundle/release/app-release.aab \
             --clobber
 
