@@ -200,17 +200,10 @@ jobs:
         shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            INPUT_TAG="${{ github.event.inputs.tag }}"
-            if [ -z "$INPUT_TAG" ]; then
-              echo "❌ No tag provided. Please specify an RC tag (e.g. v1.2.3-rc.1)"
-              exit 1
-            fi
-            if [[ ! "$INPUT_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-rc\.[0-9]+$ ]]; then
-              echo "❌ Invalid tag format: ${INPUT_TAG}. Expected e.g. v1.2.3-rc.1"
-              exit 1
-            fi
-            echo "tag=${INPUT_TAG}" >> "$GITHUB_OUTPUT"
+            echo "tag=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
           else
+            echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
+          fi
             echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
           fi
 
