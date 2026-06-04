@@ -208,8 +208,6 @@ jobs:
           else
             echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
           fi
-            echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
