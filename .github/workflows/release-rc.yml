@@ -163,8 +163,12 @@ jobs:
         if: github.event_name == 'push'
         run: |
           git add package.json
-          git commit -m "chore(release): bump version to ${{ steps.release.outputs.new_version }} [skip ci]"
-          git push origin main
+          if git diff --staged --quiet; then
+            echo "package.json already at ${{ steps.release.outputs.new_version }}, skipping commit."
+          else
+            git commit -m "chore(release): bump version to ${{ steps.release.outputs.new_version }} [skip ci]"
+            git push origin main
+          fi
 
       - name: Create and push RC tag
         if: github.event_name == 'push'
