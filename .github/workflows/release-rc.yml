@@ -236,14 +236,14 @@ jobs:
 
       - name: Decode keystore
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/release-key.jks
+          echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/release-key-staging.jks
 
       - name: Build staging APK + AAB
         run: |
           cd android
           chmod +x ./gradlew
           ./gradlew assembleRelease bundleRelease --no-daemon \
-            -Pandroid.injected.signing.store.file=${{ runner.temp }}/release-key.jks \
+            -Pandroid.injected.signing.store.file=${{ runner.temp }}/release-key-staging.jks \
             -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
             -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
             -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
