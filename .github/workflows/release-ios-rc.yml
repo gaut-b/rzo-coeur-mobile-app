@@ -99,114 +99,114 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      - name: Compute next version and RC tag
-        id: release
-        if: github.event_name == 'push'
-        run: |
-          git fetch --tags
+  #    - name: Compute next version and RC tag
+  #      id: release
+  #      if: github.event_name == 'push'
+  #      run: |
+  #        git fetch --tags
 
-          # Current version from latest stable tag (v0.0.0 if none)
-          LATEST_TAG=$(git tag -l "v[0-9]*.[0-9]*.[0-9]*" \
-            | grep -v '\-rc\.' | sort -V | tail -1)
-          CURRENT="${LATEST_TAG#v}"
-          CURRENT="${CURRENT:-0.0.0}"
+  #        # Current version from latest stable tag (v0.0.0 if none)
+  #        LATEST_TAG=$(git tag -l "v[0-9]*.[0-9]*.[0-9]*" \
+  #          | grep -v '\-rc\.' | sort -V | tail -1)
+  #        CURRENT="${LATEST_TAG#v}"
+  #        CURRENT="${CURRENT:-0.0.0}"
 
-          # Bump type from conventional commits since last STABLE tag.
-          # We deliberately base off the latest STABLE tag (not any RC) to avoid
-          # version regression (e.g. 0.0.0 + patch → 0.0.1 after a feat already
-          # bumped to 0.1.0-rc.1).
-          if [ -z "$LATEST_TAG" ]; then
-            COMMITS=$(git log --pretty=format:"%s")
-          else
-            COMMITS=$(git log --pretty=format:"%s" "${LATEST_TAG}..HEAD")
-          fi
+  #        # Bump type from conventional commits since last STABLE tag.
+  #        # We deliberately base off the latest STABLE tag (not any RC) to avoid
+  #        # version regression (e.g. 0.0.0 + patch → 0.0.1 after a feat already
+  #        # bumped to 0.1.0-rc.1).
+  #        if [ -z "$LATEST_TAG" ]; then
+  #          COMMITS=$(git log --pretty=format:"%s")
+  #        else
+  #          COMMITS=$(git log --pretty=format:"%s" "${LATEST_TAG}..HEAD")
+  #        fi
 
-          if echo "$COMMITS" | grep -qE '^[a-z]+(\([^)]+\))?!:|BREAKING CHANGE'; then
-            BUMP="major"
-          elif echo "$COMMITS" | grep -qE '^feat(\([^)]+\))?:'; then
-            BUMP="minor"
-          else
-            BUMP="patch"
-          fi
-          echo "Bump type: $BUMP (current: $CURRENT)"
+  #        if echo "$COMMITS" | grep -qE '^[a-z]+(\([^)]+\))?!:|BREAKING CHANGE'; then
+  #          BUMP="major"
+  #        elif echo "$COMMITS" | grep -qE '^feat(\([^)]+\))?:'; then
+  #          BUMP="minor"
+  #        else
+  #          BUMP="patch"
+  #        fi
+  #        echo "Bump type: $BUMP (current: $CURRENT)"
 
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
-          case "$BUMP" in
-            major) NEW_VERSION="$((MAJOR + 1)).0.0" ;;
-            minor) NEW_VERSION="${MAJOR}.$((MINOR + 1)).0" ;;
-            *)     NEW_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))" ;;
-          esac
+  #        IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+  #        case "$BUMP" in
+  #          major) NEW_VERSION="$((MAJOR + 1)).0.0" ;;
+  #          minor) NEW_VERSION="${MAJOR}.$((MINOR + 1)).0" ;;
+  #          *)     NEW_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))" ;;
+  #        esac
 
-          LATEST_RC=$(git tag -l "v${NEW_VERSION}-rc.*" | sort -V | tail -1)
-          if [ -z "$LATEST_RC" ]; then
-            RC_NUMBER=1
-          else
-            RC_NUMBER=$(echo "$LATEST_RC" | grep -oP '\d+$')
-            RC_NUMBER=$((RC_NUMBER + 1))
-          fi
+  #        LATEST_RC=$(git tag -l "v${NEW_VERSION}-rc.*" | sort -V | tail -1)
+  #        if [ -z "$LATEST_RC" ]; then
+  #          RC_NUMBER=1
+  #        else
+  #          RC_NUMBER=$(echo "$LATEST_RC" | grep -oP '\d+$')
+  #          RC_NUMBER=$((RC_NUMBER + 1))
+  #        fi
 
-          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
-          echo "rc_tag=v${NEW_VERSION}-rc.${RC_NUMBER}" >> $GITHUB_OUTPUT
+  #        echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+  #        echo "rc_tag=v${NEW_VERSION}-rc.${RC_NUMBER}" >> $GITHUB_OUTPUT
 
-      - name: Bump package.json version
-        if: github.event_name == 'push'
-        run: |
-          node -e "
-            const fs = require('fs');
-            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pkg.version = '${{ steps.release.outputs.new_version }}';
-            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-          "
+  #    - name: Bump package.json version
+  #      if: github.event_name == 'push'
+  #      run: |
+  #        node -e "
+  #          const fs = require('fs');
+  #          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+  #          pkg.version = '${{ steps.release.outputs.new_version }}';
+  #          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+  #        "
 
-      - name: Commit and push version bump
-        if: github.event_name == 'push'
-        run: |
-          git add package.json
-          if git diff --staged --quiet; then
-            echo "package.json already at ${{ steps.release.outputs.new_version }}, skipping commit."
-          else
-            git commit -m "chore(release): bump version to ${{ steps.release.outputs.new_version }} [skip ci]"
-            git push origin main
-          fi
+  #    - name: Commit and push version bump
+  #      if: github.event_name == 'push'
+  #      run: |
+  #        git add package.json
+  #        if git diff --staged --quiet; then
+  #          echo "package.json already at ${{ steps.release.outputs.new_version }}, skipping commit."
+  #        else
+  #          git commit -m "chore(release): bump version to ${{ steps.release.outputs.new_version }} [skip ci]"
+  #          git push origin main
+  #        fi
 
-      - name: Create and push RC tag
-        if: github.event_name == 'push'
-        run: |
-          git tag -a ${{ steps.release.outputs.rc_tag }} -m "${{ steps.release.outputs.rc_tag }}"
-          git push origin ${{ steps.release.outputs.rc_tag }}
+  #    - name: Create and push RC tag
+  #      if: github.event_name == 'push'
+  #      run: |
+  #        git tag -a ${{ steps.release.outputs.rc_tag }} -m "${{ steps.release.outputs.rc_tag }}"
+  #        git push origin ${{ steps.release.outputs.rc_tag }}
 
-      - name: Create GitHub pre-release
-        if: github.event_name == 'push'
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          RC_TAG="${{ steps.release.outputs.rc_tag }}"
-          LATEST_STABLE=$(git tag -l "v[0-9]*.[0-9]*.[0-9]*" \
-            | grep -v '\-rc\.' | sort -V | tail -1)
-          if [ -n "$LATEST_STABLE" ]; then
-            gh release create "${RC_TAG}" \
-              --title "Pre-release ${RC_TAG}" \
-              --generate-notes \
-              --notes-start-tag "${LATEST_STABLE}" \
-              --prerelease \
-              --verify-tag
-          else
-            gh release create "${RC_TAG}" \
-              --title "Pre-release ${RC_TAG}" \
-              --generate-notes \
-              --prerelease \
-              --verify-tag
-          fi
+  #    - name: Create GitHub pre-release
+  #      if: github.event_name == 'push'
+  #      env:
+  #        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+  #      run: |
+  #        RC_TAG="${{ steps.release.outputs.rc_tag }}"
+  #        LATEST_STABLE=$(git tag -l "v[0-9]*.[0-9]*.[0-9]*" \
+  #          | grep -v '\-rc\.' | sort -V | tail -1)
+  #        if [ -n "$LATEST_STABLE" ]; then
+  #          gh release create "${RC_TAG}" \
+  #            --title "Pre-release ${RC_TAG}" \
+  #            --generate-notes \
+  #            --notes-start-tag "${LATEST_STABLE}" \
+  #            --prerelease \
+  #            --verify-tag
+  #        else
+  #          gh release create "${RC_TAG}" \
+  #            --title "Pre-release ${RC_TAG}" \
+  #            --generate-notes \
+  #            --prerelease \
+  #            --verify-tag
+  #        fi
 
-      - name: Resolve build tag
-        id: build-tag
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "tag=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
-          fi
+  #    - name: Resolve build tag
+  #      id: build-tag
+  #      shell: bash
+  #      run: |
+  #        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+  #          echo "tag=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+  #        else
+  #          echo "tag=${{ steps.release.outputs.rc_tag }}" >> "$GITHUB_OUTPUT"
+  #        fi
 
       - name: Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
