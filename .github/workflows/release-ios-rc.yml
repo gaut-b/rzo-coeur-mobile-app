@@ -41,15 +41,19 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      -main
+
   workflow_dispatch:
     inputs:
       tag:
-        description: 'RC tag to rebuild (e.g. v1.2.3-rc.1).'
+        description: 'Ios release CI'
         required: true
 
 jobs:
   release-rc:
-    name: Create RC tag + Build staging APK
+    name: Create RC tag
     runs-on: macos-latest
     environment: staging
     concurrency:
