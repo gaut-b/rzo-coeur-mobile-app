@@ -68,7 +68,7 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       RZO_API_BASE_URL: ${{ vars.RZO_API_BASE_URL }}
       OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
-      GOOGLE_MAPS_API_KEY: ${{secrets.GOOGLE_MAPS_API_KEY}}
+      GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
 
     steps:
       - name: Generate GitHub App token
