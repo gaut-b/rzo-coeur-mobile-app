@@ -68,6 +68,7 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       RZO_API_BASE_URL: ${{ vars.RZO_API_BASE_URL }}
       OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
+      GOOGLE_MAPS_API_KEY: ${{secrets.GOOGLE_MAPS_API_KEY}}
 
     steps:
       - name: Generate GitHub App token
@@ -76,16 +77,6 @@ jobs:
         with:
           app-id: ${{ secrets.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-
-      - name: Validate tag input
-        if: github.event_name == 'workflow_dispatch'
-        shell: bash
-        run: |
-          INPUT_TAG="${{ github.event.inputs.tag }}"
-          if [[ ! "$INPUT_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-rc\.[0-9]+$ ]]; then
-            echo "❌ Invalid tag format: '${INPUT_TAG}'. Expected e.g. v1.2.3-rc.1"
-            exit 1
-          fi
 
       - name: Checkout
         uses: actions/checkout@v4
