@@ -40,7 +40,7 @@ name: Release IOS
 on:
   push:
     branches:
-      - main
+      - clem_ios_ci
   pull_request:
     branches:
       -main
