@@ -35,7 +35,7 @@
 #   "staging" environment variables:
 #     - RZO_API_BASE_URL          staging API URL (e.g. https://staging.api.example.com)
 
-name: Release RC
+name: Release IOS
 
 on:
   push:
