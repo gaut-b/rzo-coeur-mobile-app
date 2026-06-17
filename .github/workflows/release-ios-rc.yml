@@ -69,7 +69,6 @@ jobs:
       RZO_API_BASE_URL: ${{ vars.RZO_API_BASE_URL }}
       OPEN_FOOD_FACTS_API_BASE_URL: ${{ vars.OPEN_FOOD_FACTS_API_BASE_URL }}
       GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-      FASTLANE_VERSION: "2.234.0"
       APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
       APPLE_KEY_ISSUER_ID: ${{ secrets.APPLE_KEY_ISSUER_ID }}
       APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
@@ -242,7 +241,8 @@ jobs:
           apple-key-id: ${{ secrets.APPLE_KEY_ID }}
           apple-key-issuer-id: ${{ secrets.APPLE_KEY_ISSUER_ID }}
           apple-key-content: ${{ secrets.APPLE_KEY_CONTENT }}
-          ios-app-id: com.rzocoeurmobileapp         
+          ios-app-id: com.rzocoeurmobileapp
+          fastlane-version: "2.234.0"
 
 
       - name: Summary
