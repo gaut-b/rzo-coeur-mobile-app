@@ -234,6 +234,9 @@ jobs:
           output-path: build-${{ github.sha }}.ipa
           team-id: ${{ secrets.TEAM_ID }}
           team-name: ${{ secrets.TEAM_NAME }}
+          apple-key-id: ${{ secrets.APPLE_KEY_ID }}
+          apple-key-issuer-id: ${{ secrets.APPLE_KEY_ISSUER_ID }}
+          apple-key-content: ${{ secrets.APPLE_KEY_CONTENT }}
           ios-app-id: com.rzocoeurmobileapp         
 
 
