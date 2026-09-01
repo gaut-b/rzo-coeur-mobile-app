@@ -39,7 +39,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     bundleIdentifier: Env.BUNDLE_ID,
     infoPlist: {
-      ITSAppUsesNonExemptEncryption: true,
+      ITSAppUsesNonExemptEncryption: false,
     },
   },
   experiments: {
