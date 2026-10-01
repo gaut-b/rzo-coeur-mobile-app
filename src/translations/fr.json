@@ -203,7 +203,7 @@
       "list-title": "Magasins Partenaires",
       "loading": "Chargement des magasins...",
       "permission-denied": "L'accès à votre position est nécessaire pour afficher les magasins à proximité.",
-      "permission-request": "Demander l'autorisation",
+      "permission-request": "Continuer",
       "retry": "Réessayer",
       "view-details": "Voir le détail",
       "view-on-map": "Itinéraire"

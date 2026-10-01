@@ -86,7 +86,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-camera',
       {
-        cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera',
+        cameraPermission:
+          'Allow $(PRODUCT_NAME) to access your camera to scan product barcodes',
         microphonePermission: 'Allow $(PRODUCT_NAME) to access your microphone',
         recordAudioAndroid: false,
       },
@@ -96,6 +97,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         locationWhenInUsePermission:
           'Allow $(PRODUCT_NAME) to use your location to find nearby partner stores.',
+      },
+    ],
+    [
+      './plugins/withIosReleaseCodeSigning.js',
+      {
+        appleTeamId: 'MY2R4UPF8G',
+        bundleIdentifier: Env.BUNDLE_ID,
       },
     ],
   ],
