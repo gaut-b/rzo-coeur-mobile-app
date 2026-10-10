@@ -34,7 +34,7 @@ require('dotenv').config({
 
 // TODO: Replace these values with your own
 
-const BUNDLE_ID = 'com.rzocoeurmobileapp'; // ios bundle id
+const BUNDLE_ID = 'com.rzomobileapp'; // ios bundle id
 const PACKAGE = 'com.rzocoeurmobileapp'; // android package name
 const NAME = 'le reSOS du coeur'; // app name
 const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
